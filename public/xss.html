@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>XSS 테스트</title>
+</head>
+<body>
+  <h1>XSS 테스트 페이지</h1>
+  <form method="POST" action="/xsstest">
+    <label>이름: <input type="text" name="username" /></label><br>
+    <button type="submit">제출</button>
+  </form>
+</body>
+</html>
