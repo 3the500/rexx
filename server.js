@@ -13,8 +13,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/favicon.ico', (req, res) => res.status(204));
 app.get('/', (req, res) => {
-  console.log('폼 페이지 요청 들어옴');
-  res.render('form');
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 app.post('/calculate', (req, res) => {
