@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>1RM 계산기</title>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <h1>1RM 계산기</h1>
+  <p>중량(kg): <input id="weight" type="number"></p>
+  <p>반복 횟수: <input id="reps" type="number"></p>
+  <button onclick="calculate1RM()">계산하기</button>
+  <p id="result"></p>
+
+  <script>
+    function calculate1RM() {
+      const weight = parseFloat(document.getElementById('weight').value);
+      const reps = parseInt(document.getElementById('reps').value);
+      if (!weight || !reps || reps < 1) {
+        document.getElementById('result').innerText = "값을 올바르게 입력하세요.";
+        return;
+      }
+      const result = weight * (1 + reps / 30);
+      document.getElementById('result').innerText = `예상 1RM: ${result.toFixed(2)} kg`;
+    }
+  </script>
+</body>
+</html>
+
