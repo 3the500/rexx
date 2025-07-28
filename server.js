@@ -10,7 +10,7 @@ app.get('/comment.html', (req, res) => {
 
 // ... 다른 라우팅들
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`서버 실행 중 on port ${PORT}`);
 });
