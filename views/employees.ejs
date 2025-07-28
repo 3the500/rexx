@@ -1,0 +1,16 @@
+<h1>직원 목록</h1>
+<table border="1">
+  <tr>
+    <th>ID</th><th>이름</th><th>부서</th><th>입사일</th><th>연봉</th>
+  </tr>
+  <% employees.forEach(emp => { %>
+    <tr>
+      <td><%= emp.emp_id %></td>
+      <td><%= emp.emp_name %></td>
+      <td><%= emp.dept_id %></td>
+      <td><%= emp.hire_date.toISOString().split('T')[0] %></td>
+      <td><%= emp.salary %></td>
+    </tr>
+  <% }) %>
+</table>
+
