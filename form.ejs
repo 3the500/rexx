@@ -3,27 +3,92 @@
 <head>
   <meta charset="UTF-8">
   <title>1RM 계산기</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .calculator-box {
+      background-color: #ffffff;
+      border: 2px solid #34d399; /* 초록색 테두리 (tailwind 느낌) */
+      border-radius: 12px;
+      padding: 30px 40px;
+      box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #10b981;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+      color: #374151;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #10b981;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    button:hover {
+      background-color: #059669;
+    }
+
+    .result {
+      margin-top: 25px;
+      font-size: 18px;
+      color: #111827;
+      background-color: #e0f2f1;
+      padding: 10px;
+      border-radius: 8px;
+    }
+  </style>
 </head>
-<body class="bg-dark text-white d-flex justify-content-center align-items-center" style="height: 100vh;">
-  <div class="container text-center">
-    <h1 class="mb-4">1RM 계산기</h1>
-    
-    <form method="POST" action="/" class="w-50 mx-auto">
-      <div class="mb-3">
-        <label for="weight" class="form-label">중량 (kg)</label>
-        <input type="number" name="weight" id="weight" class="form-control" required>
-      </div>
-      <div class="mb-3">
-        <label for="reps" class="form-label">반복 횟수</label>
-        <input type="number" name="reps" id="reps" class="form-control" required>
-      </div>
-      <button type="submit" class="btn btn-primary">계산하기</button>
+<body>
+  <div class="calculator-box">
+    <h1>1RM 계산기</h1>
+    <form action="/" method="POST">
+      <label for="weight">중량 (kg):</label>
+      <input type="number" name="weight" id="weight" required>
+
+      <label for="reps">반복 횟수:</label>
+      <input type="number" name="reps" id="reps" required>
+
+      <button type="submit">계산하기</button>
     </form>
 
     <% if (typeof oneRM !== 'undefined') { %>
-      <div class="mt-4">
-        <h3>💪 예상 1RM: <%= oneRM %> kg</h3>
+      <div class="result">
+        예상 1RM: <strong><%= oneRM %></strong> kg
       </div>
     <% } %>
   </div>
