@@ -1,28 +1,124 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-  <title>1RM 계산기</title>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rexx 1RM Calculator</title>
+  <style>
+    :root{
+      --green:#16a34a;
+      --green-700:#15803d;
+      --black:#0a0a0a;
+      --muted:#6b7280;
+      --radius:18px;
+      --shadow:0 10px 30px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "맑은 고딕", sans-serif;
+      color:var(--black);
+      background:#fff;
+      display:flex; align-items:center; justify-content:center;
+    }
+
+    .card{
+      width:min(680px, 92vw);
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:28px 28px 22px;
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:12px; margin-bottom:10px;
+    }
+    .brand svg{width:36px; height:36px}
+    .brand-title{font-size:20px; font-weight:800}
+    .subtitle{color:var(--muted); font-size:13px; margin-top:4px}
+
+    form{margin-top:18px}
+    .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+    @media (max-width:560px){ .grid{grid-template-columns:1fr} }
+
+    label{display:block; font-size:13px; font-weight:700; margin-bottom:6px}
+    .input{
+      width:100%; border:1.5px solid #e5e7eb; border-radius:12px;
+      padding:12px 14px; font-size:16px; outline:none;
+      transition:border .15s, box-shadow .15s;
+    }
+    .input:focus{
+      border-color:var(--green);
+      box-shadow:0 0 0 4px #ecfdf5;
+    }
+    .btn{
+      width:100%; border:none; margin-top:12px;
+      background:linear-gradient(180deg,var(--green),var(--green-700));
+      color:#fff; font-weight:800; letter-spacing:.3px;
+      padding:13px 16px; border-radius:12px; cursor:pointer;
+      box-shadow:0 6px 16px rgba(22,163,74,.25);
+    }
+
+    .watermark{
+      position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+      font-weight:900; letter-spacing:.15rem; color:#000;
+      opacity:.08; text-transform:uppercase;
+      font-size: clamp(14px, 2.5vw, 18px);
+      user-select:none; pointer-events:none;
+    }
+  </style>
 </head>
 <body>
-  <h1>1RM 계산기</h1>
-  <p>중량(kg): <input id="weight" type="number"></p>
-  <p>반복 횟수: <input id="reps" type="number"></p>
-  <button onclick="calculate1RM()">계산하기</button>
-  <p id="result"></p>
+
+  <main class="card">
+    <div class="brand">
+      <!-- 공룡 SVG -->
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 45c0-9 6-16 18-16h10c7 0 11-3 13-9 1-2 3-2 5-1-1 10-6 15-14 16 6 2 9 7 9 15v6H36l-6-7-6 7H10v-11Z"
+              fill="url(#g)"/>
+        <circle cx="46" cy="18" r="2.2" fill="#0a0a0a"/>
+        <defs>
+          <linearGradient id="g" x1="10" y1="20" x2="58" y2="55" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#16a34a"/><stop offset="1" stop-color="#15803d"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div>
+        <div class="brand-title">Rexx 1RM Calculator</div>
+        <div class="subtitle">흰 배경 · 초록 포인트 · 중앙 정렬</div>
+      </div>
+    </div>
+
+    <form>
+      <div class="grid">
+        <div>
+          <label for="weight">중량 (kg)</label>
+          <input id="weight" type="number" class="input" />
+        </div>
+        <div>
+          <label for="reps">반복 횟수 (reps)</label>
+          <input id="reps" type="number" class="input" />
+        </div>
+      </div>
+      <button class="btn" type="button" onclick="calc()">계산하기</button>
+    </form>
+    <p id="result"></p>
+  </main>
+
+  <div class="watermark">rexx the dino</div>
 
   <script>
-    function calculate1RM() {
-      const weight = parseFloat(document.getElementById('weight').value);
-      const reps = parseInt(document.getElementById('reps').value);
-      if (!weight || !reps || reps < 1) {
-        document.getElementById('result').innerText = "값을 올바르게 입력하세요.";
-        return;
-      }
-      const result = weight * (1 + reps / 30);
-      document.getElementById('result').innerText = `예상 1RM: ${result.toFixed(2)} kg`;
+    function calc(){
+      const w = parseFloat(document.getElementById('weight').value);
+      const r = parseInt(document.getElementById('reps').value);
+      if(!w || !r){ document.getElementById('result').innerText = "값을 입력해주세요"; return;}
+      // Epley 공식
+      const oneRM = Math.round(w * (1 + r/30));
+      document.getElementById('result').innerText = "예상 1RM: " + oneRM + " kg";
     }
   </script>
 </body>
 </html>
-
