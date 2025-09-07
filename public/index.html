@@ -23,7 +23,6 @@
       background:#fff;
       display:flex; align-items:center; justify-content:center;
     }
-
     .card{
       width:min(680px, 92vw);
       background:#fff;
@@ -32,10 +31,7 @@
       box-shadow:var(--shadow);
       padding:28px 28px 22px;
     }
-
-    .brand{
-      display:flex; align-items:center; gap:12px; margin-bottom:10px;
-    }
+    .brand{ display:flex; align-items:center; gap:12px; margin-bottom:10px; }
     .brand svg{width:36px; height:36px}
     .brand-title{font-size:20px; font-weight:800}
     .subtitle{color:var(--muted); font-size:13px; margin-top:4px}
@@ -50,10 +46,7 @@
       padding:12px 14px; font-size:16px; outline:none;
       transition:border .15s, box-shadow .15s;
     }
-    .input:focus{
-      border-color:var(--green);
-      box-shadow:0 0 0 4px #ecfdf5;
-    }
+    .input:focus{ border-color:var(--green); box-shadow:0 0 0 4px #ecfdf5; }
     .btn{
       width:100%; border:none; margin-top:12px;
       background:linear-gradient(180deg,var(--green),var(--green-700));
@@ -61,14 +54,20 @@
       padding:13px 16px; border-radius:12px; cursor:pointer;
       box-shadow:0 6px 16px rgba(22,163,74,.25);
     }
-
     .watermark{
       position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
-      font-weight:900; letter-spacing:.15rem; color:#000;
-      opacity:.08; text-transform:uppercase;
-      font-size: clamp(14px, 2.5vw, 18px);
+      font-weight:900; letter-spacing:.15rem; color:#000; opacity:.08;
+      text-transform:uppercase; font-size: clamp(14px, 2.5vw, 18px);
       user-select:none; pointer-events:none;
     }
+
+    /* 결과 테이블 (UI 최대한 기존 유지) */
+    #rmCard{ margin-top:10px; display:none; }
+    #rmNote{ color:var(--muted); font-size:12px; margin-bottom:4px; }
+    table.rm { width:100%; border-collapse:collapse; }
+    table.rm th, table.rm td { padding:8px 6px; }
+    table.rm thead th { font-size:12px; color:#374151; text-align:left; border-bottom:1px solid #e5e7eb; }
+    table.rm tbody td:last-child { text-align:right; font-weight:700; }
   </style>
 </head>
 <body>
@@ -77,8 +76,7 @@
     <div class="brand">
       <!-- 공룡 SVG -->
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 45c0-9 6-16 18-16h10c7 0 11-3 13-9 1-2 3-2 5-1-1 10-6 15-14 16 6 2 9 7 9 15v6H36l-6-7-6 7H10v-11Z"
-              fill="url(#g)"/>
+        <path d="M10 45c0-9 6-16 18-16h10c7 0 11-3 13-9 1-2 3-2 5-1-1 10-6 15-14 16 6 2 9 7 9 15v6H36l-6-7-6 7H10v-11Z" fill="url(#g)"/>
         <circle cx="46" cy="18" r="2.2" fill="#0a0a0a"/>
         <defs>
           <linearGradient id="g" x1="10" y1="20" x2="58" y2="55" gradientUnits="userSpaceOnUse">
@@ -92,33 +90,90 @@
       </div>
     </div>
 
-    <form>
+    <!-- JS 사용: 프런트 계산 / JS 미사용: 서버 POST 사용 -->
+    <form method="post" action="/">
       <div class="grid">
         <div>
           <label for="weight">중량 (kg)</label>
-          <input id="weight" type="number" class="input" />
+          <input id="weight" name="weight" type="number" class="input" value="<%= typeof weight==='number' ? weight : '' %>" />
         </div>
         <div>
           <label for="reps">반복 횟수 (reps)</label>
-          <input id="reps" type="number" class="input" />
+          <input id="reps" name="reps" type="number" class="input" value="<%= typeof reps==='number' ? reps : '' %>" />
         </div>
       </div>
       <button class="btn" type="button" onclick="calc()">계산하기</button>
+      <!-- JS 비활성 환경 대비용: 필요하면 이 버튼 표시 -->
+      <!-- <button class="btn" type="submit" style="margin-top:8px; background:#111">서버로 계산</button> -->
     </form>
-    <p id="result"></p>
+
+    <p id="result"><%= (typeof oneRM==='number') ? `예상 1RM: ${oneRM} kg` : '' %></p>
+
+    <!-- 반복별 결과 카드 -->
+    <section id="rmCard">
+      <div id="rmNote">Epley 기반 추정치입니다 (0.5kg 반올림).</div>
+      <table class="rm">
+        <thead>
+          <tr><th>Reps</th><th>예상 중량 (kg)</th></tr>
+        </thead>
+        <tbody id="rmTbody">
+          <% if (Array.isArray(table)) { table.forEach(row => { %>
+            <tr><td><%= row.reps %>RM</td><td><%= row.est %></td></tr>
+          <% }) } %>
+        </tbody>
+      </table>
+    </section>
   </main>
 
   <div class="watermark">rexx the dino</div>
 
   <script>
+    // 0.5kg 반올림
+    const roundToPlate = (kg, step = 0.5) => Math.round(kg / step) * step;
+
+    // Epley 공식
+    const oneRM = (w, r) => w * (1 + r/30);
+    const weightAtReps = (oneRM, reps) => oneRM / (1 + 0.0333 * reps);
+
     function calc(){
       const w = parseFloat(document.getElementById('weight').value);
-      const r = parseInt(document.getElementById('reps').value);
-      if(!w || !r){ document.getElementById('result').innerText = "값을 입력해주세요"; return;}
-      // Epley 공식
-      const oneRM = Math.round(w * (1 + r/30));
-      document.getElementById('result').innerText = "예상 1RM: " + oneRM + " kg";
+      const r = parseInt(document.getElementById('reps').value, 10);
+      const resultEl = document.getElementById('result');
+      const card = document.getElementById('rmCard');
+      const tbody = document.getElementById('rmTbody');
+
+      if(!w || !r || w <= 0 || r <= 0){
+        resultEl.innerText = "값을 올바르게 입력해주세요";
+        card.style.display = 'none';
+        return;
+      }
+
+      // 1RM
+      const est1rm = roundToPlate(oneRM(w, r));
+      resultEl.innerText = "예상 1RM: " + est1rm + " kg";
+
+      // 1~10RM 테이블
+      tbody.innerHTML = '';
+      for(let reps=1; reps<=10; reps++){
+        const est = roundToPlate(weightAtReps(est1rm, reps));
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${reps}RM</td><td style="text-align:right; font-weight:700;">${est}</td>`;
+        tbody.appendChild(tr);
+      }
+      card.style.display = 'block';
+
+      // URL 쿼리로 공유(선택): /?w=100&r=3
+      const url = new URL(window.location);
+      url.searchParams.set('w', w);
+      url.searchParams.set('r', r);
+      history.replaceState({}, '', url);
     }
+
+    // SSR로 테이블이 이미 렌더된 경우 보이기
+    (function init(){
+      const serverHasTable = document.querySelector('#rmTbody tr') !== null;
+      if(serverHasTable) document.getElementById('rmCard').style.display = 'block';
+    })();
   </script>
 </body>
 </html>
