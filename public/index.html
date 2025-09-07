@@ -107,18 +107,18 @@
       <!-- <button class="btn" type="submit" style="margin-top:8px; background:#111">서버로 계산</button> -->
     </form>
 
-    <p id="result"><%= (typeof oneRM==='number') ? `예상 1RM: ${oneRM} kg` : '' %></p>
+    <p id="result"></p>
 
     <!-- 반복별 결과 카드 -->
     <section id="rmCard">
-      <div id="rmNote">Epley 기반 추정치입니다 (0.5kg 반올림).</div>
+      <div id="rmNote"></div>
       <table class="rm">
         <thead>
           <tr><th>Reps</th><th>예상 중량 (kg)</th></tr>
         </thead>
         <tbody id="rmTbody">
-          <% if (Array.isArray(table)) { table.forEach(row => { %>
-            <tr><td><%= row.reps %>RM</td><td><%= row.est %></td></tr>
+          
+            <tr><td></td><td></td></tr>
           <% }) } %>
         </tbody>
       </table>
