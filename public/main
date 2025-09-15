@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rexx Strength — 메인</title>
+  <meta name="description" content="Rexx의 1RM 계산기와 훈련 리소스 허브" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0b0f0c;           /* 거의 블랙에 가까운 남색/초록 베이스 */
+      --panel: #0f1612;        /* 카드/패널 배경 */
+      --text: #e9f5ef;         /* 본문 텍스트 */
+      --muted: #a7b9b0;        /* 보조 텍스트 */
+      --brand: #16a34a;        /* 메인 그린 (emerald-ish) */
+      --brand-strong: #0f8a3d; /* 진한 그린 */
+      --accent: #38bdf8;       /* 포인트 블루 살짝 */
+      --ring: rgba(22,163,74,.35);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; color:var(--text); background:radial-gradient(1200px 800px at 80% -10%, rgba(22,163,74,.15), transparent 50%),
+      radial-gradient(900px 600px at -10% 20%, rgba(56,189,248,.08), transparent 40%), var(--bg);
+      font-family: "Pretendard", system-ui, -apple-system, Segoe UI, Roboto, Apple SD Gothic Neo, Noto Sans KR, sans-serif;
+      letter-spacing: .1px;
+    }
+
+    /* Header */
+    .header{
+      position: sticky; top:0; z-index:50; backdrop-filter: saturate(140%) blur(10px);
+      background: linear-gradient(to bottom, rgba(11,15,12,.8), rgba(11,15,12,.35));
+      border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    .container{max-width:1100px; margin:0 auto; padding:0 20px}
+    .row{display:flex; align-items:center; justify-content:space-between; height:64px}
+    .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text)}
+    .logo{width:28px; height:28px; border-radius:8px; background: conic-gradient(from 210deg, var(--brand), var(--brand-strong)); box-shadow: 0 6px 18px rgba(22,163,74,.35)}
+    .brand span{font-weight:700; letter-spacing:.3px}
+
+    nav{display:flex; gap:20px}
+    .nav-link{position:relative; padding:10px 12px; text-decoration:none; color:var(--text); font-weight:500; opacity:.9}
+    .nav-link:hover{opacity:1}
+    /* hover underline grow effect */
+    .nav-link::after{
+      content:""; position:absolute; left:12px; right:12px; bottom:6px; height:2px; background:linear-gradient(90deg, var(--brand), #22c55e);
+      transform:scaleX(0); transform-origin: left; transition:transform .25s ease;
+    }
+    .nav-link:hover::after{transform:scaleX(1)}
+    .cta{display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; background:linear-gradient(180deg, var(--brand), var(--brand-strong)); color:white; text-decoration:none; font-weight:600; box-shadow: 0 8px 20px rgba(16,185,129,.3)}
+    .cta:focus-visible{outline: 3px solid var(--ring)}
+
+    /* Hero */
+    .hero{padding:80px 0 40px}
+    .hero-grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:28px; align-items:center}
+    .tag{display:inline-block; padding:6px 10px; border:1px solid rgba(255,255,255,.08); color:var(--muted); border-radius:999px; font-size:12px; backdrop-filter:blur(6px)}
+    h1{margin:14px 0 12px; font-size:44px; line-height:1.1}
+    h1 strong{color:#98f6c2; text-shadow:0 6px 30px rgba(16,185,129,.25)}
+    .lead{color:var(--muted); font-size:16px; line-height:1.6; max-width:56ch}
+    .hero-actions{display:flex; gap:12px; margin-top:22px; flex-wrap:wrap}
+    .ghost{display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; text-decoration:none; color:var(--text); border:1px solid rgba(255,255,255,.12)}
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      border:1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      padding:18px; box-shadow: var(--shadow);
+    }
+    .stat{display:grid; grid-template-columns: auto 1fr; gap:10px; align-items:center}
+    .stat .dot{width:10px; height:10px; border-radius:50%; background:radial-gradient(circle at 30% 30%, #d1fae5, var(--brand-strong)); box-shadow:0 0 16px rgba(16,185,129,.45)}
+    .stat h3{margin:0; font-size:14px; color:var(--muted)}
+    .stat p{margin:0; font-size:24px; font-weight:700}
+
+    /* Feature grid */
+    .features{padding:40px 0 80px}
+    .grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:16px}
+    .feature h4{margin:6px 0 8px; font-size:18px}
+    .feature p{margin:0; color:var(--muted); line-height:1.6}
+    .chip{display:inline-block; font-size:12px; padding:4px 8px; border-radius:999px; background:rgba(16,185,129,.12); color:#b7f7d5; border:1px solid rgba(16,185,129,.25)}
+
+    /* Footer */
+    footer{padding:36px 0 60px; color:var(--muted)}
+    .foot{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
+    .foot a{color:var(--muted); text-decoration:none}
+    .foot a:hover{color:var(--text)}
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .hero{padding:56px 0 24px}
+      .hero-grid{grid-template-columns: 1fr}
+    }
+    @media (max-width: 720px){
+      nav{display:none}
+      .row{height:auto; padding:12px 0}
+    }
+
+    /* Motion reduce */
+    @media (prefers-reduced-motion: reduce){
+      .nav-link::after{transition:none}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="row">
+        <a class="brand" href="#" aria-label="Rexx Strength 홈">
+          <div class="logo" aria-hidden="true"></div>
+          <span>Rexx Strength</span>
+        </a>
+        <nav aria-label="주 메뉴">
+          <a class="nav-link" href="#features">기능</a>
+          <a class="nav-link" href="#stats">스탯</a>
+          <a class="nav-link" href="#about">소개</a>
+          <!-- 1RM 계산기 연결: 라우트/파일 경로를 네 앱에 맞게 수정하세요. 예: /1rm 또는 /1rm.html -->
+          <a class="nav-link" href="/index.html" title="1RM 계산기로 이동">1RM 계산기</a>
+        </nav>
+        <!-- 우측 CTA는 1RM으로 바로가기 -->
+        <a class="cta" href="/1rm" aria-label="1RM 계산기 바로가기">지금 1RM 계산</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <span class="tag">강력한 그린 아이덴티티 · 깔끔한 인터랙션</span>
+          <h1>
+            당신의 리프팅을 숫자로 증명.
+            <br />
+            <strong>정확한 1RM</strong>과 간지나는 기록 관리.
+          </h1>
+          <p class="lead">Rexx의 툴킷으로 스쿼트·벤치·데드의 퍼포먼스를 한눈에. 세련된 그린 테마, 가벼운 속도, 직관적인 UI.</p>
+          <div class="hero-actions">
+            <a class="cta" href="/1rm">1RM 계산 시작</a>
+            <a class="ghost" href="#features">기능 살펴보기</a>
+          </div>
+        </div>
+        <div>
+          <div class="card" aria-labelledby="demo-title">
+            <h3 id="demo-title" style="margin:0 0 6px; font-size:16px; color:var(--muted)">빠른 미리보기</h3>
+            <div style="border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.06)">
+              <svg viewBox="0 0 560 320" role="img" aria-label="1RM 인터페이스 미리보기" style="display:block; width:100%; height:auto; background:linear-gradient(180deg, #0f1612, #0b0f0c)">
+                <defs>
+                  <linearGradient id="g" x1="0" x2="1">
+                    <stop offset="0" stop-color="#16a34a"/>
+                    <stop offset="1" stop-color="#0f8a3d"/>
+                  </linearGradient>
+                </defs>
+                <rect x="24" y="26" rx="10" ry="10" width="512" height="44" fill="none" stroke="rgba(255,255,255,.1)"/>
+                <rect x="24" y="90" rx="10" ry="10" width="180" height="38" fill="url(#g)"/>
+                <rect x="214" y="90" rx="10" ry="10" width="180" height="38" fill="rgba(255,255,255,.08)"/>
+                <rect x="404" y="90" rx="10" ry="10" width="132" height="38" fill="rgba(255,255,255,.08)"/>
+                <rect x="24" y="148" rx="12" ry="12" width="240" height="120" fill="rgba(255,255,255,.04)"/>
+                <rect x="296" y="148" rx="12" ry="12" width="240" height="120" fill="rgba(255,255,255,.04)"/>
+                <text x="36" y="160" fill="#b7f7d5" font-size="12" font-family="system-ui, sans-serif">SQUAT</text>
+                <text x="308" y="160" fill="#b7f7d5" font-size="12" font-family="system-ui, sans-serif">DEADLIFT</text>
+                <text x="36" y="290" fill="#94a3b8" font-size="10" font-family="system-ui, sans-serif">* 실제 앱 UI는 더 디테일합니다</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats / Highlights -->
+  <section id="stats" aria-label="하이라이트">
+    <div class="container">
+      <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap:16px; margin: 10px 0 24px;">
+        <div class="card stat">
+          <div class="dot" aria-hidden="true"></div>
+          <div>
+            <h3>개발 스택</h3>
+            <p>Node.js · MySQL</p>
+          </div>
+        </div>
+        <div class="card stat">
+          <div class="dot" aria-hidden="true"></div>
+          <div>
+            <h3>초록 감성</h3>
+            <p>Rexx Green UI</p>
+          </div>
+        </div>
+        <div class="card stat">
+          <div class="dot" aria-hidden="true"></div>
+          <div>
+            <h3>핵심 기능</h3>
+            <p>정확한 1RM 계산</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="features" aria-label="기능">
+    <div class="container">
+      <div class="grid">
+        <div class="card feature">
+          <span class="chip">빠르고 가벼움</span>
+          <h4>로딩 최소화</h4>
+          <p>필요한 리소스만 불러오는 구조로 초기 진입이 빠릅니다.</p>
+        </div>
+        <div class="card feature">
+          <span class="chip">정확성</span>
+          <h4>다양한 공식 지원</h4>
+          <p>Epley, Brzycki 등 여러 공식을 비교해 최적 값을 제공합니다.</p>
+        </div>
+        <div class="card feature">
+          <span class="chip">확장성</span>
+          <h4>여러 계산기와 연동</h4>
+          <p>앞으로 탑롤 디펜스/사이드 프레셔 등 계산기와도 연결 가능.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About / CTA -->
+  <section id="about" aria-label="소개">
+    <div class="container">
+      <div class="card" style="display:grid; grid-template-columns: 1fr auto; gap:12px; align-items:center">
+        <div>
+          <h3 style="margin:0 0 6px">Rexx의 목표</h3>
+          <p class="lead" style="margin:0">강력한 기록 관리와 깔끔한 UI/UX. 리프터에게 필요한 기능만 빠르게.</p>
+        </div>
+        <a class="cta" href="/1rm">1RM 계산 하러가기</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container foot">
+      <div style="display:flex; align-items:center; gap:10px">
+        <div class="logo" aria-hidden="true"></div>
+        <span>© <span id="y"></span> Rexx Strength</span>
+      </div>
+      <div style="display:flex; gap:14px">
+        <a href="#about">About</a>
+        <a href="#features">Features</a>
+        <a href="/1rm">1RM</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 연도 자동
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
