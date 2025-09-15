@@ -11,6 +11,12 @@ app.use(express.urlencoded({ extended: true }));
 // 정적 파일 폴더
 app.use(express.static('public'));
 
+const path = require("path");
+
+app.get("/", (req,res)=>{
+  res.sendFile(path.join(__dirname, "public", "main.html"));
+});
+
 // 공통 유틸 (Epley + 0.5kg 반올림)
 function roundToPlate(kg, step = 0.5) {
   return Math.round(kg / step) * step;
