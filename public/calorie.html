@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>칼로리 계산기 — Rexx Strength</title>
+  <link rel="stylesheet" href="/style.css"/>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,Noto Sans KR,sans-serif}
+    .wrap{max-width:960px;margin:0 auto;padding:24px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .card{border:1px solid #e5e7eb;border-radius:12px;padding:16px}
+    label{display:flex;flex-direction:column;gap:6px;font-size:14px}
+    input,select,button{padding:10px;border:1px solid #cbd5e1;border-radius:10px}
+    button.cta{background:#16a34a;color:#fff;font-weight:700;border:none}
+    .out h3{margin:8px 0 6px}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    @media(max-width:900px){.row,.grid3{grid-template-columns:1fr}}
+    .muted{color:#64748b;font-size:12px}
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <a href="/" style="text-decoration:none;color:inherit">← 메인으로</a>
+    <h1>칼로리 계산기</h1>
+    <p class="muted">Mifflin-St Jeor + 활동계수로 BMR/TDEE 계산 후, 유지/벌크/다이어트 3가지 권장 칼로리를 제공합니다.</p>
+  </header>
+
+  <main class="wrap">
+    <form id="form" class="card" autocomplete="off">
+      <div class="row">
+        <label>성별
+          <select name="sex" required>
+            <option value="male">남성</option>
+            <option value="female">여성</option>
+          </select>
+        </label>
+        <label>나이
+          <input type="number" name="age" min="10" max="100" required/>
+        </label>
+        <label>키 (cm)
+          <input type="number" name="height_cm" step="0.1" min="120" max="230" required/>
+        </label>
+        <label>체중 (kg)
+          <input type="number" name="weight_kg" step="0.1" min="30" max="250" required/>
+        </label>
+        <label>활동수준
+          <select name="activity" required>
+            <option value="1.2">거의 운동 안함 (1.2)</option>
+            <option value="1.375">가벼운 활동 주1~3 (1.375)</option>
+            <option value="1.55" selected>보통 활동 주3~5 (1.55)</option>
+            <option value="1.725">높은 활동 주6~7 (1.725)</option>
+            <option value="1.9">매우 높음 (1.9)</option>
+          </select>
+        </label>
+        <label>벌크 surplus (kcal)
+          <select name="bulk_surplus">
+            <option>200</option><option selected>300</option><option>400</option><option>500</option>
+          </select>
+        </label>
+        <label>컷 deficit (kcal)
+          <select name="cut_deficit">
+            <option>200</option><option selected>300</option><option>400</option><option>500</option>
+          </select>
+        </label>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="cta" type="submit">계산하기</button>
+        <span class="muted">* 결과는 가이드이며 개인 차가 큽니다.</span>
+      </div>
+    </form>
+
+    <section id="out" class="out" style="margin-top:16px"></section>
+  </main>
+
+  <script>
+    const $ = (s, p=document)=>p.querySelector(s);
+    const out = $('#out');
+    $('#form').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const payload = Object.fromEntries(fd.entries());
+      // 숫자 변환
+      payload.age = +payload.age;
+      payload.height_cm = +payload.height_cm;
+      payload.weight_kg = +payload.weight_kg;
+      payload.activity = +payload.activity;
+      payload.bulk_surplus = +payload.bulk_surplus;
+      payload.cut_deficit = +payload.cut_deficit;
+
+      const res = await fetch('/api/calorie', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if(!res.ok){ out.innerHTML = `<div class="card">에러: ${data?.message||'요청 실패'}</div>`; return; }
+
+      const box = (title, k, m)=>
+        `<div class="card"><h3>${title}</h3>
+           <p>권장 칼로리: <b>${k.toLocaleString()} kcal</b></p>
+           <p class="muted">단백질 ${m.protein_g} g · 지방 ${m.fat_g} g · 탄수 ${m.carb_g} g</p>
+         </div>`;
+
+      out.innerHTML = `
+        <div class="grid3">
+          ${box('유지 (TDEE)', data.tdee.kcal, data.tdee.macros)}
+          ${box('벌크', data.bulk.kcal, data.bulk.macros)}
+          ${box('다이어트', data.cut.kcal, data.cut.macros)}
+        </div>
+        <div class="card" style="margin-top:12px">
+          <p>BMR: <b>${data.bmr}</b> kcal · TDEE 활동계수: <b>${payload.activity}</b></p>
+          <p class="muted">매크로 기준: 단백질 1.8 g/kg, 지방 0.8 g/kg, 탄수는 나머지</p>
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>
