@@ -8,16 +8,24 @@ const PORT = process.env.PORT || 8080;
 // EJS 세팅
 app.set('view engine', 'ejs');
 
-// POST 요청 파싱
+// 바디 파서
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // 🔥 JSON 파싱 (API용)
 
-// 정적 파일 폴더
+/* =========================================================
+ * [메인 라우트]  — 사이트 홈을 public/main.html로 고정
+ *   - 주의: express.static 보다 "위"에 두어야 / 에서 main이 확실히 뜸
+ * =======================================================*/
+app.get('/', (req,res)=>{
+  res.sendFile(path.join(__dirname, 'public', 'main.html'));
+});
+
+// 정적 파일 서빙 (CSS/JS/이미지/정적 HTML 등)
 app.use(express.static('public'));
 
-// --------------------------------------
-// 1RM 계산기 관련 유틸 함수
-// --------------------------------------
+/* =========================================================
+ * [1RM 계산기 관련 유틸 함수]
+ * =======================================================*/
 function roundToPlate(kg, step = 0.5) {
   return Math.round(kg / step) * step;
 }
@@ -28,11 +36,12 @@ function epleyWeightAtReps(oneRM, reps) {
   return oneRM / (1 + 0.0333 * reps);
 }
 
-// --------------------------------------
-// 1RM 계산기 라우트
-// --------------------------------------
-// 루트 페이지 (GET): 폼만 렌더링 (쿼리 있을 경우 프리필)
-app.get('/', (req, res) => {
+/* =========================================================
+ * [1RM 계산기 라우트] — 경로를 /1rm 로 변경
+ *   - form.ejs 의 <form action="..."> 도 /1rm 로 바꿔줘야 함!
+ * =======================================================*/
+// 1RM (GET): 쿼리 있을 경우 프리필
+app.get('/1rm', (req, res) => {
   const w = parseFloat(req.query.w);
   const r = parseInt(req.query.r, 10);
   let oneRM, table = null;
@@ -48,17 +57,17 @@ app.get('/', (req, res) => {
   res.render('form', { weight: w, reps: r, oneRM, table });
 });
 
-// 루트 페이지 (POST): JS 비활성 환경 대비 SSR
-app.post('/', (req, res) => {
+// 1RM (POST): JS 비활성 환경 대비 SSR
+app.post('/1rm', (req, res) => {
   const weight = parseFloat(req.body.weight);
   const reps = parseInt(req.body.reps, 10);
 
   if (!isNaN(weight) && !isNaN(reps) && weight > 0 && reps > 0) {
     const oneRM = roundToPlate(epleyOneRM(weight, reps));
     const table = Array.from({ length: 10 }, (_, i) => {
-      const r = i + 1;
-      const est = roundToPlate(epleyWeightAtReps(oneRM, r));
-      return { reps: r, est };
+      const rr = i + 1;
+      const est = roundToPlate(epleyWeightAtReps(oneRM, rr));
+      return { reps: rr, est };
     });
     res.render('form', { weight, reps, oneRM, table });
   } else {
@@ -66,9 +75,10 @@ app.post('/', (req, res) => {
   }
 });
 
-// --------------------------------------
-// 칼로리 계산기 API (POST /api/calorie)
-// --------------------------------------
+/* =========================================================
+ * [칼로리 계산기 API] — POST /api/calorie
+ *   - 한 번에 유지/벌크/다이어트 3가지 결과 반환
+ * =======================================================*/
 app.post('/api/calorie',
   body('sex').isIn(['male','female']),
   body('age').isInt({ min: 10, max: 100 }),
@@ -123,9 +133,9 @@ app.post('/api/calorie',
   }
 );
 
-// --------------------------------------
-// 서버 실행
-// --------------------------------------
+/* =========================================================
+ * [서버 실행]
+ * =======================================================*/
 app.listen(PORT, () => {
   console.log(`서버 실행 중: http://localhost:${PORT}`);
 });
