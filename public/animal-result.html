@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>테스트 결과 | Rexx Strength</title>
+  <link rel="stylesheet" href="./style.css" />
+
+  <style>
+    .result-wrap{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      background:
+        radial-gradient(1200px 600px at 50% 0%, rgba(0,0,0,.18), rgba(0,0,0,.65)),
+        url("./animal-image.png");
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+      background-attachment: fixed;
+      color:#fff;
+    }
+
+    .result-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:18px 20px;
+    }
+    .result-brand{
+      text-decoration:none;
+      color:rgba(255,255,255,.9);
+      font-weight:800;
+      letter-spacing:-0.2px;
+    }
+
+    .result-center{
+      flex:1;
+      display:grid;
+      place-items:start center;
+      padding: 72px 16px 40px;
+    }
+
+    .result-card{
+      width:min(860px, 100%);
+      padding: 22px 18px;
+      border-radius: 18px;
+      background: rgba(10,12,14,.52);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+      text-align:center;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.9);
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .animal-name{
+      margin: 6px 0 6px;
+      font-size: clamp(28px, 4vw, 46px);
+      line-height:1.12;
+      letter-spacing:-0.6px;
+      text-shadow: 0 10px 32px rgba(0,0,0,.35);
+    }
+
+    .one-liner{
+      margin: 0;
+      color: rgba(255,255,255,.82);
+      font-size: 15.5px;
+      line-height: 1.7;
+    }
+
+    .grid{
+      margin-top: 16px;
+      display:grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 860px){
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .box{
+      text-align:left;
+      padding: 14px 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .box h3{
+      margin:0 0 8px;
+      font-size: 15px;
+      letter-spacing:-0.2px;
+      color: rgba(255,255,255,.92);
+    }
+    .box ul{
+      margin:0;
+      padding-left: 18px;
+      color: rgba(255,255,255,.82);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .actions{
+      margin-top: 16px;
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      justify-content:center;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:none;
+      cursor:pointer;
+      text-decoration:none;
+      font-weight:900;
+      letter-spacing:-0.2px;
+      border-radius: 14px;
+      padding: 13px 16px;
+      width: min(320px, 100%);
+      transition: transform .12s ease, filter .12s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(1.05); }
+    .btn:active{ transform: translateY(0); }
+
+    .btn-primary{
+      background: linear-gradient(135deg,#ffb703,#ff7a00);
+      color:#0b0b0b;
+      box-shadow: 0 12px 30px rgba(0,0,0,.42);
+      border: 1px solid rgba(255,255,255,.15);
+    }
+
+    .btn-ghost{
+      background: rgba(255,255,255,.12);
+      color: rgba(255,255,255,.92);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    .result-bottom{
+      padding: 18px 20px 26px;
+      text-align:center;
+      color: rgba(255,255,255,.65);
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="result-wrap">
+    <header class="result-top">
+      <a class="result-brand" href="./main.html">Rexx Strength</a>
+      <span id="tinyInfo" style="color:rgba(255,255,255,.75); font-size:13px;"></span>
+    </header>
+
+    <section class="result-center">
+      <div class="result-card">
+        <div class="badge" id="badge">🦁 결과 로딩중...</div>
+
+        <h1 class="animal-name" id="animalName">-</h1>
+        <p class="one-liner" id="oneLiner">-</p>
+
+        <div class="grid">
+          <div class="box">
+            <h3>✅ 너의 운동 스타일</h3>
+            <ul id="styleList"></ul>
+          </div>
+          <div class="box">
+            <h3>🔥 Rexx 추천 루틴</h3>
+            <ul id="routineList"></ul>
+          </div>
+          <div class="box">
+            <h3>⚠️ 조심할 포인트</h3>
+            <ul id="warnList"></ul>
+          </div>
+          <div class="box">
+            <h3>🎯 한 줄 코칭</h3>
+            <ul id="coachList"></ul>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="btnCopy">결과 링크 복사</button>
+          <a class="btn btn-ghost" href="./animal-quiz.html">다시 하기</a>
+          <a class="btn btn-ghost" href="./main.html">메인으로</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="result-bottom">
+      결과는 재미로 보는 테스트이며, 실제 운동은 컨디션/부상 이력에 맞춰 조절해줘.
+    </footer>
+  </main>
+
+  <script>
+    // ===== 쿼리스트링에서 type 가져오기 =====
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get("type") || "곰";
+
+    // ===== 16동물 데이터(임시 문구, 나중에 너 톤으로 교체하면 됨) =====
+    const DATA = {
+      "곰": {
+        emoji: "🐻",
+        one: "기본기 + 꾸준함으로 강해지는 탱커 타입.",
+        style: ["루틴을 지키면 성장이 빠름", "중량보단 폼/템포 안정적", "볼륨을 잘 쌓는 편"],
+        routine: ["스쿼트/벤치/데드 주 2~3회 변형", "RPE 7~8로 볼륨 누적", "보조는 등/코어 위주"],
+        warn: ["욕심내서 한 번에 올리면 컨디션 깨짐", "휴식/수면 부족 시 퍼포먼스 하락"],
+        coach: ["한 주만 더 쌓아. 너는 누적이 무기야."]
+      },
+      "호랑이": {
+        emoji: "🐯",
+        one: "한 번 꽂히면 PR까지 밀어붙이는 포식자 타입.",
+        style: ["고중량/저반복 선호", "승부욕 강함", "기록 갱신에 몰입"],
+        routine: ["메인 리프트 Top set + Back-off", "주 1회 PR 데이", "삼두/상부등 보강"],
+        warn: ["폼 무너지기 전에 컷!", "부상 신호 무시 금지"],
+        coach: ["강함은 ‘지속’에서 나온다. 오늘은 깔끔하게."]
+      },
+      "사자": { emoji:"🦁", one:"무대 체질. 존재감으로 끌고 가는 리더 타입.", style:["사람 있으면 더 강해짐","강도 높게 때리는 편","결단 빠름"], routine:["빅3 + 보조 2~3개 짧고 굵게","짧은 고강도 인터벌 유산소","어깨/등 라인 집중"], warn:["과몰입으로 과훈련 주의","회복(수면/영양) 빼먹지 말기"], coach:["너의 무기는 ‘리듬’. 루틴을 리듬으로 만들어."] },
+      "매": { emoji:"🦅", one:"각 잡고 꽂히면 정확하게 찌르는 스나이퍼 타입.", style:["디테일/효율 중시","기술적으로 접근","최소로 최대 효율"], routine:["주요 리프트는 폼/바패스 교정","보조는 약점만 2개","짧게 자주"], warn:["완벽주의로 진도가 느려질 수 있음"], coach:["완벽은 훈련으로 만든다. 한 세트씩 전진."] },
+      "코끼리": { emoji:"🐘", one:"한 번 꾸준히 하면 절대 안 무너지는 내구성 타입.", style:["지구력/볼륨 강점","루틴 유지 잘함","회복관리도 잘함"], routine:["중고반복(6~12) 중심","머신/덤벨로 볼륨 누적","주 2회 가벼운 유산소"], warn:["자극이 약하면 지루해질 수 있음"], coach:["너는 ‘오래’가 강점. 꾸준함이 곧 괴력이다."] },
+      "늑대": { emoji:"🐺", one:"혼자서도, 무리에서도 강해지는 전술가 타입.", style:["상황 적응 빠름","경쟁/자극도 활용","계획+유연함 밸런스"], routine:["상체/하체 분할 + 약점 1개","주간 목표만 지키기","컨디션 따라 강도 조절"], warn:["여러 루틴을 갈아타다 분산될 수 있음"], coach:["하나만 정해. 이번 달은 그거로 끝까지."] },
+      "고양이": { emoji:"🐱", one:"감각으로 타이밍 잡는 미니멀리스트 타입.", style:["컨디션 따라 최적화","자극/펌핑 좋아함","과한 건 싫음"], routine:["중량은 유지, 템포/가동범위 집중","상체 펌핑 2~3종","짧게 자주"], warn:["강도 너무 낮아지면 정체"], coach:["감각은 좋다. 주 1회는 ‘빡세게’ 찍자."] },
+      "개": { emoji:"🐶", one:"에너지와 성실함으로 레벨업하는 긍정 타입.", style:["동기부여 잘 받음","꾸준한 출석","피드백 수용 빠름"], routine:["전신/분할 뭐든 잘 맞음","기록을 ‘간단’하게라도 남기기","코어/유산소 소량"], warn:["흥분해서 페이스 오버 주의"], coach:["지금 페이스 그대로. 다만 ‘호흡’부터 잡자."] },
+      "소": { emoji:"🐮", one:"단단하게 밀어붙이는 근성 타입.", style:["반복/근지구력 강점","루틴 고정 선호","묵묵히 누적"], routine:["8~15rep 볼륨","하체/등 비중↑","스트레칭 5분 고정"], warn:["유연성/가동범위 놓치면 정체"], coach:["강함은 유연함 위에서 완성된다. 가동범위 챙겨."] },
+      "토끼": { emoji:"🐰", one:"민첩하게 치고 빠지는 스피드 타입.", style:["짧고 효율적인 운동","가벼운 템포 좋아함","루틴 다양성 선호"], routine:["서킷/슈퍼셋 2~3세트","전신 가볍게 자주","유산소 섞기"], warn:["중량/기본기 소홀하면 성장 느림"], coach:["가볍게만 가지 말고 ‘핵심 한 종목’은 잡자."] },
+      "원숭이": { emoji:"🐵", one:"재미가 곧 지속. 플레이메이커 타입.", style:["새 운동 잘 시도","동작 다양성","친구랑 하면 최강"], routine:["푸쉬/풀/레그 + 재미 종목 1","그립/코어 보너스","기록은 핵심만"], warn:["산만해지면 진척이 안 보임"], coach:["재미는 유지하되, 목표는 ‘하나’만."] },
+      "거북이": { emoji:"🐢", one:"느리지만 확실하게, 장기전 최강 타입.", style:["부상 회피 우선","기본기/자세 집착","꾸준함 끝판왕"], routine:["RPE 6~7 안정 볼륨","템포/정지 반복","회복(수면/걷기) 필수"], warn:["너무 안전하게만 하면 자극 부족"], coach:["안전하게, 근데 ‘조금씩’ 더. 그게 너의 PR이다."] },
+      "표범": { emoji:"🐆", one:"폭발력 + 민첩함으로 치고 나가는 헌터 타입.", style:["강도 높게 짧게","순간 집중력","어깨/등 사용 능숙"], routine:["Top set 강하게 + 보조 짧게","스프린트/점프 소량","상부등/후면삼각근 강화"], warn:["과속하면 폼 무너짐"], coach:["빨라도 된다. 대신 ‘정확하게’ 빠르게."] },
+      "말": { emoji:"🐴", one:"체력으로 밀어붙이는 엔진 타입.", style:["볼륨耐性 좋음","루틴 길어도 버팀","점진적 상승 선호"], routine:["주 4~5회 분할 볼륨","하체/등 중심","컨디션 관리 유산소"], warn:["너무 많이 해서 회복이 밀릴 수 있음"], coach:["너는 엔진이야. 다만 오버히트만 조심."] },
+      "여우": { emoji:"🦊", one:"머리로 이기는 효율 덕후 타입.", style:["최적화 좋아함","약점 공략형","데이터/기록 좋아함"], routine:["약점 2개만 집중 보강","볼륨은 최소 유효량","루틴은 4주 단위"], warn:["최적화 집착으로 실행이 늦어질 수 있음"], coach:["분석은 끝. 이제 실행. 오늘 한 세트부터."] },
+      "코뿔소": { emoji:"🦏", one:"직진. 단단하게 밀고 들어가는 탱크 타입.", style:["중량/직진 성향","고집 있지만 성실","강도 높게 오래 버팀"],
+        routine:["메인 리프트 고정(3~5rep)","등/코어 보강 필수","스트랩/벨트는 보조로"],
+        warn:["목/허리 과부하 주의","과한 고집은 부상으로 이어짐"],
+        coach:["직진 좋다. 대신 ‘폼’은 절대 양보하지 마."]
+      }
+    };
+
+    // ===== DOM 채우기 =====
+    const d = DATA[type] || DATA["곰"];
+    document.getElementById("badge").textContent = `${d.emoji} 너의 타입`;
+    document.getElementById("animalName").textContent = `${type}형`;
+    document.getElementById("oneLiner").textContent = d.one;
+
+    document.getElementById("tinyInfo").textContent = `결과: ${type}형`;
+
+    function fillList(id, items){
+      const ul = document.getElementById(id);
+      ul.innerHTML = items.map(x => `<li>${x}</li>`).join("");
+    }
+    fillList("styleList", d.style);
+    fillList("routineList", d.routine);
+    fillList("warnList", d.warn);
+    fillList("coachList", d.coach);
+
+    // ===== 링크 복사 =====
+    document.getElementById("btnCopy").addEventListener("click", async () => {
+      const url = window.location.href;
+      try {
+        await navigator.clipboard.writeText(url);
+        document.getElementById("btnCopy").textContent = "복사 완료! 🔥";
+        setTimeout(() => (document.getElementById("btnCopy").textContent = "결과 링크 복사"), 1200);
+      } catch (e) {
+        // 폴백
+        prompt("아래 링크를 복사해줘:", url);
+      }
+    });
+  </script>
+</body>
+</html>
