@@ -1,1 +1,221 @@
 
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>동물 운동 유형 테스트 - 퀴즈 | Rexx Strength</title>
+  <link rel="stylesheet" href="./style.css" />
+  <style>
+    .quiz-wrap{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      background: radial-gradient(1200px 600px at 50% 0%, rgba(0,0,0,.25), rgba(0,0,0,.75)),
+                  url("./animal-image.png");
+      background-size: cover;
+      background-position:center;
+      background-repeat:no-repeat;
+    }
+    .quiz-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:18px 20px;
+      color:#fff;
+    }
+    .quiz-brand{
+      text-decoration:none;
+      color:rgba(255,255,255,.9);
+      font-weight:800;
+    }
+    .quiz-card{
+      width:min(880px, 100%);
+      margin: 40px auto 0;
+      padding: 22px;
+      border-radius: 18px;
+      background: rgba(10,12,14,.60);
+      backdrop-filter: blur(10px);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+      color:#fff;
+    }
+    .progress{
+      height:10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.12);
+      overflow:hidden;
+      margin-top:12px;
+    }
+    .bar{
+      height:100%;
+      width:0%;
+      background: linear-gradient(135deg,#ffb703,#ff7a00);
+    }
+    .q-no{
+      margin-top:10px;
+      color:rgba(255,255,255,.8);
+      font-size:14px;
+    }
+    .q-title{
+      margin: 14px 0 0;
+      font-size: clamp(20px, 2.4vw, 30px);
+      line-height:1.25;
+      letter-spacing:-0.3px;
+    }
+    .answers{
+      margin-top:18px;
+      display:grid;
+      gap:12px;
+    }
+    .ans-btn{
+      width:100%;
+      border:none;
+      cursor:pointer;
+      padding:16px 16px;
+      border-radius:16px;
+      font-weight:800;
+      font-size:16px;
+      text-align:left;
+      color:#0b0b0b;
+      background: rgba(255,255,255,.92);
+      transition: transform .1s ease, filter .1s ease;
+    }
+    .ans-btn:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+    .ans-btn:active{ transform: translateY(0); }
+    .ans-btn.secondary{
+      background: rgba(255,255,255,.14);
+      color: rgba(255,255,255,.92);
+      border:1px solid rgba(255,255,255,.18);
+    }
+    .quiz-bottom{
+      margin-top:auto;
+      padding: 18px 20px 26px;
+      color: rgba(255,255,255,.7);
+      text-align:center;
+      font-size:13px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="quiz-wrap">
+    <header class="quiz-top">
+      <a class="quiz-brand" href="./main.html">Rexx Strength</a>
+      <span id="stepText">1 / 10</span>
+    </header>
+
+    <section class="quiz-card">
+      <div class="progress" aria-label="진행률">
+        <div class="bar" id="bar"></div>
+      </div>
+      <div class="q-no" id="qNo">Q1</div>
+      <h1 class="q-title" id="qTitle">질문이 여기에 들어갑니다</h1>
+
+      <div class="answers">
+        <button class="ans-btn" id="btnA">A 선택지</button>
+        <button class="ans-btn secondary" id="btnB">B 선택지</button>
+      </div>
+    </section>
+
+    <footer class="quiz-bottom">
+      선택하면 자동으로 다음 문항으로 넘어갑니다.
+    </footer>
+  </main>
+
+  <script>
+    // ====== 10문항(샘플) ======
+    // 너가 문항 확정하면 여기 텍스트만 교체하면 됨
+    const questions = [
+      { q: "헬스장 가면 제일 먼저 하는 건?", a: "오늘 목표 중량부터 확인한다", b: "몸풀기하며 컨디션부터 본다", aTags:["power"], bTags:["steady"] },
+      { q: "운동 루틴은?", a: "루틴 철저히 고정", b: "그날 느낌대로 조절", aTags:["routine"], bTags:["flex"] },
+      { q: "세트 중간 쉬는 시간은?", a: "짧게 텐션 유지", b: "충분히 회복 후 강하게", aTags:["tempo"], bTags:["power"] },
+      { q: "운동 성향은?", a: "혼자 몰입", b: "같이 하면 더 불타오름", aTags:["solo"], bTags:["pack"] },
+      { q: "실패(불가) 직전까지?", a: "가끔은 끝까지 간다", b: "폼 깨지면 바로 멈춘다", aTags:["aggressive"], bTags:["steady"] },
+      { q: "좋아하는 운동은?", a: "3대 같은 중량 운동", b: "머신/덤벨로 자극", aTags:["power"], bTags:["detail"] },
+      { q: "운동 기록은?", a: "매번 숫자 기록", b: "대충 감으로 기억", aTags:["routine"], bTags:["flex"] },
+      { q: "부상 방지 스타일은?", a: "가동성/스트레칭 필수", b: "워밍업만 하고 바로 본운동", aTags:["steady"], bTags:["aggressive"] },
+      { q: "유산소는?", a: "최소로만", b: "컨디션 관리로 꼭", aTags:["power"], bTags:["steady"] },
+      { q: "운동 목표는?", a: "PR/성장", b: "꾸준함/몸관리", aTags:["aggressive"], bTags:["steady"] },
+    ];
+
+    // ====== 4축(16유형) 예시: power/steady, routine/flex, solo/pack, aggressive/detail
+    const axes = {
+      power: 0, steady: 0,
+      routine: 0, flex: 0,
+      solo: 0, pack: 0,
+      aggressive: 0, detail: 0
+    };
+
+    let idx = 0;
+
+    const qNo = document.getElementById("qNo");
+    const qTitle = document.getElementById("qTitle");
+    const btnA = document.getElementById("btnA");
+    const btnB = document.getElementById("btnB");
+    const bar = document.getElementById("bar");
+    const stepText = document.getElementById("stepText");
+
+    function render() {
+      const item = questions[idx];
+      qNo.textContent = `Q${idx + 1}`;
+      qTitle.textContent = item.q;
+      btnA.textContent = item.a;
+      btnB.textContent = item.b;
+
+      stepText.textContent = `${idx + 1} / ${questions.length}`;
+      bar.style.width = `${((idx) / questions.length) * 100}%`;
+    }
+
+    function pick(tags) {
+      tags.forEach(t => axes[t] = (axes[t] ?? 0) + 1);
+
+      idx++;
+      if (idx >= questions.length) {
+        // 진행바 100%
+        bar.style.width = "100%";
+
+        // ===== 결과 타입 만들기(16유형 키) =====
+        // 각 축에서 더 큰 쪽 선택
+        const key =
+          (axes.power >= axes.steady ? "P" : "S") +
+          (axes.routine >= axes.flex ? "R" : "F") +
+          (axes.solo >= axes.pack ? "O" : "T") +
+          (axes.aggressive >= axes.detail ? "A" : "D");
+
+        // ===== 16유형 → 동물 매핑(임시) =====
+        const map = {
+          "PROA": "호랑이",
+          "PROD": "사자",
+          "PRTA": "늑대",
+          "PRTD": "표범",
+          "PFOA": "매",
+          "PFOD": "여우",
+          "PFTA": "말",
+          "PFTD": "원숭이",
+          "SROA": "곰",
+          "SROD": "코끼리",
+          "SRTA": "개",
+          "SRTD": "고양이",
+          "SFOA": "코뿔소",
+          "SFOD": "소",
+          "SFTA": "토끼",
+          "SFTD": "거북이",
+        };
+
+        const animal = map[key] || "곰";
+
+        // 결과 페이지로 이동
+        window.location.href = `./animal-result.html?type=${encodeURIComponent(animal)}`;
+        return;
+      }
+      render();
+    }
+
+    btnA.addEventListener("click", () => pick(questions[idx].aTags));
+    btnB.addEventListener("click", () => pick(questions[idx].bTags));
+
+    render();
+  </script>
+</body>
+</html>
