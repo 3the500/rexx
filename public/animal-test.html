@@ -4,79 +4,182 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>동물로 보는 내 운동 유형 테스트 | Rexx Strength</title>
+
+  <!-- 기존 메인 스타일 재사용 -->
   <link rel="stylesheet" href="./style.css" />
+
+  <!-- 페이지 전용 스타일(원하면 style.css로 옮겨도 됨) -->
+  <style>
+    /* ===== Animal Test Landing (page-only) ===== */
+    .animal-landing {
+      min-height: 100vh;
+      position: relative;
+
+      /* 배경 이미지 */
+      background-image:
+        radial-gradient(1200px 600px at 50% 20%, rgba(0,0,0,.25), rgba(0,0,0,.65)),
+        url("./images/animal-gym.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 상단 좌측 작은 브랜드 */
+    .animal-topbar {
+      padding: 18px 20px;
+    }
+    .animal-brand {
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      color: rgba(255,255,255,.88);
+    }
+    .animal-brand:hover {
+      color: rgba(255,255,255,1);
+    }
+
+    /* 중앙 상단(하단보다 살짝 위) */
+    .animal-center {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      padding: 24px 16px 120px; /* 아래 버튼 공간 확보 */
+    }
+
+    /* 요즘 스타일: 글 박스(블러/반투명) */
+    .animal-hero {
+      width: min(920px, 100%);
+      text-align: center;
+      padding: 28px 22px;
+      border-radius: 18px;
+
+      background: rgba(10, 12, 14, 0.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+    }
+
+    .animal-title {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 4.2vw, 54px);
+      line-height: 1.1;
+      color: rgba(255,255,255,.96);
+      letter-spacing: -0.6px;
+    }
+
+    .animal-subtitle {
+      margin: 0;
+      color: rgba(255,255,255,.80);
+      font-size: clamp(14px, 1.6vw, 18px);
+      line-height: 1.6;
+    }
+
+    .animal-meta {
+      margin-top: 14px;
+      display: inline-flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .animal-pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.86);
+      font-size: 13px;
+    }
+
+    /* 하단보다 살짝 위에 떠있는 CTA */
+    .animal-bottom {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 26px;
+      padding: 0 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .animal-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+
+      width: min(520px, 100%);
+      padding: 16px 18px;
+      border-radius: 16px;
+
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+
+      /* 기존 cta랑 다르게 “테스트 전용” 색감 */
+      background: linear-gradient(135deg, #ffb703, #ff7a00);
+      color: #0b0b0b;
+
+      box-shadow: 0 14px 40px rgba(0,0,0,.45);
+      border: 1px solid rgba(255,255,255,.15);
+      transform: translateY(0);
+      transition: transform .12s ease, filter .12s ease;
+    }
+
+    .animal-cta:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+
+    .animal-cta:active {
+      transform: translateY(0);
+    }
+
+    /* 모바일에서 배경 고정이 부담되면 */
+    @media (max-width: 768px) {
+      .animal-landing { background-attachment: scroll; }
+      .animal-hero { padding: 22px 16px; }
+      .animal-bottom { bottom: 18px; }
+    }
+  </style>
 </head>
 
 <body>
-  <header class="topbar">
-    <a class="brand" href="./main.html">Rexx Strength</a>
-  </header>
+  <main class="animal-landing">
+    <header class="animal-topbar">
+      <a class="animal-brand" href="./main.html">Rexx Strength</a>
+    </header>
 
-  <main class="test-landing">
-    <section class="hero">
-      <h1 class="hero-title">동물로 보는 내 운동 유형?!</h1>
-      <p class="hero-subtitle">10문항 · 1분 · 결과 공유 가능</p>
+    <section class="animal-center">
+      <div class="animal-hero">
+        <h1 class="animal-title">동물로 보는 내 운동 유형?!</h1>
+        <p class="animal-subtitle">
+          10문항으로 딱 나오는 “운동 성향” 테스트.<br />
+          너는 헬스장에서 어떤 동물 타입일까?
+        </p>
 
-      <!-- 이미지: public/images/animal-gym.png 같은 경로로 두면 좋음 -->
-      <div class="hero-image-wrap">
-        <img
-          src="./images/animal-gym.png"
-          alt="헬스장에서 운동하는 동물 캐릭터 일러스트"
-          class="hero-image"
-          loading="lazy"
-        />
-      </div>
-
-      <div class="hero-actions">
-        <a class="cta" href="./animal-quiz.html">지금 테스트하기</a>
+        <div class="animal-meta" aria-label="테스트 정보">
+          <span class="animal-pill">⏱ 1분</span>
+          <span class="animal-pill">📝 10문항</span>
+          <span class="animal-pill">📤 결과 공유</span>
+        </div>
       </div>
     </section>
-  </main>
 
-  <footer class="footer">
-    <small>© Rexx Strength</small>
-  </footer>
+    <!-- 버튼: 하단보다 살짝 위 -->
+    <div class="animal-bottom">
+      <!-- 여기 링크만 나중에 퀴즈 섹션/페이지로 연결 -->
+      <a class="animal-cta" href="./animal-quiz.html">
+        지금 테스트하러가기 → 
+      </a>
+    </div>
+  </main>
 </body>
 </html>
-
-/* ===== Animal Test Landing ===== */
-.test-landing {
-  min-height: calc(100vh - 120px);
-  display: grid;
-  place-items: center;
-  padding: 32px 16px;
-}
-
-.hero {
-  width: min(980px, 100%);
-  text-align: center;
-}
-
-.hero-title {
-  font-size: clamp(28px, 4vw, 44px);
-  line-height: 1.15;
-  margin: 0 0 10px;
-}
-
-.hero-subtitle {
-  opacity: 0.8;
-  margin: 0 0 22px;
-}
-
-.hero-image-wrap {
-  margin: 18px auto 26px;
-  width: min(760px, 100%);
-}
-
-.hero-image {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 18px;
-}
-
-.hero-actions {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-}
