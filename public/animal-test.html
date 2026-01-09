@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>동물로 보는 내 운동 유형 테스트 | Rexx Strength</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="brand" href="./main.html">Rexx Strength</a>
+  </header>
+
+  <main class="test-landing">
+    <section class="hero">
+      <h1 class="hero-title">동물로 보는 내 운동 유형?!</h1>
+      <p class="hero-subtitle">10문항 · 1분 · 결과 공유 가능</p>
+
+      <!-- 이미지: public/images/animal-gym.png 같은 경로로 두면 좋음 -->
+      <div class="hero-image-wrap">
+        <img
+          src="./images/animal-gym.png"
+          alt="헬스장에서 운동하는 동물 캐릭터 일러스트"
+          class="hero-image"
+          loading="lazy"
+        />
+      </div>
+
+      <div class="hero-actions">
+        <a class="cta" href="./animal-quiz.html">지금 테스트하기</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>© Rexx Strength</small>
+  </footer>
+</body>
+</html>
+
+/* ===== Animal Test Landing ===== */
+.test-landing {
+  min-height: calc(100vh - 120px);
+  display: grid;
+  place-items: center;
+  padding: 32px 16px;
+}
+
+.hero {
+  width: min(980px, 100%);
+  text-align: center;
+}
+
+.hero-title {
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.15;
+  margin: 0 0 10px;
+}
+
+.hero-subtitle {
+  opacity: 0.8;
+  margin: 0 0 22px;
+}
+
+.hero-image-wrap {
+  margin: 18px auto 26px;
+  width: min(760px, 100%);
+}
+
+.hero-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 18px;
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
