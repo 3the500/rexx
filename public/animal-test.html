@@ -10,9 +10,16 @@
 
   <style>
     /* ===== Animal Test Landing (page-only) ===== */
-    .animal-landing{
-      min-height: 100vh;
-      position: relative;
+    
+.animal-landing {
+  min-height: 100vh;
+  background-image:
+    radial-gradient(1200px 600px at 50% 20%, rgba(0,0,0,.18), rgba(0,0,0,.55)),
+    url("./images/animal-gym.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
       /* 배경 이미지 + 어두운 그라데이션 */
       background-image:
@@ -143,12 +150,9 @@
 </head>
 
 <body>
-  .animal-landing {
-  background-image:
-    radial-gradient(1200px 600px at 50% 20%, rgba(0,0,0,.18), rgba(0,0,0,.55)),
-    url("./images/animal-gym.png");
-}
-    </header>
+  <main class="animal-landing">
+<header class="animal-topbar">
+<a class="animal-brand" href="./main.html">Rexx Strength</a>    </header>
 
     <section class="animal-center">
       <div class="animal-hero">
