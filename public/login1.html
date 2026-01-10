@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>로그인 | Rexx</title>
+
+  <style>
+    :root{
+      --green: #1DB954;          /* 포인트 초록 (원하면 바꿔도 됨) */
+      --green-2: #16a34a;        /* hover용 */
+      --bg: #0b0f0c;             /* 어두운 배경 */
+      --card: rgba(255,255,255,.06);
+      --card-2: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.65);
+      --line: rgba(255,255,255,.14);
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
+      --radius: 16px;
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin: 0;
+      min-height: 100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 450px at 50% -10%, rgba(29,185,84,.35), transparent 60%),
+        radial-gradient(700px 360px at 90% 20%, rgba(29,185,84,.18), transparent 60%),
+        linear-gradient(180deg, #070a08 0%, #0b0f0c 55%, #070a08 100%);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .wrap{
+      width: 100%;
+      max-width: 420px;
+    }
+
+    /* 상단 로고/타이틀 */
+    .brand{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      user-select: none;
+    }
+    .brand-badge{
+      width: 38px; height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(29,185,84,.95), rgba(29,185,84,.35));
+      box-shadow: 0 10px 28px rgba(29,185,84,.18);
+      border: 1px solid rgba(255,255,255,.15);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #041b0b;
+    }
+    .brand h1{
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.2px;
+    }
+    .sub{
+      text-align: center;
+      margin: 6px 0 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* 카드 */
+    .card{
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .card-title{
+      margin: 0 0 14px;
+      font-size: 16px;
+      letter-spacing: -0.2px;
+    }
+
+    .field{
+      margin-top: 12px;
+    }
+    .label{
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    /* 네이버 느낌: 깔끔한 인풋 + 포커스 초록 라인 */
+    .input{
+      width: 100%;
+      height: 48px;
+      padding: 0 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      color: var(--text);
+      outline: none;
+      transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    .input::placeholder{ color: rgba(255,255,255,.35); }
+    .input:focus{
+      border-color: rgba(29,185,84,.85);
+      box-shadow: 0 0 0 4px rgba(29,185,84,.16);
+      background: rgba(0,0,0,.28);
+    }
+
+    .row{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .check{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .check input{
+      accent-color: var(--green);
+      width: 16px; height: 16px;
+    }
+
+    .link{
+      color: rgba(29,185,84,.95);
+      text-decoration: none;
+    }
+    .link:hover{ text-decoration: underline; }
+
+    /* 버튼 */
+    .btn{
+      width: 100%;
+      height: 48px;
+      border: 0;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      transition: transform .06s ease, filter .15s ease, background .15s ease;
+    }
+    .btn:active{ transform: translateY(1px); }
+
+    .btn-primary{
+      margin-top: 16px;
+      background: linear-gradient(135deg, rgba(29,185,84,.98), rgba(29,185,84,.72));
+      color: #041b0b;
+    }
+    .btn-primary:hover{ filter: brightness(1.03); }
+
+    .btn-ghost{
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .btn-ghost:hover{ background: rgba(255,255,255,.10); }
+
+    /* 하단 액션(회원가입/되돌아가기) */
+    .footer{
+      margin-top: 16px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding-top: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .footer-hint{
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .btn-group{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* 작은 화면 */
+    @media (max-width: 420px){
+      .card{ padding: 18px; }
+      .btn-group{ grid-template-columns: 1fr; }
+    }
+
+    /* 접근성: 에러 메시지 자리(나중에 JS로 활용 가능) */
+    .msg{
+      display: none;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(255, 86, 86, .12);
+      border: 1px solid rgba(255, 86, 86, .20);
+      color: rgba(255,255,255,.92);
+      font-size: 13px;
+    }
+    .msg.show{ display: block; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="brand" aria-label="Rexx Login">
+      <div class="brand-badge">R</div>
+      <h1>Rexx Strength</h1>
+    </div>
+    <p class="sub">이메일로 간편하게 로그인하고 테스트/기록을 이어가세요.</p>
+
+    <main class="card">
+      <h2 class="card-title">로그인</h2>
+
+      <!--
+        백엔드 붙이면:
+        action="/login" method="post" 로 바꾸면 됨.
+        지금은 프론트 페이지만 있으니 "#" 유지
+      -->
+      <form id="loginForm" action="#" method="post" autocomplete="on" novalidate>
+        <div class="field">
+          <label class="label" for="email">이메일</label>
+          <input
+            class="input"
+            id="email"
+            name="email"
+            type="email"
+            placeholder="example@rexx.com"
+            autocomplete="email"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label class="label" for="password">비밀번호</label>
+          <input
+            class="input"
+            id="password"
+            name="password"
+            type="password"
+            placeholder="비밀번호를 입력하세요"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+
+        <div class="row">
+          <label class="check">
+            <input type="checkbox" id="remember" />
+            로그인 유지
+          </label>
+          <a class="link" href="#" onclick="alert('비밀번호 찾기는 백엔드 붙일 때 연결하면 돼!')">비밀번호 찾기</a>
+        </div>
+
+        <button class="btn btn-primary" type="submit">로그인하기</button>
+
+        <!-- 에러 메시지 자리 -->
+        <div id="msg" class="msg" role="alert"></div>
+
+        <div class="footer">
+          <div class="footer-hint">계정이 없나요?</div>
+
+          <div class="btn-group">
+            <!-- 회원가입 페이지로 이동 -->
+            <a href="./register.html" style="text-decoration:none">
+              <button class="btn btn-ghost" type="button">회원가입</button>
+            </a>
+
+            <!-- 메인으로 되돌아가기 -->
+            <a href="./main.html" style="text-decoration:none">
+              <button class="btn btn-ghost" type="button">되돌아가기</button>
+            </a>
+          </div>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    // 지금은 백엔드가 없으니, 제출하면 안내만 띄우도록 해둠.
+    // 나중에 백엔드 붙이면 이 부분 삭제/수정해서 fetch로 로그인 처리하면 됨.
+    const form = document.getElementById("loginForm");
+    const msg = document.getElementById("msg");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      // 간단 검증 (네이버 스타일처럼 너무 시끄럽지 않게)
+      if (!email || !password) {
+        msg.textContent = "이메일과 비밀번호를 모두 입력해주세요.";
+        msg.classList.add("show");
+        return;
+      }
+
+      msg.classList.remove("show");
+      alert("✅ 프론트 화면 완성! (백엔드 붙이면 여기서 로그인 API 호출하면 됨)");
+    });
+  </script>
+</body>
+</html>
