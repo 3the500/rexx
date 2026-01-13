@@ -149,8 +149,9 @@
         return;
       }
 
+      // 1RM 계산만 유지 (출력 제거)
+const est1rm = roundToPlate(oneRM(w, r));
       
-
       // 1~10RM 테이블
       tbody.innerHTML = '';
       for(let reps=1; reps<=10; reps++){
