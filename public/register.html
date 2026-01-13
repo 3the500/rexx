@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>회원가입 | Rexx</title>
+
+  <style>
+    :root{
+      --green: #1DB954;
+      --green-2: #16a34a;
+      --bg: #0b0f0c;
+      --card: rgba(255,255,255,.06);
+      --card-2: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.65);
+      --line: rgba(255,255,255,.14);
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
+      --radius: 16px;
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin: 0;
+      min-height: 100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 450px at 50% -10%, rgba(29,185,84,.35), transparent 60%),
+        radial-gradient(700px 360px at 90% 20%, rgba(29,185,84,.18), transparent 60%),
+        linear-gradient(180deg, #070a08 0%, #0b0f0c 55%, #070a08 100%);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .wrap{ width: 100%; max-width: 420px; }
+
+    .brand{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      user-select: none;
+    }
+    .brand-badge{
+      width: 38px; height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(29,185,84,.95), rgba(29,185,84,.35));
+      box-shadow: 0 10px 28px rgba(29,185,84,.18);
+      border: 1px solid rgba(255,255,255,.15);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #041b0b;
+    }
+    .brand h1{ margin: 0; font-size: 18px; letter-spacing: -0.2px; }
+    .sub{
+      text-align: center;
+      margin: 6px 0 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .card-title{ margin: 0 0 14px; font-size: 16px; letter-spacing: -0.2px; }
+
+    .field{ margin-top: 12px; }
+    .label{
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .input{
+      width: 100%;
+      height: 48px;
+      padding: 0 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      color: var(--text);
+      outline: none;
+      transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    .input::placeholder{ color: rgba(255,255,255,.35); }
+    .input:focus{
+      border-color: rgba(29,185,84,.85);
+      box-shadow: 0 0 0 4px rgba(29,185,84,.16);
+      background: rgba(0,0,0,.28);
+    }
+
+    .hint{
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .hint strong{ color: rgba(255,255,255,.84); }
+
+    .row{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      flex-wrap: wrap;
+    }
+
+    .check{
+      display: inline-flex;
+      align-items: flex-start;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+      line-height: 1.35;
+    }
+    .check input{
+      accent-color: var(--green);
+      width: 16px; height: 16px;
+      margin-top: 2px;
+    }
+
+    .link{
+      color: rgba(29,185,84,.95);
+      text-decoration: none;
+    }
+    .link:hover{ text-decoration: underline; }
+
+    .btn{
+      width: 100%;
+      height: 48px;
+      border: 0;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      transition: transform .06s ease, filter .15s ease, background .15s ease;
+    }
+    .btn:active{ transform: translateY(1px); }
+
+    .btn-primary{
+      margin-top: 16px;
+      background: linear-gradient(135deg, rgba(29,185,84,.98), rgba(29,185,84,.72));
+      color: #041b0b;
+    }
+    .btn-primary:hover{ filter: brightness(1.03); }
+
+    .btn-ghost{
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .btn-ghost:hover{ background: rgba(255,255,255,.10); }
+
+    .footer{
+      margin-top: 16px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding-top: 14px;
+      display: grid;
+      gap: 10px;
+    }
+    .footer-hint{
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .btn-group{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 420px){
+      .card{ padding: 18px; }
+      .btn-group{ grid-template-columns: 1fr; }
+    }
+
+    .msg{
+      display: none;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.92);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .msg.show{ display: block; }
+    .msg.error{
+      background: rgba(255, 86, 86, .12);
+      border-color: rgba(255, 86, 86, .20);
+    }
+    .msg.ok{
+      background: rgba(29,185,84,.12);
+      border-color: rgba(29,185,84,.22);
+    }
+
+    .pw-meter{
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .bar{
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .bar.on{
+      background: rgba(29,185,84,.55);
+      border-color: rgba(29,185,84,.45);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="brand" aria-label="Rexx Register">
+      <div class="brand-badge">R</div>
+      <h1>Rexx Strength</h1>
+    </div>
+    <p class="sub">회원가입하고 1RM/칼로리/기록 기능을 풀로 사용하세요.</p>
+
+    <main class="card">
+      <h2 class="card-title">회원가입</h2>
+
+      <form id="registerForm" action="#" method="post" autocomplete="on" novalidate>
+        <div class="field">
+          <label class="label" for="email">이메일</label>
+          <input
+            class="input"
+            id="email"
+            name="email"
+            type="email"
+            placeholder="example@rexx.com"
+            autocomplete="email"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label class="label" for="nickname">닉네임 (선택)</label>
+          <input
+            class="input"
+            id="nickname"
+            name="nickname"
+            type="text"
+            placeholder="Rexx"
+            autocomplete="nickname"
+          />
+          <div class="hint">닉네임은 <strong>마이페이지</strong>에서 언제든 변경 가능하게 만들면 좋아.</div>
+        </div>
+
+        <div class="field">
+          <label class="label" for="password">비밀번호</label>
+          <input
+            class="input"
+            id="password"
+            name="password"
+            type="password"
+            placeholder="8자 이상 (영문/숫자/특수문자 권장)"
+            autocomplete="new-password"
+            required
+          />
+          <div class="pw-meter" aria-hidden="true">
+            <div class="bar" id="pw1"></div>
+            <div class="bar" id="pw2"></div>
+            <div class="bar" id="pw3"></div>
+          </div>
+          <div class="hint">보안상 <strong>32자 이상 랜덤</strong>은 시크릿이고, 비번은 최소 8자만 지켜도 OK.</div>
+        </div>
+
+        <div class="field">
+          <label class="label" for="password2">비밀번호 확인</label>
+          <input
+            class="input"
+            id="password2"
+            name="password2"
+            type="password"
+            placeholder="비밀번호를 다시 입력하세요"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+
+        <div class="row">
+          <label class="check">
+            <input type="checkbox" id="agree" />
+            <span>
+              <strong>이용약관</strong> 및 <strong>개인정보 처리방침</strong>에 동의합니다.
+              <a class="link" href="#" onclick="alert('약관/개인정보 페이지는 나중에 연결하면 돼!'); return false;">(보기)</a>
+            </span>
+          </label>
+        </div>
+
+        <button class="btn btn-primary" type="submit">회원가입하기</button>
+
+        <div id="msg" class="msg" role="alert"></div>
+
+        <div class="footer">
+          <div class="footer-hint">이미 계정이 있나요?</div>
+
+          <div class="btn-group">
+            <a href="./login.html" style="text-decoration:none">
+              <button class="btn btn-ghost" type="button">로그인</button>
+            </a>
+
+            <a href="./main.html" style="text-decoration:none">
+              <button class="btn btn-ghost" type="button">되돌아가기</button>
+            </a>
+          </div>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    const form = document.getElementById("registerForm");
+    const msg = document.getElementById("msg");
+
+    const pw = document.getElementById("password");
+    const pw2 = document.getElementById("password2");
+    const agree = document.getElementById("agree");
+
+    const b1 = document.getElementById("pw1");
+    const b2 = document.getElementById("pw2");
+    const b3 = document.getElementById("pw3");
+
+    function setMsg(type, text){
+      msg.classList.remove("show", "error", "ok");
+      if (!text){
+        msg.textContent = "";
+        return;
+      }
+      msg.textContent = text;
+      msg.classList.add("show", type);
+    }
+
+    function strengthScore(p){
+      let s = 0;
+      if (p.length >= 8) s++;
+      if (/[A-Z]/.test(p) || /[a-z]/.test(p)) s++;
+      if (/\d/.test(p)) s++;
+      if (/[^A-Za-z0-9]/.test(p)) s++;
+      // 0~4 -> 0~3로 매핑(미터 3칸)
+      if (s <= 1) return 1;
+      if (s === 2) return 2;
+      return 3;
+    }
+
+    function renderMeter(){
+      const p = pw.value || "";
+      const level = p.length ? strengthScore(p) : 0;
+
+      [b1,b2,b3].forEach(b => b.classList.remove("on"));
+      if (level >= 1) b1.classList.add("on");
+      if (level >= 2) b2.classList.add("on");
+      if (level >= 3) b3.classList.add("on");
+    }
+
+    pw.addEventListener("input", renderMeter);
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const nickname = document.getElementById("nickname").value.trim();
+      const password = pw.value;
+      const password2 = pw2.value;
+
+      if (!email || !password || !password2) {
+        setMsg("error", "이메일과 비밀번호(확인)를 모두 입력해주세요.");
+        return;
+      }
+      if (password.length < 8) {
+        setMsg("error", "비밀번호는 최소 8자 이상이어야 해요.");
+        return;
+      }
+      if (password !== password2) {
+        setMsg("error", "비밀번호 확인이 일치하지 않아요.");
+        return;
+      }
+      if (!agree.checked) {
+        setMsg("error", "이용약관 및 개인정보 처리방침 동의가 필요해요.");
+        return;
+      }
+
+      setMsg("", "");
+      alert("✅ 회원가입 화면 완성! (백엔드 붙이면 여기서 /api/auth/register 호출하면 됨)");
+    });
+  </script>
+</body>
+</html>
