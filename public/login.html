@@ -291,27 +291,56 @@
   </div>
 
   <script>
-    // 지금은 백엔드가 없으니, 제출하면 안내만 띄우도록 해둠.
-    // 나중에 백엔드 붙이면 이 부분 삭제/수정해서 fetch로 로그인 처리하면 됨.
-    const form = document.getElementById("loginForm");
-    const msg = document.getElementById("msg");
+    
+  const form = document.getElementById("loginForm");
+  const msg = document.getElementById("msg");
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
+  function showMsg(text) {
+    msg.textContent = text;
+    msg.classList.add("show");
+  }
+  function hideMsg() {
+    msg.textContent = "";
+    msg.classList.remove("show");
+  }
 
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-      // 간단 검증 (네이버 스타일처럼 너무 시끄럽지 않게)
-      if (!email || !password) {
-        msg.textContent = "이메일과 비밀번호를 모두 입력해주세요.";
-        msg.classList.add("show");
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    if (!email || !password) {
+      showMsg("이메일과 비밀번호를 모두 입력해주세요.");
+      return;
+    }
+    hideMsg();
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        showMsg(data.message || "로그인 실패");
         return;
       }
 
-      msg.classList.remove("show");
-      alert("✅ 프론트 화면 완성! (백엔드 붙이면 여기서 로그인 API 호출하면 됨)");
-    });
+      // ✅ 토큰 저장
+      localStorage.setItem("rexx_token", data.token);
+
+      // ✅ 로그인 후 마이페이지로 이동
+      window.location.href = "/mypage.html";
+
+    } catch (err) {
+      showMsg("서버와 통신할 수 없습니다.");
+    }
+  });
+
   </script>
 </body>
 </html>
