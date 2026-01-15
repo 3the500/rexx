@@ -330,79 +330,72 @@
   </div>
 
   <script>
-    const form = document.getElementById("registerForm");
-    const msg = document.getElementById("msg");
+   
+  const form = document.getElementById("registerForm");
+  const msg = document.getElementById("msg");
 
-    const pw = document.getElementById("password");
-    const pw2 = document.getElementById("password2");
-    const agree = document.getElementById("agree");
+  function showMsg(text) {
+    msg.textContent = text;
+    msg.classList.add("show");
+  }
+  function hideMsg() {
+    msg.textContent = "";
+    msg.classList.remove("show");
+  }
 
-    const b1 = document.getElementById("pw1");
-    const b2 = document.getElementById("pw2");
-    const b3 = document.getElementById("pw3");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-    function setMsg(type, text){
-      msg.classList.remove("show", "error", "ok");
-      if (!text){
-        msg.textContent = "";
-        return;
-      }
-      msg.textContent = text;
-      msg.classList.add("show", type);
+    const email = document.getElementById("email").value.trim();
+    const nickname = document.getElementById("nickname").value.trim();
+    const password = document.getElementById("password").value;
+    const password2 = document.getElementById("password2").value;
+    const agree = document.getElementById("agree").checked;
+
+    if (!email || !password || !password2) {
+      showMsg("이메일과 비밀번호를 모두 입력해주세요.");
+      return;
+    }
+    if (password.length < 8) {
+      showMsg("비밀번호는 최소 8자 이상이어야 합니다.");
+      return;
+    }
+    if (password !== password2) {
+      showMsg("비밀번호 확인이 일치하지 않습니다.");
+      return;
+    }
+    if (!agree) {
+      showMsg("약관 동의가 필요합니다.");
+      return;
     }
 
-    function strengthScore(p){
-      let s = 0;
-      if (p.length >= 8) s++;
-      if (/[A-Z]/.test(p) || /[a-z]/.test(p)) s++;
-      if (/\d/.test(p)) s++;
-      if (/[^A-Za-z0-9]/.test(p)) s++;
-      // 0~4 -> 0~3로 매핑(미터 3칸)
-      if (s <= 1) return 1;
-      if (s === 2) return 2;
-      return 3;
+    hideMsg();
+
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, nickname })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        showMsg(data.message || "회원가입 실패");
+        return;
+      }
+
+      // ✅ JWT 저장 (회원가입 = 즉시 로그인)
+      localStorage.setItem("rexx_token", data.token);
+
+      // ✅ 마이페이지로 이동
+      window.location.href = "/mypage.html";
+
+    } catch (err) {
+      showMsg("서버와 통신할 수 없습니다.");
     }
+  });
 
-    function renderMeter(){
-      const p = pw.value || "";
-      const level = p.length ? strengthScore(p) : 0;
-
-      [b1,b2,b3].forEach(b => b.classList.remove("on"));
-      if (level >= 1) b1.classList.add("on");
-      if (level >= 2) b2.classList.add("on");
-      if (level >= 3) b3.classList.add("on");
-    }
-
-    pw.addEventListener("input", renderMeter);
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const email = document.getElementById("email").value.trim();
-      const nickname = document.getElementById("nickname").value.trim();
-      const password = pw.value;
-      const password2 = pw2.value;
-
-      if (!email || !password || !password2) {
-        setMsg("error", "이메일과 비밀번호(확인)를 모두 입력해주세요.");
-        return;
-      }
-      if (password.length < 8) {
-        setMsg("error", "비밀번호는 최소 8자 이상이어야 해요.");
-        return;
-      }
-      if (password !== password2) {
-        setMsg("error", "비밀번호 확인이 일치하지 않아요.");
-        return;
-      }
-      if (!agree.checked) {
-        setMsg("error", "이용약관 및 개인정보 처리방침 동의가 필요해요.");
-        return;
-      }
-
-      setMsg("", "");
-      alert("✅ 회원가입 화면 완성! (백엔드 붙이면 여기서 /api/auth/register 호출하면 됨)");
-    });
   </script>
 </body>
 </html>
