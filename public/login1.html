@@ -290,10 +290,11 @@
     </main>
   </div>
 
-  <script>
-    
+ 
+    <script>
   const form = document.getElementById("loginForm");
   const msg = document.getElementById("msg");
+  const remember = document.getElementById("remember");
 
   function showMsg(text) {
     msg.textContent = text;
@@ -320,27 +321,28 @@
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
 
-      if (!res.ok || !data.ok) {
+      if (!res.ok || !data.ok || !data.token) {
         showMsg(data.message || "로그인 실패");
         return;
       }
 
-      // ✅ 토큰 저장
-      localStorage.setItem("rexx_token", data.token);
+      // ✅ 토큰 저장 (로그인 유지 체크에 따라 저장소 선택)
+      const storage = remember?.checked ? localStorage : sessionStorage;
+      storage.setItem("token", data.token);
 
-      // ✅ 로그인 후 마이페이지로 이동
+      // ✅ 로그인 후 이동
       window.location.href = "/mypage.html";
-
     } catch (err) {
       showMsg("서버와 통신할 수 없습니다.");
     }
   });
-
-  </script>
+</script>
+  
+ 
 </body>
 </html>
