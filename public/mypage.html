@@ -301,7 +301,7 @@
   </div>
 
   <script>
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
     const msg = document.getElementById("msg");
     const statusPill = document.getElementById("statusPill");
     const statusText = document.getElementById("statusText");
@@ -336,7 +336,7 @@
 
         if (!res.ok || !data.ok) {
           // 토큰 만료/위조/형식 오류 등 → 토큰 삭제 후 로그인
-          localStorage.removeItem("token");
+          localStorage.removeItem("token"); sessionStorage.removeItem("token");
           window.location.href = "/login1.html";
           return;
         }
@@ -358,7 +358,7 @@
     }
 
     document.getElementById("logoutBtn").addEventListener("click", () => {
-      localStorage.removeItem("token");
+      localStorage.removeItem("token"); sessionStorage.removeItem("token");
       window.location.href = "/login1.html";
     });
 
