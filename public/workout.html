@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>나와 맞는 운동찾기!!</title>
+  <style>
+    :root{
+      --bg:#0b0f19;
+      --card:rgba(255,255,255,.10);
+      --border:rgba(255,255,255,.18);
+      --text:#eaf0ff;
+      --muted:rgba(234,240,255,.75);
+      --accent:#7aa7ff;
+      --danger:#ff6b6b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      color:var(--text);
+      background: radial-gradient(1200px 600px at 20% 10%, rgba(122,167,255,.18), transparent 55%),
+                  radial-gradient(900px 600px at 90% 30%, rgba(255,107,107,.12), transparent 55%),
+                  var(--bg);
+      overflow-x:hidden;
+    }
+
+    /* 배경이미지 넣을 거면 여기 URL만 바꿔 */
+    .bg {
+      position:fixed; inset:0;
+      background-image:url("YOUR_BACKGROUND_IMAGE_URL_HERE");
+      background-size:cover;
+      background-position:center;
+      filter: saturate(1.05) contrast(1.05);
+      opacity:.25;
+      z-index:-2;
+    }
+    .bg::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(to bottom, rgba(11,15,25,.75), rgba(11,15,25,.92));
+      z-index:-1;
+    }
+
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .card{
+      width:min(920px, 100%);
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:18px;
+      backdrop-filter: blur(10px);
+      padding:22px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+    }
+
+    header{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      justify-content:space-between;
+      margin-bottom:14px;
+    }
+    .title{
+      font-size:18px;
+      letter-spacing:-0.2px;
+      margin:0;
+    }
+    .sub{
+      margin:4px 0 0;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .pill{
+      font-size:12px;
+      padding:8px 10px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      color:var(--muted);
+      white-space:nowrap;
+      user-select:none;
+    }
+
+    /* ✅ 질문/선택지 전체를 화면 중앙으로 */
+    .stage{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:58vh;
+    }
+
+    .qbox{
+      width:min(760px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      text-align:center; /* 질문을 중앙에 */
+    }
+
+    .qtext{
+      font-size:24px;
+      line-height:1.35;
+      margin:0 auto;
+      letter-spacing:-0.3px;
+    }
+
+    .answers{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:10px;
+      margin-top:6px;
+    }
+    @media (max-width:720px){
+      .answers{grid-template-columns: 1fr;}
+      .qtext{font-size:20px;}
+    }
+
+    .opt{
+      text-align:left;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:12px 12px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background: rgba(255,255,255,.06);
+      cursor:pointer;
+      transition: transform .08s ease, background .12s ease, border-color .12s ease;
+      user-select:none;
+    }
+    .opt:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.09);
+      border-color: rgba(122,167,255,.55);
+    }
+    .opt input{ margin-top:3px; transform:scale(1.05); }
+    .opt .label{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+    }
+    .opt .label b{ font-weight:700; }
+    .opt .label span{ color:var(--muted); font-size:13px; }
+
+    .bar{
+      height:10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.10);
+      overflow:hidden;
+      border:1px solid var(--border);
+      margin:14px 0 4px;
+    }
+    .bar > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(122,167,255,.9), rgba(122,167,255,.45));
+      transition: width .25s ease;
+    }
+
+    .footer{
+      display:flex;
+      gap:10px;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:12px;
+      flex-wrap:wrap;
+    }
+    .btns{
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    button{
+      border:none;
+      border-radius:12px;
+      padding:12px 14px;
+      font-weight:700;
+      cursor:pointer;
+      transition: transform .08s ease, opacity .12s ease;
+    }
+    button:active{ transform: translateY(1px); }
+    .primary{ background: var(--accent); color:#0b0f19; }
+    .ghost{ background: transparent; color: var(--text); border:1px solid var(--border); }
+    .danger{ background: rgba(255,107,107,.18); color: #ffd6d6; border:1px solid rgba(255,107,107,.35); }
+
+    .hint{ font-size:13px; color:var(--muted); }
+
+    .result{
+      display:none;
+      text-align:center;
+      padding:8px 0 0;
+    }
+    .result h2{ margin:8px 0 4px; font-size:26px; }
+    .result p{ margin:0; color:var(--muted); }
+    .badge{
+      display:inline-block;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.07);
+    }
+    .top3{
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .chip{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.06);
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .hide{ display:none !important; }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+
+  <div class="wrap">
+    <div class="card" role="application" aria-label="운동 유형 테스트">
+      <header>
+        <div>
+          <h1 class="title">나와 맞는 운동찾기!!</h1>
+          <p class="sub">10문항으로 16개 종목(레슬링/유도/팔씨름/헬스/러닝/크로스핏/축구/농구/배구/필라테스/수영/탁구/볼링/배드민턴/복싱/태권도) 중 추천을 골라줘.</p>
+        </div>
+        <div class="pill" id="counter">Q 1 / 10</div>
+      </header>
+
+      <div class="bar" aria-hidden="true"><div id="barFill"></div></div>
+
+      <!-- ✅ 질문이 화면 중앙(카드 기준)으로 오게 구성 -->
+      <div class="stage" id="stage">
+        <div class="qbox" id="qbox">
+          <p class="qtext" id="qtext">질문</p>
+          <div class="answers" id="answers"></div>
+
+          <div class="footer">
+            <div class="hint" id="hint">선택지를 고른 뒤 “다음”을 눌러줘.</div>
+            <div class="btns">
+              <button class="ghost" id="prevBtn" type="button">이전</button>
+              <button class="primary" id="nextBtn" type="button">다음</button>
+              <button class="danger hide" id="restartBtn" type="button">다시하기</button>
+            </div>
+          </div>
+
+          <div class="result" id="result">
+            <div class="badge">당신에게 가장 잘 맞는 종목</div>
+            <h2 id="resultMain">—</h2>
+            <p id="resultDesc">—</p>
+            <div class="top3" id="top3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * ✅ 유형(16종목) 정의 + 간단 설명
+     * 사용자 요청: "유형별로 종목을 나눠줘"
+     * => 각 유형 = 종목 1개로 매핑 (총 16유형)
+     */
+    const TYPES = [
+      { key:"wrestling", name:"레슬링", desc:"몸싸움/클린치/테이크다운 감각이 강함. 치열한 접촉전 좋아하는 타입." },
+      { key:"judo", name:"유도", desc:"그립 싸움과 밸런스 붕괴에 강함. 기술로 상대를 제압하는 타입." },
+      { key:"armwrestling", name:"팔씨름", desc:"손목/전완/그립에 집착(?)하는 타입. 한 방의 힘과 레버리지에 꽂힘." },
+      { key:"gym", name:"헬스", desc:"기록과 루틴에 강함. 꾸준히 쌓아서 몸/힘을 만드는 타입." },
+      { key:"running", name:"러닝", desc:"심폐/리듬/지구력을 즐김. 혼자 몰입해서 달리는 게 맞는 타입." },
+      { key:"crossfit", name:"크로스핏", desc:"다양한 종목+WOD 뽕맛. 경쟁/기록/팀 분위기 좋아하는 타입." },
+      { key:"soccer", name:"축구", desc:"넓은 시야/팀플/전술. 함께 뛰는 에너지가 맞는 타입." },
+      { key:"basketball", name:"농구", desc:"순간 판단/템포/1:1. 빠른 전개와 클러치 상황 좋아하는 타입." },
+      { key:"volleyball", name:"배구", desc:"타이밍/점프/협업. 역할 분담과 리듬감이 맞는 타입." },
+      { key:"pilates", name:"필라테스", desc:"코어/자세/정렬. 몸을 정교하게 쓰는 걸 좋아하는 타입." },
+      { key:"swimming", name:"수영", desc:"전신 지구력+호흡 컨트롤. 관절 부담 적고 꾸준한 타입." },
+      { key:"tabletennis", name:"탁구", desc:"반응속도/각도/스핀. 두뇌+손맛 조합 좋아하는 타입." },
+      { key:"bowling", name:"볼링", desc:"루틴/정확도/멘탈. ‘한 투구’의 집중을 즐기는 타입." },
+      { key:"badminton", name:"배드민턴", desc:"민첩/스텝/연타. 빠른 발과 랠리 감각이 맞는 타입." },
+      { key:"boxing", name:"복싱", desc:"거리/리듬/가드. 타격의 기본기와 스파링 감각 좋아하는 타입." },
+      { key:"taekwondo", name:"태권도", desc:"킥/스피드/거리. 발차기와 폭발력을 즐기는 타입." },
+    ];
+
+    // 점수판
+    const score = Object.fromEntries(TYPES.map(t => [t.key, 0]));
+
+    /**
+     * ✅ 10가지 질문 (요청한 종목 기준으로 점수 분배)
+     * 각 문항의 선택지마다 여러 종목에 가중치를 부여해서 결과를 내도록 구성.
+     */
+    const QUESTIONS = [
+      {
+        text: "운동할 때 제일 설레는 순간은?",
+        options: [
+          { title:"상대랑 부딪히고 주도권 잡을 때", sub:"클린치/그립/힘싸움", points:{ wrestling:2, judo:2, armwrestling:1 } },
+          { title:"기록이 오르는 걸 확인할 때", sub:"중량/반복/PR", points:{ gym:3, crossfit:1 } },
+          { title:"호흡이 터져도 계속 밀어붙일 때", sub:"지구력/심폐", points:{ running:2, swimming:2, crossfit:1 } },
+          { title:"팀플로 한 방에 분위기 뒤집을 때", sub:"패스/연계/득점", points:{ soccer:2, basketball:2, volleyball:2 } },
+        ]
+      },
+      {
+        text: "너는 어떤 승부가 더 취향이야?",
+        options: [
+          { title:"맨몸으로 정면승부", sub:"붙어서 끝내는 맛", points:{ wrestling:2, judo:2, boxing:1 } },
+          { title:"정확도/기술로 깔끔하게", sub:"각도/스핀/루틴", points:{ tabletennis:2, bowling:2, badminton:1 } },
+          { title:"순간 폭발력으로 찍어누르기", sub:"스피드/파워", points:{ taekwondo:2, basketball:2, boxing:1 } },
+          { title:"꾸준함으로 만든 체력", sub:"지구력/호흡", points:{ running:2, swimming:2, pilates:1 } },
+        ]
+      },
+      {
+        text: "너한테 가장 중요한 건?",
+        options: [
+          { title:"힘(파워)", sub:"세게 때리고/들고/밀기", points:{ gym:2, armwrestling:2, crossfit:1 } },
+          { title:"기술(컨트롤)", sub:"밸런스/각도/타이밍", points:{ judo:2, tabletennis:2, volleyball:1 } },
+          { title:"스피드(반응)", sub:"순간 판단/순발력", points:{ badminton:2, basketball:2, taekwondo:1 } },
+          { title:"지구력(지속)", sub:"오래 가는 힘", points:{ running:2, swimming:2, soccer:1 } },
+        ]
+      },
+      {
+        text: "운동 스타일, 너는 어느 쪽?",
+        options: [
+          { title:"혼자 몰입해서 루틴", sub:"나만의 페이스", points:{ running:2, gym:2, swimming:1, pilates:1 } },
+          { title:"사람들이랑 같이 해야 불 붙음", sub:"팀/커뮤니티", points:{ crossfit:2, soccer:2, basketball:1, volleyball:1 } },
+          { title:"1:1 승부가 제일 재밌음", sub:"상대랑 붙어서", points:{ boxing:2, wrestling:1, judo:1, armwrestling:2 } },
+          { title:"정교한 감각/손맛이 좋음", sub:"라켓/볼/핀", points:{ tabletennis:2, badminton:2, bowling:1 } },
+        ]
+      },
+      {
+        text: "너는 어떤 훈련이 더 잘 맞아?",
+        options: [
+          { title:"반복해서 폼을 완성", sub:"자세/정렬/기본기", points:{ pilates:2, swimming:1, boxing:1, taekwondo:1 } },
+          { title:"힘을 모아서 한 번에", sub:"한 방/레버리지", points:{ armwrestling:3, gym:1 } },
+          { title:"전략적으로 움직이는 전개", sub:"전술/포지션", points:{ soccer:2, basketball:2, volleyball:2 } },
+          { title:"붙어서 무너뜨리는 기술", sub:"테이크다운/던지기", points:{ wrestling:2, judo:2 } },
+        ]
+      },
+      {
+        text: "부상/피로 관리 기준으로는?",
+        options: [
+          { title:"관절 부담 적고 전신운동 선호", sub:"회복이 중요", points:{ swimming:3, pilates:2 } },
+          { title:"타격/접촉 있어도 OK", sub:"스릴이 더 큼", points:{ boxing:2, taekwondo:2, wrestling:1, judo:1 } },
+          { title:"내 페이스대로 조절 가능해야 함", sub:"강약 조절", points:{ gym:2, running:2, bowling:1 } },
+          { title:"짧고 강하게, 템포 있게", sub:"고강도 한 판", points:{ crossfit:3, badminton:1, basketball:1 } },
+        ]
+      },
+      {
+        text: "너의 경쟁 본능은 어디서 터져?",
+        options: [
+          { title:"랠리/공방이 길어질수록", sub:"집중력 폭발", points:{ badminton:2, tabletennis:2, volleyball:1 } },
+          { title:"카운터 한 방/한 번의 타이밍", sub:"클러치", points:{ basketball:2, bowling:2, boxing:1 } },
+          { title:"끝까지 버티는 체력 싸움", sub:"페이스 유지", points:{ running:2, swimming:2, soccer:1 } },
+          { title:"힘/그립으로 찍어누르는 승부", sub:"완력", points:{ armwrestling:2, gym:1, wrestling:1, judo:1 } },
+        ]
+      },
+      {
+        text: "너는 어떤 장비/환경이 더 끌려?",
+        options: [
+          { title:"매트/도장 같은 격투 공간", sub:"스파링/기술", points:{ wrestling:2, judo:2, taekwondo:1, boxing:1 } },
+          { title:"헬스장/바벨/기구", sub:"중량의 로망", points:{ gym:3, crossfit:1 } },
+          { title:"코트/구장", sub:"라인/포지션", points:{ soccer:2, basketball:2, volleyball:2, badminton:1 } },
+          { title:"물/레인", sub:"호흡과 리듬", points:{ swimming:3 } },
+        ]
+      },
+      {
+        text: "너에게 ‘재미’는?",
+        options: [
+          { title:"기술이 통했을 때의 짜릿함", sub:"각도/타이밍", points:{ judo:2, tabletennis:2, badminton:1, boxing:1 } },
+          { title:"기록이 누적되는 성장", sub:"꾸준함", points:{ gym:2, running:1, swimming:1, pilates:1 } },
+          { title:"팀워크로 만들어내는 한 점", sub:"연계", points:{ soccer:2, basketball:2, volleyball:2 } },
+          { title:"한 방으로 흐름을 뒤집는 폭발", sub:"스피드/파워", points:{ taekwondo:2, crossfit:1, boxing:1 } },
+        ]
+      },
+      {
+        text: "마지막! 너의 성향에 가장 가까운 건?",
+        options: [
+          { title:"냉정하고 계산적", sub:"정확/멘탈", points:{ bowling:2, tabletennis:2, pilates:1 } },
+          { title:"불타오르는 공격형", sub:"압박/전진", points:{ boxing:2, taekwondo:2, wrestling:1 } },
+          { title:"끈질긴 운영형", sub:"지구력/페이스", points:{ running:2, swimming:2, soccer:1 } },
+          { title:"파워/피지컬 자신 있음", sub:"힘으로 해결", points:{ gym:2, armwrestling:2, crossfit:1 } },
+        ]
+      },
+    ];
+
+    // 상태
+    let idx = 0;
+    const answersPicked = new Array(QUESTIONS.length).fill(null); // {optIndex, points}
+    const qtext = document.getElementById("qtext");
+    const answersEl = document.getElementById("answers");
+    const counter = document.getElementById("counter");
+    const barFill = document.getElementById("barFill");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const hint = document.getElementById("hint");
+    const resultBox = document.getElementById("result");
+    const resultMain = document.getElementById("resultMain");
+    const resultDesc = document.getElementById("resultDesc");
+    const top3 = document.getElementById("top3");
+
+    function setProgress() {
+      counter.textContent = `Q ${Math.min(idx+1, QUESTIONS.length)} / ${QUESTIONS.length}`;
+      const pct = (idx / QUESTIONS.length) * 100;
+      barFill.style.width = `${pct}%`;
+    }
+
+    function clearScores() {
+      for (const k in score) score[k] = 0;
+    }
+
+    function recomputeScoresUpTo(currentIdxExclusive) {
+      clearScores();
+      for (let i=0; i<currentIdxExclusive; i++){
+        const pick = answersPicked[i];
+        if (!pick) continue;
+        for (const [k,v] of Object.entries(pick.points)){
+          score[k] += v;
+        }
+      }
+    }
+
+    function renderQuestion() {
+      // 결과 화면 숨김
+      resultBox.style.display = "none";
+      restartBtn.classList.add("hide");
+      nextBtn.classList.remove("hide");
+      answersEl.classList.remove("hide");
+      hint.classList.remove("hide");
+
+      const q = QUESTIONS[idx];
+      qtext.textContent = q.text;
+
+      answersEl.innerHTML = "";
+      q.options.forEach((opt, i) => {
+        const id = `q${idx}_o${i}`;
+        const label = document.createElement("label");
+        label.className = "opt";
+        label.setAttribute("for", id);
+
+        label.innerHTML = `
+          <input type="radio" name="q${idx}" id="${id}" value="${i}" />
+          <div class="label">
+            <b>${opt.title}</b>
+            <span>${opt.sub}</span>
+          </div>
+        `;
+
+        label.addEventListener("click", () => {
+          const input = label.querySelector("input");
+          input.checked = true;
+          answersPicked[idx] = { optIndex:i, points: opt.points };
+          hint.textContent = "선택 완료! “다음”으로 진행할 수 있어.";
+          hint.style.color = "var(--muted)";
+        });
+
+        answersEl.appendChild(label);
+      });
+
+      // 이전에 선택한 값 복원
+      const prevPick = answersPicked[idx];
+      if (prevPick) {
+        const radio = document.getElementById(`q${idx}_o${prevPick.optIndex}`);
+        if (radio) radio.checked = true;
+        hint.textContent = "선택 완료! “다음”으로 진행할 수 있어.";
+      } else {
+        hint.textContent = "선택지를 고른 뒤 “다음”을 눌러줘.";
+      }
+
+      prevBtn.disabled = idx === 0;
+      prevBtn.style.opacity = idx === 0 ? .5 : 1;
+
+      // 마지막 문항 버튼 텍스트 변경
+      nextBtn.textContent = (idx === QUESTIONS.length - 1) ? "결과 보기" : "다음";
+
+      setProgress();
+    }
+
+    function showResult() {
+      // 전체 점수 재계산(안전)
+      recomputeScoresUpTo(QUESTIONS.length);
+
+      // 점수 정렬
+      const ranked = TYPES
+        .map(t => ({...t, score: score[t.key]}))
+        .sort((a,b) => b.score - a.score);
+
+      const best = ranked[0];
+      const second = ranked[1];
+      const third = ranked[2];
+
+      // UI 전환
+      answersEl.classList.add("hide");
+      hint.classList.add("hide");
+      nextBtn.classList.add("hide");
+      restartBtn.classList.remove("hide");
+
+      // 진행바 100%
+      barFill.style.width = "100%";
+      counter.textContent = `DONE / ${QUESTIONS.length}`;
+
+      // 결과 출력
+      resultMain.textContent = best.name;
+      resultDesc.textContent = best.desc;
+      top3.innerHTML = "";
+
+      [best, second, third].forEach((t, i) => {
+        const el = document.createElement("div");
+        el.className = "chip";
+        el.textContent = `${i+1}위: ${t.name} (점수 ${t.score})`;
+        top3.appendChild(el);
+      });
+
+      resultBox.style.display = "block";
+    }
+
+    prevBtn.addEventListener("click", () => {
+      if (idx === 0) return;
+
+      // 현재 인덱스 이전까지 점수 재계산
+      idx -= 1;
+      recomputeScoresUpTo(idx);
+      renderQuestion();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      const pick = answersPicked[idx];
+      if (!pick) {
+        hint.textContent = "아직 선택 안 했어! 하나 골라줘 😄";
+        hint.style.color = "var(--danger)";
+        return;
+      }
+
+      // 현재 문항까지 반영해서 점수 누적
+      recomputeScoresUpTo(idx+1);
+
+      if (idx === QUESTIONS.length - 1) {
+        showResult();
+        return;
+      }
+
+      idx += 1;
+      renderQuestion();
+    });
+
+    restartBtn.addEventListener("click", () => {
+      idx = 0;
+      for (let i=0; i<answersPicked.length; i++) answersPicked[i] = null;
+      clearScores();
+      renderQuestion();
+      setProgress();
+    });
+
+    // 초기 렌더
+    renderQuestion();
+  </script>
+</body>
+</html>
