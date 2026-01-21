@@ -23,8 +23,12 @@
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "맑은 고딕", sans-serif;
       color:var(--black);
       background:#fff;
-      display:flex; align-items:center; justify-content:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
+
+    /* 중앙 카드 */
     .card{
       width:min(680px, 92vw);
       background:#fff;
@@ -33,6 +37,46 @@
       box-shadow:var(--shadow);
       padding:28px 28px 22px;
     }
+
+    /* 상단 왼쪽 네비 */
+    .top-nav{
+      position:fixed;
+      top:16px;
+      left:16px;
+      z-index:1000;
+    }
+    .back-btn{
+      display:inline-block;
+      padding:8px 12px;
+      font-size:13px;
+      font-weight:700;
+      border-radius:10px;
+      background:#f3f4f6;
+      color:#111;
+      text-decoration:none;
+      border:1px solid #e5e7eb;
+    }
+    .back-btn:hover{ background:#e5e7eb; }
+
+    /* 하단 중앙 링크 */
+    .bottom-links{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
+      font-size:13px;
+      color:#111;
+      opacity:.6;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .bottom-links a{
+      text-decoration:none;
+      color:inherit;
+    }
+    .bottom-links a:hover{ opacity:1; }
+
     .brand{ display:flex; align-items:center; gap:12px; margin-bottom:10px; }
     .brand svg{width:36px; height:36px}
     .brand-title{font-size:20px; font-weight:800}
@@ -49,39 +93,53 @@
       transition:border .15s, box-shadow .15s;
     }
     .input:focus{ border-color:var(--green); box-shadow:0 0 0 4px #ecfdf5; }
+
     .btn{
       width:100%; border:none; margin-top:12px;
       background:linear-gradient(180deg,var(--green),var(--green-700));
-      color:#fff; font-weight:800; letter-spacing:.3px;
-      padding:13px 16px; border-radius:12px; cursor:pointer;
+      color:#fff; font-weight:800;
+      padding:13px 16px; border-radius:12px;
+      cursor:pointer;
       box-shadow:0 6px 16px rgba(22,163,74,.25);
     }
-    .watermark{
-      position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
-      font-weight:900; letter-spacing:.15rem; color:#000; opacity:.08;
-      text-transform:uppercase; font-size: clamp(14px, 2.5vw, 18px);
-      user-select:none; pointer-events:none;
-    }
 
-    /* 결과 테이블 (UI 최대한 기존 유지) */
+    /* 결과 테이블 */
     #rmCard{ margin-top:10px; display:none; }
     #rmNote{ color:var(--muted); font-size:12px; margin-bottom:4px; }
     table.rm { width:100%; border-collapse:collapse; }
     table.rm th, table.rm td { padding:8px 6px; }
-    table.rm thead th { font-size:12px; color:#374151; text-align:left; border-bottom:1px solid #e5e7eb; }
+    table.rm thead th {
+      font-size:12px; color:#374151; text-align:left;
+      border-bottom:1px solid #e5e7eb;
+    }
     table.rm tbody td:last-child { text-align:right; font-weight:700; }
+
+    /* 주의 문구 */
+    .notice{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+    .notice strong{ font-weight:700; }
   </style>
 </head>
+
 <body>
 
+  <!-- 상단 왼쪽 -->
+  <div class="top-nav">
+    <a href="/" class="back-btn">← 메인으로</a>
+  </div>
+
+  <!-- 중앙 계산기 -->
   <main class="card">
     <div class="brand">
-      <!-- 공룡 SVG -->
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M10 45c0-9 6-16 18-16h10c7 0 11-3 13-9 1-2 3-2 5-1-1 10-6 15-14 16 6 2 9 7 9 15v6H36l-6-7-6 7H10v-11Z" fill="url(#g)"/>
         <circle cx="46" cy="18" r="2.2" fill="#0a0a0a"/>
         <defs>
-          <linearGradient id="g" x1="10" y1="20" x2="58" y2="55" gradientUnits="userSpaceOnUse">
+          <linearGradient id="g" x1="10" y1="20" x2="58" y2="55">
             <stop stop-color="#16a34a"/><stop offset="1" stop-color="#15803d"/>
           </linearGradient>
         </defs>
@@ -92,111 +150,74 @@
       </div>
     </div>
 
-    <!-- JS 사용: 프런트 계산 / JS 미사용: 서버 POST 사용 -->
-    <form method="post" action="/">
+    <form>
       <div class="grid">
         <div>
           <label for="weight">중량 (kg)</label>
-          <input id="weight" name="weight" type="number" class="input" value="<%= typeof weight==='number' ? weight : '' %>" />
+          <input id="weight" type="number" class="input" />
         </div>
         <div>
           <label for="reps">반복 횟수 (reps)</label>
-          <input id="reps" name="reps" type="number" class="input" value="<%= typeof reps==='number' ? reps : '' %>" />
+          <input id="reps" type="number" class="input" />
         </div>
       </div>
       <button class="btn" type="button" onclick="calc()">계산하기</button>
-      <!-- JS 비활성 환경 대비용: 필요하면 이 버튼 표시 -->
-      <!-- <button class="btn" type="submit" style="margin-top:8px; background:#111">서버로 계산</button> -->
     </form>
 
-    <p id="result"></p>
-
-    <!-- 반복별 결과 카드 -->
     <section id="rmCard">
       <div id="rmNote"></div>
+      <p class="notice">
+        ※ 계산 결과는 <strong>추정치</strong>이며 실제 운동 시 개인 컨디션·폼·휴식 상태에 따라 차이가 있을 수 있습니다.<br>
+        일반적으로 <strong>2~5회 반복</strong> 구간에서 비교적 정확하며, 반복 횟수가 높을수록 오차가 커질 수 있습니다.
+      </p>
       <table class="rm">
         <thead>
           <tr><th>Reps</th><th>예상 중량 (kg)</th></tr>
         </thead>
-        <tbody id="rmTbody">
-          
-            <tr><td></td><td></td></tr>
-          
-        </tbody>
+        <tbody id="rmTbody"></tbody>
       </table>
     </section>
   </main>
 
-  <div class="watermark">rexx the dino</div>
+  <!-- 하단 중앙 -->
+  <footer class="bottom-links">
+    <a href="/privacy.html">개인정보처리방침</a>
+    <span>·</span>
+    <a href="/contact.html">문의하기</a>
+  </footer>
 
   <script>
-    // 0.5kg 반올림
     const roundToPlate = (kg, step = 0.5) => Math.round(kg / step) * step;
-
-    // Epley 공식
     const oneRM = (w, r) => w * (1 + r/30);
     const weightAtReps = (oneRM, reps) => oneRM / (1 + 0.0333 * reps);
 
     function calc(){
-      const w = parseFloat(document.getElementById('weight').value);
-      const r = parseInt(document.getElementById('reps').value, 10);
-      const resultEl = document.getElementById('result');
+      const w = parseFloat(weight.value);
+      const r = parseInt(reps.value, 10);
       const card = document.getElementById('rmCard');
       const tbody = document.getElementById('rmTbody');
 
       if(!w || !r || w <= 0 || r <= 0){
-        resultEl.innerText = "값을 올바르게 입력해주세요";
-        card.style.display = 'none';
+        card.style.display='none';
         return;
       }
 
-      // 1RM 계산만 유지 (출력 제거)
-const est1rm = roundToPlate(oneRM(w, r));
-      
-      // 1~10RM 테이블
-      tbody.innerHTML = '';
-      for(let reps=1; reps<=10; reps++){
-        const est = roundToPlate(weightAtReps(est1rm, reps));
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${reps}RM</td><td style="text-align:right; font-weight:700;">${est}</td>`;
+      const est1rm = roundToPlate(oneRM(w, r));
+      tbody.innerHTML='';
+
+      for(let i=1;i<=10;i++){
+        const est = roundToPlate(weightAtReps(est1rm, i));
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td>${i}RM</td><td>${est}</td>`;
         tbody.appendChild(tr);
       }
-      card.style.display = 'block';
 
-      // URL 쿼리로 공유(선택): /?w=100&r=3
-      const url = new URL(window.location);
-      url.searchParams.set('w', w);
-      url.searchParams.set('r', r);
-      history.replaceState({}, '', url);
+      document.getElementById('rmNote').innerText =
+        '※ 1RM 계산은 Epley 공식 기반의 추정치입니다.';
+
+      card.style.display='block';
     }
-
-    // SSR로 테이블이 이미 렌더된 경우 보이기
-    (function init(){
-      const serverHasTable = document.querySelector('#rmTbody tr') !== null;
-      if(serverHasTable) document.getElementById('rmCard').style.display = 'block';
-    })();
   </script>
-  <a href="/" style="text-decoration:none;color:inherit">← 메인으로</a>
-  <footer style="
-  margin-top: 24px;
-  padding: 16px 0;
-  font-size: 14px;
-  opacity: 0.95;
-">
-  <div style="
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-    align-items: center;
-  ">
-    <span>© Rexx Strength</span>
-    <a href="/privacy.html" style="text-decoration:none;color:inherit;">
-      개인정보처리방침
-    </a>
-    <a href="/contact.html" style="text-decoration:none;color:inherit;">
-      문의하기
-    </a>
-  </div>
-</footer>
+
 </body>
 </html>
