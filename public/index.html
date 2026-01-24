@@ -4,146 +4,190 @@
 <head>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7710330114657085"
      crossorigin="anonymous"></script>  
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rexx 1RM 계산기</title>
-  <style>
-    :root{
-      --green:#16a34a;
-      --green-700:#15803d;
-      --black:#0a0a0a;
-      --muted:#6b7280;
-      --radius:18px;
-      --shadow:0 10px 30px rgba(0,0,0,.08);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "맑은 고딕", sans-serif;
-      color:var(--black);
-      background:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
 
-    /* 중앙 카드 */
-    .card{
-      width:min(680px, 92vw);
-      background:#fff;
-      border:1px solid #e5e7eb;
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:28px 28px 22px;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rexx 1RM 계산기</title>
 
-    /* 상단 왼쪽 네비 */
-    .top-nav{
-      position:fixed;
-      top:16px;
-      left:16px;
-      z-index:1000;
-    }
-    .back-btn{
-      display:inline-block;
-      padding:8px 12px;
-      font-size:13px;
-      font-weight:700;
-      border-radius:10px;
-      background:#f3f4f6;
-      color:#111;
-      text-decoration:none;
-      border:1px solid #e5e7eb;
-    }
-    .back-btn:hover{ background:#e5e7eb; }
+<style>
+:root{
+  --green:#16a34a;
+  --green-700:#15803d;
+  --black:#0a0a0a;
+  --muted:#6b7280;
+  --radius:18px;
+  --shadow:0 10px 30px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "맑은 고딕", sans-serif;
+  background:#fff;
+  color:var(--black);
+}
 
-    /* 하단 중앙 링크 */
-    .bottom-links{
-      position:fixed;
-      left:50%;
-      bottom:18px;
-      transform:translateX(-50%);
-      font-size:13px;
-      color:#111;
-      opacity:.6;
-      display:flex;
-      gap:8px;
-      align-items:center;
-    }
-    .bottom-links a{
-      text-decoration:none;
-      color:inherit;
-    }
-    .bottom-links a:hover{ opacity:1; }
+/* 상단 네비 */
+.top-nav{
+  position:fixed;
+  top:16px;
+  left:16px;
+}
+.back-btn{
+  padding:8px 12px;
+  font-size:13px;
+  font-weight:700;
+  border-radius:10px;
+  background:#f3f4f6;
+  border:1px solid #e5e7eb;
+  text-decoration:none;
+  color:#111;
+}
 
-    .brand{ display:flex; align-items:center; gap:12px; margin-bottom:10px; }
-    .brand svg{width:36px; height:36px}
-    .brand-title{font-size:20px; font-weight:800}
-    .subtitle{color:var(--muted); font-size:13px; margin-top:4px}
+/* 메인 레이아웃 */
+.wrapper{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:80px 16px 80px;
+}
 
-    form{margin-top:18px}
-    .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
-    @media (max-width:560px){ .grid{grid-template-columns:1fr} }
+/* 계산기 카드 */
+.card{
+  width:min(680px, 92vw);
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:28px;
+}
 
-    label{display:block; font-size:13px; font-weight:700; margin-bottom:6px}
-    .input{
-      width:100%; border:1.5px solid #e5e7eb; border-radius:12px;
-      padding:12px 14px; font-size:16px; outline:none;
-      transition:border .15s, box-shadow .15s;
-    }
-    .input:focus{ border-color:var(--green); box-shadow:0 0 0 4px #ecfdf5; }
+/* 브랜드 */
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.brand-title{
+  font-size:20px;
+  font-weight:800;
+}
+.subtitle{
+  font-size:13px;
+  color:var(--muted);
+}
 
-    .btn{
-      width:100%; border:none; margin-top:12px;
-      background:linear-gradient(180deg,var(--green),var(--green-700));
-      color:#fff; font-weight:800;
-      padding:13px 16px; border-radius:12px;
-      cursor:pointer;
-      box-shadow:0 6px 16px rgba(22,163,74,.25);
-    }
+/* 입력 */
+form{ margin-top:18px; }
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+@media(max-width:560px){
+  .grid{grid-template-columns:1fr;}
+}
+label{
+  font-size:13px;
+  font-weight:700;
+}
+.input{
+  width:100%;
+  padding:12px 14px;
+  border-radius:12px;
+  border:1.5px solid #e5e7eb;
+  font-size:16px;
+}
+.input:focus{
+  outline:none;
+  border-color:var(--green);
+  box-shadow:0 0 0 4px #ecfdf5;
+}
+.btn{
+  margin-top:12px;
+  width:100%;
+  padding:13px;
+  font-weight:800;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(180deg,var(--green),var(--green-700));
+  color:#fff;
+  cursor:pointer;
+}
 
-    /* 결과 테이블 */
-    #rmCard{ margin-top:10px; display:none; }
-    #rmNote{ color:var(--muted); font-size:12px; margin-bottom:4px; }
-    table.rm { width:100%; border-collapse:collapse; }
-    table.rm th, table.rm td { padding:8px 6px; }
-    table.rm thead th {
-      font-size:12px; color:#374151; text-align:left;
-      border-bottom:1px solid #e5e7eb;
-    }
-    table.rm tbody td:last-child { text-align:right; font-weight:700; }
+/* 결과 영역 */
+#rmCard{
+  display:none;
+  margin-top:18px;
+}
+#rmNote{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+th,td{
+  padding:8px 6px;
+  border-bottom:1px solid #e5e7eb;
+}
+td:last-child{
+  text-align:right;
+  font-weight:700;
+}
+.notice{
+  margin-top:8px;
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.5;
+}
 
-    /* 주의 문구 */
-    .notice{
-      margin-top:10px;
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.5;
-    }
-    .notice strong{ font-weight:700; }
-  </style>
+/* 설명 텍스트 */
+.info{
+  margin-top:26px;
+  padding-top:22px;
+  border-top:1px solid #e5e7eb;
+}
+.info h3{
+  font-size:15px;
+  margin-bottom:6px;
+}
+.info p{
+  font-size:13px;
+  color:#374151;
+  line-height:1.7;
+  margin-bottom:10px;
+}
+
+/* 하단 링크 */
+footer{
+  position:fixed;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:13px;
+  opacity:.6;
+}
+footer a{
+  text-decoration:none;
+  color:inherit;
+  margin:0 6px;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- 상단 왼쪽 -->
-  <div class="top-nav">
-    <a href="/" class="back-btn">← 메인으로</a>
-  </div>
+<div class="top-nav">
+  <a href="/" class="back-btn">← 메인으로</a>
+</div>
 
-  <!-- 중앙 계산기 -->
+<div class="wrapper">
+
   <main class="card">
     <div class="brand">
-      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 45c0-9 6-16 18-16h10c7 0 11-3 13-9 1-2 3-2 5-1-1 10-6 15-14 16 6 2 9 7 9 15v6H36l-6-7-6 7H10v-11Z" fill="url(#g)"/>
-        <circle cx="46" cy="18" r="2.2" fill="#0a0a0a"/>
-        <defs>
-          <linearGradient id="g" x1="10" y1="20" x2="58" y2="55">
-            <stop stop-color="#16a34a"/><stop offset="1" stop-color="#15803d"/>
-          </linearGradient>
-        </defs>
-      </svg>
       <div>
         <div class="brand-title">Rexx 1RM Calculator</div>
         <div class="subtitle">당신의 한계는 없습니다.</div>
@@ -153,71 +197,91 @@
     <form>
       <div class="grid">
         <div>
-          <label for="weight">중량 (kg)</label>
-          <input id="weight" type="number" class="input" />
+          <label>중량 (kg)</label>
+          <input id="weight" type="number" class="input">
         </div>
         <div>
-          <label for="reps">반복 횟수 (reps)</label>
-          <input id="reps" type="number" class="input" />
+          <label>반복 횟수 (reps)</label>
+          <input id="reps" type="number" class="input">
         </div>
       </div>
       <button class="btn" type="button" onclick="calc()">계산하기</button>
     </form>
 
+    <!-- 결과 -->
     <section id="rmCard">
       <div id="rmNote"></div>
-      <p class="notice">
-        ※ 계산 결과는 <strong>추정치</strong>이며 실제 운동 시 개인 컨디션·폼·휴식 상태에 따라 차이가 있을 수 있습니다.<br>
-        일반적으로 <strong>2~5회 반복</strong> 구간에서 비교적 정확하며, 반복 횟수가 높을수록 오차가 커질 수 있습니다.
-      </p>
-      <table class="rm">
+      <table>
         <thead>
           <tr><th>Reps</th><th>예상 중량 (kg)</th></tr>
         </thead>
         <tbody id="rmTbody"></tbody>
       </table>
+      <p class="notice">
+        ※ 계산 결과는 추정치이며 실제 최대 중량은 개인 컨디션 및 숙련도에 따라 달라질 수 있습니다.
+      </p>
     </section>
+
+    <!-- 설명 텍스트 -->
+    <section class="info">
+      <h3>이 1RM 계산기는 언제 사용하나요?</h3>
+      <p>
+        이 계산기는 현재 수행 가능한 중량과 반복 횟수를 기반으로
+        최대 1회 반복 중량(1RM)을 안전하게 예측하기 위해 만들어졌습니다.
+        무리한 최대 중량 도전을 하지 않고도 자신의 근력 수준을 파악할 수 있습니다.
+      </p>
+
+      <h3>이런 분께 추천합니다</h3>
+      <p>
+        중량 프로그램을 계획 중이거나, 체중 변화 후 근력 상태를 확인하고 싶은 분,
+        스쿼트·벤치프레스·데드리프트 기록을 체계적으로 관리하고 싶은 분께 적합합니다.
+      </p>
+
+      <h3>계산 방식 안내</h3>
+      <p>
+        입력된 값은 Epley 공식 기반으로 계산되며,
+        일반적으로 2~5회 반복 구간에서 비교적 정확한 결과를 제공합니다.
+        본 계산기는 참고용 도구로 활용하시기 바랍니다.
+      </p>
+    </section>
+
   </main>
 
-  <!-- 하단 중앙 -->
-  <footer class="bottom-links">
-    <a href="/privacy.html">개인정보처리방침</a>
-    <span>·</span>
-    <a href="/contact.html">문의하기</a>
-  </footer>
+</div>
 
-  <script>
-    const roundToPlate = (kg, step = 0.5) => Math.round(kg / step) * step;
-    const oneRM = (w, r) => w * (1 + r/30);
-    const weightAtReps = (oneRM, reps) => oneRM / (1 + 0.0333 * reps);
+<footer>
+  <a href="/privacy.html">개인정보처리방침</a> ·
+  <a href="/contact.html">문의하기</a>
+</footer>
 
-    function calc(){
-      const w = parseFloat(weight.value);
-      const r = parseInt(reps.value, 10);
-      const card = document.getElementById('rmCard');
-      const tbody = document.getElementById('rmTbody');
+<script>
+const round = kg => Math.round(kg * 2) / 2;
+const oneRM = (w, r) => w * (1 + r / 30);
+const weightAtReps = (rm, reps) => rm / (1 + 0.0333 * reps);
 
-      if(!w || !r || w <= 0 || r <= 0){
-        card.style.display='none';
-        return;
-      }
+function calc(){
+  const w = +weight.value;
+  const r = +reps.value;
+  const card = document.getElementById('rmCard');
+  const tbody = document.getElementById('rmTbody');
 
-      const est1rm = roundToPlate(oneRM(w, r));
-      tbody.innerHTML='';
+  if(!w || !r){ card.style.display='none'; return; }
 
-      for(let i=1;i<=10;i++){
-        const est = roundToPlate(weightAtReps(est1rm, i));
-        const tr=document.createElement('tr');
-        tr.innerHTML=`<td>${i}RM</td><td>${est}</td>`;
-        tbody.appendChild(tr);
-      }
+  const est = round(oneRM(w,r));
+  tbody.innerHTML='';
 
-      document.getElementById('rmNote').innerText =
-        '※ 1RM 계산은 Epley 공식 기반의 추정치입니다.';
+  for(let i=1;i<=10;i++){
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${i}RM</td><td>${round(weightAtReps(est,i))}</td>`;
+    tbody.appendChild(tr);
+  }
 
-      card.style.display='block';
-    }
-  </script>
+  document.getElementById('rmNote').innerText =
+    `예상 1RM: ${est} kg (Epley 공식 기반)`;
+
+  card.style.display='block';
+}
+</script>
 
 </body>
 </html>
