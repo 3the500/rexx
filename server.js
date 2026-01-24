@@ -241,7 +241,7 @@ function epleyWeightAtReps(oneRM, reps) {
 /* =========================================================
  * [1RM 라우트]
  * =======================================================*/
-app.get("/1rm", (req, res) => {
+app.get("/index.html", (req, res) => {
   const w = parseFloat(req.query.w);
   const r = parseInt(req.query.r, 10);
   let oneRM, table = null;
