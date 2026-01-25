@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="ko">
 <head>
-
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7710330114657085"
-     crossorigin="anonymous"></script>  
+     crossorigin="anonymous"></script>
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Rexx Strength — 메인</title>
@@ -11,15 +11,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg: #0b0f0c;           /* 거의 블랙에 가까운 남색/초록 베이스 */
-      --panel: #0f1612;        /* 카드/패널 배경 */
-      --text: #e9f5ef;         /* 본문 텍스트 */
-      --muted: #a7b9b0;        /* 보조 텍스트 */
-      --brand: #16a34a;        /* 메인 그린 (emerald-ish) */
-      --brand-strong: #0f8a3d; /* 진한 그린 */
-      --accent: #38bdf8;       /* 포인트 블루 살짝 */
+      --bg: #0b0f0c;
+      --panel: #0f1612;
+      --text: #e9f5ef;
+      --muted: #a7b9b0;
+      --brand: #16a34a;
+      --brand-strong: #0f8a3d;
+      --accent: #38bdf8;
       --ring: rgba(22,163,74,.35);
       --shadow: 0 10px 30px rgba(0,0,0,.35);
       --radius: 18px;
@@ -27,17 +28,22 @@
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; color:var(--text); background:radial-gradient(1200px 800px at 80% -10%, rgba(22,163,74,.15), transparent 50%),
-      radial-gradient(900px 600px at -10% 20%, rgba(56,189,248,.08), transparent 40%), var(--bg);
+      margin:0;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 80% -10%, rgba(22,163,74,.15), transparent 50%),
+        radial-gradient(900px 600px at -10% 20%, rgba(56,189,248,.08), transparent 40%),
+        var(--bg);
       font-family: "Pretendard", system-ui, -apple-system, Segoe UI, Roboto, Apple SD Gothic Neo, Noto Sans KR, sans-serif;
       letter-spacing: .1px;
     }
 
     /* Header */
     .header{
-      position: sticky; top:0; z-index:50; backdrop-filter: saturate(140%) blur(10px);
-      background: linear-gradient(to bottom, rgba(11,15,12,.8), rgba(11,15,12,.35));
-      border-bottom: 1px solid rgba(255,255,255,.05);
+      position: sticky; top:0; z-index:50;
+      backdrop-filter: saturate(140%) blur(10px);
+      background: linear-gradient(to bottom, rgba(11,15,12,.86), rgba(11,15,12,.35));
+      border-bottom: 1px solid rgba(255,255,255,.06);
     }
     .container{max-width:1100px; margin:0 auto; padding:0 20px}
     .row{display:flex; align-items:center; justify-content:space-between; height:64px}
@@ -45,16 +51,90 @@
     .logo{width:28px; height:28px; border-radius:8px; background: conic-gradient(from 210deg, var(--brand), var(--brand-strong)); box-shadow: 0 6px 18px rgba(22,163,74,.35)}
     .brand span{font-weight:700; letter-spacing:.3px}
 
-    nav{display:flex; gap:20px}
-    .nav-link{position:relative; padding:10px 12px; text-decoration:none; color:var(--text); font-weight:500; opacity:.9}
-    .nav-link:hover{opacity:1}
-    /* hover underline grow effect */
-    .nav-link::after{
-      content:""; position:absolute; left:12px; right:12px; bottom:6px; height:2px; background:linear-gradient(90deg, var(--brand), #22c55e);
-      transform:scaleX(0); transform-origin: left; transition:transform .25s ease;
+    /* Nav */
+    nav{display:flex; align-items:center; gap:8px}
+    .nav-link, .nav-button{
+      position:relative;
+      padding:10px 12px;
+      text-decoration:none;
+      color:var(--text);
+      font-weight:600;
+      opacity:.92;
+      border-radius:12px;
+      line-height:1;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
     }
-    .nav-link:hover::after{transform:scaleX(1)}
-    .cta{display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; background:linear-gradient(180deg, var(--brand), var(--brand-strong)); color:white; text-decoration:none; font-weight:600; box-shadow: 0 8px 20px rgba(16,185,129,.3)}
+    .nav-link:hover, .nav-button:hover{opacity:1; background: rgba(255,255,255,.04)}
+    .nav-link:focus-visible, .nav-button:focus-visible{outline:3px solid var(--ring)}
+
+    /* underline grow effect */
+    .nav-link::after, .nav-button::after{
+      content:"";
+      position:absolute;
+      left:12px; right:12px; bottom:6px;
+      height:2px;
+      background:linear-gradient(90deg, var(--brand), #22c55e);
+      transform:scaleX(0);
+      transform-origin:left;
+      transition:transform .25s ease;
+      border-radius:999px;
+    }
+    .nav-link:hover::after, .nav-button:hover::after{transform:scaleX(1)}
+
+    /* Dropdown */
+    .dropdown{
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+    }
+    .dropdown-menu{
+      position:absolute;
+      top: calc(100% + 10px);
+      left: 0;
+      min-width: 220px;
+      padding:10px;
+      border-radius: 14px;
+      background: rgba(15,22,18,.92);
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: 0 18px 45px rgba(0,0,0,.45);
+      display:none;
+      backdrop-filter: blur(10px) saturate(140%);
+    }
+    .dropdown:hover .dropdown-menu,
+    .dropdown:focus-within .dropdown-menu{
+      display:block;
+    }
+    .menu-item{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      padding:10px 10px;
+      border-radius: 12px;
+      text-decoration:none;
+      color: var(--text);
+      border:1px solid transparent;
+    }
+    .menu-item:hover{
+      background: rgba(255,255,255,.04);
+      border-color: rgba(16,185,129,.20);
+    }
+    .menu-title{font-weight:700; font-size:14px}
+    .menu-desc{font-size:12px; color: var(--muted); line-height:1.4}
+
+    /* CTA */
+    .cta{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 14px;
+      border-radius:12px;
+      background:linear-gradient(180deg, var(--brand), var(--brand-strong));
+      color:white;
+      text-decoration:none;
+      font-weight:700;
+      box-shadow: 0 8px 20px rgba(16,185,129,.3);
+      white-space:nowrap;
+    }
     .cta:focus-visible{outline: 3px solid var(--ring)}
 
     /* Hero */
@@ -65,18 +145,32 @@
     h1 strong{color:#98f6c2; text-shadow:0 6px 30px rgba(16,185,129,.25)}
     .lead{color:var(--muted); font-size:16px; line-height:1.6; max-width:56ch}
     .hero-actions{display:flex; gap:12px; margin-top:22px; flex-wrap:wrap}
-    .ghost{display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; text-decoration:none; color:var(--text); border:1px solid rgba(255,255,255,.12)}
+    .ghost{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:8px; padding:10px 14px; border-radius:12px;
+      text-decoration:none; color:var(--text);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.02);
+      font-weight:600;
+    }
+    .ghost:hover{background: rgba(255,255,255,.04)}
+    .ghost:focus-visible{outline:3px solid var(--ring)}
 
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
       border:1px solid rgba(255,255,255,.06);
       border-radius: var(--radius);
-      padding:18px; box-shadow: var(--shadow);
+      padding:18px;
+      box-shadow: var(--shadow);
     }
     .stat{display:grid; grid-template-columns: auto 1fr; gap:10px; align-items:center}
-    .stat .dot{width:10px; height:10px; border-radius:50%; background:radial-gradient(circle at 30% 30%, #d1fae5, var(--brand-strong)); box-shadow:0 0 16px rgba(16,185,129,.45)}
+    .stat .dot{
+      width:10px; height:10px; border-radius:50%;
+      background:radial-gradient(circle at 30% 30%, #d1fae5, var(--brand-strong));
+      box-shadow:0 0 16px rgba(16,185,129,.45)
+    }
     .stat h3{margin:0; font-size:14px; color:var(--muted)}
-    .stat p{margin:0; font-size:24px; font-weight:700}
+    .stat p{margin:0; font-size:24px; font-weight:800}
 
     /* Feature grid */
     .features{padding:40px 0 80px}
@@ -100,31 +194,51 @@
       nav{display:none}
       .row{height:auto; padding:12px 0}
     }
-
-    /* Motion reduce */
     @media (prefers-reduced-motion: reduce){
-      .nav-link::after{transition:none}
+      .nav-link::after, .nav-button::after{transition:none}
     }
   </style>
 </head>
+
 <body>
   <!-- Header -->
   <header class="header">
     <div class="container">
       <div class="row">
-        <a class="brand" href="#" aria-label="Rexx Strength 홈">
+        <a class="brand" href="/" aria-label="Rexx Strength 홈">
           <div class="logo" aria-hidden="true"></div>
           <span>Rexx Strength</span>
         </a>
+
+        <!-- 상단 툴바에 기능 몰아넣기 -->
         <nav aria-label="주 메뉴">
-          <a class="nav-link" href="#features">기능</a>
-          <a class="nav-link" href="#stats">스탯</a>
-          <a class="nav-link" href="#about">소개</a>
-          <!-- 1RM 계산기 연결: 라우트/파일 경로를 네 앱에 맞게 수정하세요. 예: /1rm 또는 /1rm.html -->
           <a class="nav-link" href="/index.html" title="1RM 계산기로 이동">1RM 계산기</a>
+          <a class="nav-link" href="/calorie.html" title="칼로리 계산기로 이동">칼로리 계산기</a>
+
+          <!-- 유형테스트 드롭다운 -->
+          <div class="dropdown">
+            <button class="nav-button" type="button" aria-haspopup="true" aria-expanded="false">
+              유형테스트
+              <span aria-hidden="true" style="opacity:.75">▾</span>
+            </button>
+
+            <div class="dropdown-menu" role="menu" aria-label="유형테스트 하위 메뉴">
+              <a class="menu-item" href="/animal-test.html" role="menuitem">
+                <div class="menu-title">동물로 보는 운동유형 테스트</div>
+                <div class="menu-desc">성향을 동물상으로 매칭해서 결과 카드로 보여줘요</div>
+              </a>
+              <a class="menu-item" href="/workout.html" role="menuitem">
+                <div class="menu-title">나와 맞는 운동은!?</div>
+                <div class="menu-desc">선호/성향 기반으로 추천 운동 루틴을 제안해요</div>
+              </a>
+            </div>
+          </div>
+
+          <a class="nav-link" href="/login1.html" title="로그인 페이지로 이동">로그인</a>
         </nav>
-        <!-- 우측 CTA는 1RM으로 바로가기 -->
-        <a class="cta" href="/login1.html" aria-label="로그인 하기">로그인 하기</a>
+
+        <!-- 우측 CTA (원하면 로그인 대신 1RM 시작으로 바꿔도 됨) -->
+        <a class="cta" href="/index.html" aria-label="1RM 계산 시작">1RM 시작</a>
       </div>
     </div>
   </header>
@@ -141,12 +255,18 @@
             <strong>정확한 1RM</strong>과 간지나는 기록 관리.
           </h1>
           <p class="lead">Rexx의 툴킷으로 스쿼트·벤치·데드의 퍼포먼스를 한눈에. 세련된 그린 테마, 가벼운 속도, 직관적인 UI.</p>
+
           <div class="hero-actions">
-            <a class="cta" href="/index.html">1rm 계산 시작</a>
-            <a class="cta" href="/animal-test.html">동물로 보는 운동유형 테스트!!</a>
-            <a class="cta" href="/workout.html">나와 맞는 운동은!?</a>
+            <a class="cta" href="/index.html">1RM 계산 시작</a>
+            <a class="ghost" href="/calorie.html">칼로리 계산</a>
+
+            <!-- 유형테스트는 버튼 2개 대신 상단 드롭다운으로 정리했으니,
+                 메인에서는 1개 CTA만 두고 싶으면 아래 두 개는 지워도 됨 -->
+            <a class="ghost" href="/animal-test.html">유형테스트 1</a>
+            <a class="ghost" href="/workout.html">유형테스트 2</a>
           </div>
         </div>
+
         <div>
           <div class="card" aria-labelledby="demo-title">
             <h3 id="demo-title" style="margin:0 0 6px; font-size:16px; color:var(--muted)">빠른 미리보기</h3>
@@ -245,7 +365,8 @@
     <div class="container foot">
       <div style="display:flex; align-items:center; gap:10px">
         <div class="logo" aria-hidden="true"></div>
-        <span>© <span id="y"></span> Rexx Strength</span>
+        <!-- 연도 고정: 2025 -->
+        <span>© 2025 Rexx Strength</span>
       </div>
       <div style="display:flex; gap:14px">
         <a href="/privacy.html">개인정보처리방침</a>
@@ -255,9 +376,6 @@
     </div>
   </footer>
 
-  <script>
-    // 연도 자동
-    document.getElementById('y').textContent = new Date().getFullYear();
-  </script>
+  <!-- 연도 자동 스크립트 제거 -->
 </body>
 </html>
