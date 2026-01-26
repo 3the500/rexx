@@ -46,13 +46,14 @@
       border-bottom: 1px solid rgba(255,255,255,.06);
     }
     .container{max-width:1100px; margin:0 auto; padding:0 20px}
-    .row{display:flex; align-items:center; justify-content:space-between; height:64px}
+    .row{display:flex; align-items:center; justify-content:space-between; height:64px; gap:12px;}
     .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text)}
     .logo{width:28px; height:28px; border-radius:8px; background: conic-gradient(from 210deg, var(--brand), var(--brand-strong)); box-shadow: 0 6px 18px rgba(22,163,74,.35)}
     .brand span{font-weight:700; letter-spacing:.3px}
 
-    /* Nav */
-    nav{display:flex; align-items:center; gap:8px}
+    /* Desktop Nav */
+    .nav-desktop{display:flex; align-items:center; gap:8px}
+
     .nav-link, .nav-button{
       position:relative;
       padding:10px 12px;
@@ -68,6 +69,7 @@
       background: transparent;
       border: 0;
       cursor: pointer;
+      white-space:nowrap;
     }
     .nav-link:hover, .nav-button:hover{
       opacity:1;
@@ -91,15 +93,13 @@
     }
     .nav-link:hover::after, .nav-button:hover::after{transform:scaleX(1)}
 
-    /* Dropdown */
+    /* Dropdown (Desktop hover) */
     .dropdown{
       position:relative;
       display:inline-flex;
       align-items:center;
-      z-index: 60; /* 메뉴가 헤더 위로 확실히 */
+      z-index: 60;
     }
-
-    /* ✅ 회색 박스 느낌 제거 + nav 톤(패널/그린) 맞춤 */
     .dropdown-menu{
       position:absolute;
       top: calc(100% + 10px);
@@ -113,14 +113,11 @@
       display:none;
       backdrop-filter: blur(12px) saturate(160%);
     }
-
-    /* hover / focus open */
     .dropdown:hover .dropdown-menu,
     .dropdown:focus-within .dropdown-menu{
       display:block;
     }
 
-    /* ✅ 메뉴 아이템을 “버튼/칩”처럼 보이게 */
     .menu-item{
       display:flex;
       align-items:flex-start;
@@ -134,14 +131,11 @@
       transition: transform .12s ease, background .12s ease, border-color .12s ease;
     }
     .menu-item + .menu-item{ margin-top:10px; }
-
     .menu-item:hover{
       background: rgba(16,185,129,.10);
       border-color: rgba(16,185,129,.35);
       transform: translateY(-1px);
     }
-
-    /* 왼쪽 작은 점(그린) */
     .menu-dot{
       width:10px; height:10px;
       border-radius:50%;
@@ -150,7 +144,6 @@
       box-shadow: 0 0 16px rgba(16,185,129,.45);
       flex: 0 0 auto;
     }
-
     .menu-title{font-weight:800; font-size:14px; line-height:1.2}
     .menu-desc{font-size:12px; color: var(--muted); line-height:1.4; margin-top:3px}
 
@@ -167,6 +160,101 @@
       white-space:nowrap;
     }
     .cta:focus-visible{outline: 3px solid var(--ring)}
+
+    /* Mobile: hamburger + dropdown panel */
+    .mobile-controls{
+      display:none;
+      align-items:center;
+      gap:10px;
+    }
+    .menu-toggle{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.02);
+      color: var(--text);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+    }
+    .menu-toggle:hover{background: rgba(255,255,255,.04)}
+    .menu-toggle:focus-visible{outline:3px solid var(--ring)}
+    .menu-toggle svg{width:20px;height:20px;opacity:.95}
+
+    .mobile-menu{
+      display:none;
+      border-top:1px solid rgba(255,255,255,.06);
+      background: linear-gradient(to bottom, rgba(11,15,12,.70), rgba(11,15,12,.35));
+      backdrop-filter: saturate(140%) blur(10px);
+    }
+    .mobile-menu.open{display:block;}
+    .mobile-menu-inner{
+      max-width:1100px;
+      margin:0 auto;
+      padding:12px 20px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .m-link{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 12px;
+      border-radius:14px;
+      text-decoration:none;
+      color:var(--text);
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.02);
+      font-weight:800;
+    }
+    .m-link:hover{background: rgba(255,255,255,.04)}
+    .m-sub{
+      color:var(--muted);
+      font-weight:600;
+      font-size:12px;
+    }
+
+    /* details for mobile submenu */
+    .m-details{
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.02);
+      border-radius:14px;
+      overflow:hidden;
+    }
+    .m-details summary{
+      list-style:none;
+      cursor:pointer;
+      padding:12px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-weight:800;
+      color:var(--text);
+    }
+    .m-details summary::-webkit-details-marker{display:none}
+    .m-details .m-panel{
+      padding:10px 12px 12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .m-item{
+      display:flex;
+      gap:10px;
+      padding:12px 12px;
+      border-radius:14px;
+      text-decoration:none;
+      color:var(--text);
+      border:1px solid rgba(16,185,129,.20);
+      background: rgba(16,185,129,.08);
+    }
+    .m-item:hover{
+      background: rgba(16,185,129,.12);
+      border-color: rgba(16,185,129,.35);
+    }
 
     /* Hero */
     .hero{padding:80px 0 40px}
@@ -220,11 +308,16 @@
     @media (max-width: 900px){
       .hero{padding:56px 0 24px}
       .hero-grid{grid-template-columns: 1fr}
+      h1{font-size:38px}
     }
+
+    /* ✅ 핵심: 모바일에선 desktop nav 대신 hamburger + 모바일 메뉴 */
     @media (max-width: 720px){
-      nav{display:none}
       .row{height:auto; padding:12px 0}
+      .nav-desktop{display:none;}
+      .mobile-controls{display:flex;}
     }
+
     @media (prefers-reduced-motion: reduce){
       .nav-link::after, .nav-button::after{transition:none}
       .menu-item{transition:none}
@@ -242,17 +335,15 @@
           <span>Rexx Strength</span>
         </a>
 
-        <!-- 상단 툴바: 1RM / 칼로리 / 유형테스트(드롭다운) / 로그인 -->
-        <nav aria-label="주 메뉴">
+        <!-- Desktop Nav -->
+        <nav class="nav-desktop" aria-label="주 메뉴">
           <a class="nav-link" href="/index.html" title="1RM 계산기로 이동">1RM 계산기</a>
           <a class="nav-link" href="/calorie.html" title="칼로리 계산기로 이동">칼로리 계산기</a>
 
-          <!-- 유형테스트 드롭다운 -->
           <div class="dropdown">
             <button class="nav-button" type="button" aria-haspopup="true" aria-expanded="false">
               유형테스트 <span aria-hidden="true" style="opacity:.75">▾</span>
             </button>
-
             <div class="dropdown-menu" role="menu" aria-label="유형테스트 하위 메뉴">
               <a class="menu-item" href="/animal-test.html" role="menuitem">
                 <div class="menu-dot" aria-hidden="true"></div>
@@ -261,7 +352,6 @@
                   <div class="menu-desc">성향을 동물상으로 매칭해서 결과 카드로 보여줘요</div>
                 </div>
               </a>
-
               <a class="menu-item" href="/workout.html" role="menuitem">
                 <div class="menu-dot" aria-hidden="true"></div>
                 <div>
@@ -275,8 +365,58 @@
           <a class="nav-link" href="/login1.html" title="로그인 페이지로 이동">로그인</a>
         </nav>
 
-        <!-- ✅ 오른쪽 CTA를 1RM 시작 -> 로그인 버튼으로 원복 -->
-        <a class="cta" href="/login1.html" aria-label="로그인 하기">로그인 하기</a>
+        <!-- Mobile Controls: hamburger + CTA -->
+        <div class="mobile-controls" aria-label="모바일 메뉴">
+          <button class="menu-toggle" id="menuBtn" type="button" aria-label="메뉴 열기" aria-expanded="false">
+            <!-- hamburger icon -->
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <a class="cta" href="/login1.html" aria-label="로그인 하기">로그인 하기</a>
+        </div>
+
+        <!-- Desktop CTA (PC에서는 이 버튼 보이게) -->
+        <a class="cta" href="/login1.html" aria-label="로그인 하기" style="margin-left:10px;" id="desktopCta">로그인 하기</a>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Panel -->
+    <div class="mobile-menu" id="mobileMenu" aria-label="모바일 펼침 메뉴">
+      <div class="mobile-menu-inner">
+        <a class="m-link" href="/index.html">
+          <span>1RM 계산기</span><span class="m-sub">바로 계산</span>
+        </a>
+        <a class="m-link" href="/calorie.html">
+          <span>칼로리 계산기</span><span class="m-sub">다이어트 기본</span>
+        </a>
+
+        <details class="m-details">
+          <summary>
+            <span>유형테스트</span>
+            <span class="m-sub">열기 ▾</span>
+          </summary>
+          <div class="m-panel">
+            <a class="m-item" href="/animal-test.html">
+              <div class="menu-dot" aria-hidden="true"></div>
+              <div>
+                <div class="menu-title">동물로 보는 운동유형 테스트</div>
+                <div class="menu-desc">결과 카드로 성향 분석</div>
+              </div>
+            </a>
+            <a class="m-item" href="/workout.html">
+              <div class="menu-dot" aria-hidden="true"></div>
+              <div>
+                <div class="menu-title">나와 맞는 운동은!?</div>
+                <div class="menu-desc">성향 기반 루틴 추천</div>
+              </div>
+            </a>
+          </div>
+        </details>
+
+        <a class="m-link" href="/login1.html">
+          <span>로그인</span><span class="m-sub">기록 저장</span>
+        </a>
       </div>
     </div>
   </header>
@@ -408,5 +548,31 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    // 모바일 메뉴 토글
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const desktopCta = document.getElementById('desktopCta');
+
+    function syncCtas() {
+      // 모바일 폭이면 desktop CTA 숨김(중복 방지)
+      if (window.matchMedia('(max-width: 720px)').matches) {
+        desktopCta.style.display = 'none';
+      } else {
+        desktopCta.style.display = 'inline-flex';
+        mobileMenu.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    menuBtn.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', String(open));
+    });
+
+    window.addEventListener('resize', syncCtas);
+    syncCtas();
+  </script>
 </body>
 </html>
