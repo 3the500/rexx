@@ -322,6 +322,54 @@
       .nav-link::after, .nav-button::after{transition:none}
       .menu-item{transition:none}
     }
+
+/* ===== HERO VIDEO ===== */
+.hero-video-section {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 64px); /* 헤더 높이 제외 */
+  overflow: hidden;
+}
+
+.hero-video-section video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: rgba(0,0,0,0.45);
+  z-index: 2;
+}
+
+.hero-video-overlay h1 {
+  font-size: clamp(32px, 6vw, 56px);
+  margin: 0 0 14px;
+  font-weight: 900;
+}
+
+.hero-video-overlay p {
+  color: var(--muted);
+  max-width: 520px;
+  font-size: 15px;
+  margin-bottom: 26px;
+}
+
+.hero-video-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+    
   </style>
 </head>
 
@@ -422,53 +470,28 @@
   </header>
 
   <!-- Hero -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-grid">
-        <div>
-          <span class="tag">강력한 그린 아이덴티티 · 깔끔한 인터랙션</span>
-          <h1>
-            당신의 리프팅을 숫자로 증명.
-            <br />
-            <strong>정확한 1RM</strong>과 간지나는 기록 관리.
-          </h1>
-          <p class="lead">Rexx의 툴킷으로 스쿼트·벤치·데드의 퍼포먼스를 한눈에. 세련된 그린 테마, 가벼운 속도, 직관적인 UI.</p>
+  <!-- Hero Video -->
+<section class="hero-video-section">
+  <video
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+  >
+    <source src="/videos/hero.mp4" type="video/mp4">
+  </video>
 
-          <div class="hero-actions">
-            <a class="cta" href="/index.html">1RM 계산 시작</a>
-            <a class="ghost" href="/calorie.html">칼로리 계산</a>
-          </div>
-        </div>
+  <div class="hero-video-overlay">
+    <h1>REXX STRENGTH</h1>
+    <p>고중량을 증명하는 숫자. 정확한 1RM 계산과 퍼포먼스 관리.</p>
 
-        <div>
-          <div class="card" aria-labelledby="demo-title">
-            <h3 id="demo-title" style="margin:0 0 6px; font-size:16px; color:var(--muted)">빠른 미리보기</h3>
-            <div style="border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.06)">
-              <svg viewBox="0 0 560 320" role="img" aria-label="1RM 인터페이스 미리보기" style="display:block; width:100%; height:auto; background:linear-gradient(180deg, #0f1612, #0b0f0c)">
-                <defs>
-                  <linearGradient id="g" x1="0" x2="1">
-                    <stop offset="0" stop-color="#16a34a"/>
-                    <stop offset="1" stop-color="#0f8a3d"/>
-                  </linearGradient>
-                </defs>
-                <rect x="24" y="26" rx="10" ry="10" width="512" height="44" fill="none" stroke="rgba(255,255,255,.1)"/>
-                <rect x="24" y="90" rx="10" ry="10" width="180" height="38" fill="url(#g)"/>
-                <rect x="214" y="90" rx="10" ry="10" width="180" height="38" fill="rgba(255,255,255,.08)"/>
-                <rect x="404" y="90" rx="10" ry="10" width="132" height="38" fill="rgba(255,255,255,.08)"/>
-                <rect x="24" y="148" rx="12" ry="12" width="240" height="120" fill="rgba(255,255,255,.04)"/>
-                <rect x="296" y="148" rx="12" ry="12" width="240" height="120" fill="rgba(255,255,255,.04)"/>
-                <text x="36" y="160" fill="#b7f7d5" font-size="12" font-family="system-ui, sans-serif">SQUAT</text>
-                <text x="308" y="160" fill="#b7f7d5" font-size="12" font-family="system-ui, sans-serif">DEADLIFT</text>
-                <text x="36" y="290" fill="#94a3b8" font-size="10" font-family="system-ui, sans-serif">* 실제 앱 UI는 더 디테일합니다</text>
-              </svg>
-            </div>
-          </div>
-        </div>
-
-      </div>
+    <div class="hero-video-actions">
+      <a class="cta" href="/index.html">1RM 계산기</a>
+      <a class="ghost" href="/calorie.html">칼로리 계산</a>
     </div>
-  </section>
-
+  </div>
+</section>
   <!-- Stats / Highlights -->
   <section id="stats" aria-label="하이라이트">
     <div class="container">
