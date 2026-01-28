@@ -53,7 +53,6 @@
 
     /* Desktop Nav */
     .nav-desktop{display:flex; align-items:center; gap:8px}
-
     .nav-link, .nav-button{
       position:relative;
       padding:10px 12px;
@@ -256,25 +255,7 @@
       border-color: rgba(16,185,129,.35);
     }
 
-    /* Hero */
-    .hero{padding:80px 0 40px}
-    .hero-grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:28px; align-items:center}
-    .tag{display:inline-block; padding:6px 10px; border:1px solid rgba(255,255,255,.08); color:var(--muted); border-radius:999px; font-size:12px; backdrop-filter:blur(6px)}
-    h1{margin:14px 0 12px; font-size:44px; line-height:1.1}
-    h1 strong{color:#98f6c2; text-shadow:0 6px 30px rgba(16,185,129,.25)}
-    .lead{color:var(--muted); font-size:16px; line-height:1.6; max-width:56ch}
-    .hero-actions{display:flex; gap:12px; margin-top:22px; flex-wrap:wrap}
-    .ghost{
-      display:inline-flex; align-items:center; justify-content:center;
-      gap:8px; padding:10px 14px; border-radius:12px;
-      text-decoration:none; color:var(--text);
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.02);
-      font-weight:700;
-    }
-    .ghost:hover{background: rgba(255,255,255,.04)}
-    .ghost:focus-visible{outline:3px solid var(--ring)}
-
+    /* Cards / grids below hero */
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
       border:1px solid rgba(255,255,255,.06);
@@ -291,27 +272,18 @@
     .stat h3{margin:0; font-size:14px; color:var(--muted)}
     .stat p{margin:0; font-size:24px; font-weight:800}
 
-    /* Feature grid */
     .features{padding:40px 0 80px}
     .grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:16px}
     .feature h4{margin:6px 0 8px; font-size:18px}
     .feature p{margin:0; color:var(--muted); line-height:1.6}
     .chip{display:inline-block; font-size:12px; padding:4px 8px; border-radius:999px; background:rgba(16,185,129,.12); color:#b7f7d5; border:1px solid rgba(16,185,129,.25)}
 
-    /* Footer */
     footer{padding:36px 0 60px; color:var(--muted)}
     .foot{display:flex; align-items:center; justify-content:flex-start; gap:12px; flex-wrap:wrap}
     .foot a{color:var(--muted); text-decoration:none}
     .foot a:hover{color:var(--text)}
 
     /* Responsive */
-    @media (max-width: 900px){
-      .hero{padding:56px 0 24px}
-      .hero-grid{grid-template-columns: 1fr}
-      h1{font-size:38px}
-    }
-
-    /* ✅ 핵심: 모바일에선 desktop nav 대신 hamburger + 모바일 메뉴 */
     @media (max-width: 720px){
       .row{height:auto; padding:12px 0}
       .nav-desktop{display:none;}
@@ -323,53 +295,54 @@
       .menu-item{transition:none}
     }
 
-/* ===== HERO VIDEO ===== */
-.hero-video-section {
-  position: relative;
-  width: 100%;
-  height: calc(100vh - 64px); /* 헤더 높이 제외 */
-  overflow: hidden;
-}
-
-.hero-video-section video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.hero-video-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background: rgba(0,0,0,0.45);
-  z-index: 2;
-}
-
-.hero-video-overlay h1 {
-  font-size: clamp(32px, 6vw, 56px);
-  margin: 0 0 14px;
-  font-weight: 900;
-}
-
-.hero-video-overlay p {
-  color: var(--muted);
-  max-width: 520px;
-  font-size: 15px;
-  margin-bottom: 26px;
-}
-
-.hero-video-actions {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-    
+    /* ===== HERO VIDEO (확정 안정 버전) ===== */
+    .hero-video-section{
+      position: relative;
+      width: 100%;
+      height: calc(100vh - 64px);
+      overflow: hidden;
+      background: #000; /* 영상 로딩 전/실패 시 */
+    }
+    .hero-video-bg{
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      z-index: 1;
+    }
+    .hero-video-overlay{
+      position: absolute;
+      inset: 0;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      background: rgba(0,0,0,0.45);
+      z-index: 2;
+      padding: 0 18px;
+    }
+    .hero-video-overlay h1{
+      font-size: clamp(32px, 6vw, 56px);
+      margin: 0 0 14px;
+      font-weight: 900;
+      letter-spacing: .6px;
+    }
+    .hero-video-overlay p{
+      color: var(--muted);
+      max-width: 520px;
+      font-size: 15px;
+      margin: 0 0 26px;
+      line-height: 1.6;
+    }
+    .hero-video-actions{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
   </style>
 </head>
 
@@ -416,7 +389,6 @@
         <!-- Mobile Controls: hamburger + CTA -->
         <div class="mobile-controls" aria-label="모바일 메뉴">
           <button class="menu-toggle" id="menuBtn" type="button" aria-label="메뉴 열기" aria-expanded="false">
-            <!-- hamburger icon -->
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
@@ -424,7 +396,6 @@
           <a class="cta" href="/login1.html" aria-label="로그인 하기">로그인 하기</a>
         </div>
 
-        <!-- Desktop CTA (PC에서는 이 버튼 보이게) -->
         <a class="cta" href="/login1.html" aria-label="로그인 하기" style="margin-left:10px;" id="desktopCta">로그인 하기</a>
       </div>
     </div>
@@ -469,29 +440,30 @@
     </div>
   </header>
 
-  <!-- Hero -->
   <!-- Hero Video -->
-<section class="hero-video-section">
-  <video
-    autoplay
-    muted
-    loop
-    playsinline
-    preload="auto"
-  >
-    <source src="/videos/hero.mp4" type="video/mp4">
-  </video>
+  <section class="hero-video-section">
+    <video
+      class="hero-video-bg"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+    >
+      <source src="/videos/hero.mp4" type="video/mp4">
+    </video>
 
-  <div class="hero-video-overlay">
-    <h1>REXX STRENGTH</h1>
-    <p>고중량을 증명하는 숫자. 정확한 1RM 계산과 퍼포먼스 관리.</p>
+    <div class="hero-video-overlay">
+      <h1>REXX STRENGTH</h1>
+      <p>고중량을 증명하는 숫자. 정확한 1RM 계산과 퍼포먼스 관리.</p>
 
-    <div class="hero-video-actions">
-      <a class="cta" href="/index.html">1RM 계산기</a>
-      <a class="ghost" href="/calorie.html">칼로리 계산</a>
+      <div class="hero-video-actions">
+        <a class="cta" href="/index.html">1RM 계산기</a>
+        <a class="ghost" href="/calorie.html">칼로리 계산</a>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+
   <!-- Stats / Highlights -->
   <section id="stats" aria-label="하이라이트">
     <div class="container">
@@ -579,7 +551,6 @@
     const desktopCta = document.getElementById('desktopCta');
 
     function syncCtas() {
-      // 모바일 폭이면 desktop CTA 숨김(중복 방지)
       if (window.matchMedia('(max-width: 720px)').matches) {
         desktopCta.style.display = 'none';
       } else {
@@ -596,6 +567,16 @@
 
     window.addEventListener('resize', syncCtas);
     syncCtas();
+
+    // ✅ autoplay 보조 (특히 모바일/사파리 성공률 ↑)
+    const heroVideo = document.querySelector('.hero-video-bg');
+    if (heroVideo) {
+      heroVideo.play().catch(() => {
+        // muted + playsinline 상태에서 재시도
+        heroVideo.muted = true;
+        heroVideo.play().catch(()=>{});
+      });
+    }
   </script>
 </body>
 </html>
