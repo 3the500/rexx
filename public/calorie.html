@@ -21,6 +21,30 @@
     .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
     @media(max-width:900px){.row,.grid3{grid-template-columns:1fr}}
     .muted{color:#64748b;font-size:12px}
+
+    /* ===== Footer (가운데 정렬) ===== */
+    .site-footer{
+      margin-top: 24px;
+      padding: 16px 0;
+      font-size: 14px;
+      opacity: .95;
+    }
+    .site-footer .footer-inner{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center; /* ✅ 핵심: 가운데 정렬 */
+      text-align:center;      /* ✅ 줄바꿈돼도 가운데 느낌 */
+    }
+    .site-footer a{
+      text-decoration:none;
+      color:inherit;
+    }
+    .site-footer a:hover{
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
   </style>
 </head>
 <body>
@@ -120,27 +144,14 @@
     });
   </script>
 
-<footer style="
-  margin-top: 24px;
-  padding: 16px 0;
-  font-size: 14px;
-  opacity: 0.95;
-">
-  <div style="
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-    align-items: center;
-  ">
-    <span>© Rexx Strength</span>
-    <a href="/privacy.html" style="text-decoration:none;color:inherit;">
-      개인정보처리방침
-    </a>
-    <a href="/contact.html" style="text-decoration:none;color:inherit;">
-      문의하기
-    </a>
-  </div>
-</footer>
+  <!-- ✅ Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© Rexx Strength</span>
+      <a href="/privacy.html">개인정보처리방침</a>
+      <a href="/contact.html">문의하기</a>
+    </div>
+  </footer>
   
 </body>
 </html>
