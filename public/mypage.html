@@ -1,1 +1,436 @@
-<!doctype html> <html lang="ko"> <head> <meta charset="utf-8" /> <meta name="viewport" content="width=device-width, initial-scale=1" /> <title>마이페이지 | Rexx</title> <style> :root{ --green: #1DB954; --green-2: #16a34a; --bg: #0b0f0c; --card: rgba(255,255,255,.06); --card-2: rgba(255,255,255,.10); --text: rgba(255,255,255,.92); --muted: rgba(255,255,255,.65); --line: rgba(255,255,255,.14); --shadow: 0 18px 50px rgba(0,0,0,.45); --radius: 16px; } *{ box-sizing: border-box; } body{ margin: 0; min-height: 100vh; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif; color: var(--text); background: radial-gradient(900px 450px at 50% -10%, rgba(29,185,84,.35), transparent 60%), radial-gradient(700px 360px at 90% 20%, rgba(29,185,84,.18), transparent 60%), linear-gradient(180deg, #070a08 0%, #0b0f0c 55%, #070a08 100%); padding: 24px; } .wrap{ max-width: 980px; margin: 0 auto; } /* top bar */ .top{ display:flex; align-items:center; justify-content:space-between; gap: 12px; margin-bottom: 16px; } .brand{ display:flex; align-items:center; gap: 10px; user-select:none; } .brand-badge{ width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(135deg, rgba(29,185,84,.95), rgba(29,185,84,.35)); box-shadow: 0 10px 28px rgba(29,185,84,.18); border: 1px solid rgba(255,255,255,.15); display: grid; place-items: center; font-weight: 800; letter-spacing: -0.5px; color: #041b0b; } .brand h1{ margin: 0; font-size: 18px; letter-spacing: -0.2px; } .sub{ margin: 2px 0 0; color: var(--muted); font-size: 13px; } /* buttons */ .btn{ height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.07); color: var(--text); cursor: pointer; font-weight: 700; letter-spacing: -0.2px; transition: background .15s ease, transform .06s ease; } .btn:hover{ background: rgba(255,255,255,.10); } .btn:active{ transform: translateY(1px); } .btn-primary{ border: 0; background: linear-gradient(135deg, rgba(29,185,84,.98), rgba(29,185,84,.72)); color: #041b0b; } .btn-primary:hover{ filter: brightness(1.03); } /* layout cards */ .grid{ display:grid; grid-template-columns: 1.1fr .9fr; gap: 14px; } @media (max-width: 860px){ .grid{ grid-template-columns: 1fr; } } .card{ background: var(--card); border: 1px solid rgba(255,255,255,.10); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); } .card-title{ margin: 0 0 10px; font-size: 15px; letter-spacing: -0.2px; } .card-desc{ margin: 0 0 12px; color: var(--muted); font-size: 13px; line-height: 1.5; } .kvs{ display:grid; gap: 8px; margin-top: 10px; } .kv{ display:flex; align-items:center; justify-content:space-between; gap: 10px; padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.12); background: rgba(0,0,0,.18); font-size: 13px; } .kv span{ color: var(--muted); } .kv b{ font-weight: 800; } .actions{ display:grid; gap: 10px; margin-top: 10px; } .action{ display:flex; align-items:center; justify-content:space-between; gap: 10px; padding: 12px; border-radius: 14px; border: 1px solid rgba(255,255,255,.12); background: rgba(0,0,0,.18); } .action-title{ font-weight: 800; } .action-desc{ color: var(--muted); font-size: 13px; margin-top: 2px; } .action a{ color: rgba(29,185,84,.95); text-decoration: none; font-weight: 800; font-size: 13px; white-space: nowrap; } .action a:hover{ text-decoration: underline; } .msg{ display:none; margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(255, 86, 86, .12); border: 1px solid rgba(255, 86, 86, .20); color: rgba(255,255,255,.92); font-size: 13px; line-height: 1.45; } .msg.show{ display:block; } .pill{ display:inline-flex; align-items:center; gap: 8px; padding: 8px 10px; border-radius: 999px; border: 1px solid rgba(29,185,84,.25); background: rgba(29,185,84,.10); color: rgba(255,255,255,.9); font-size: 12px; margin-top: 10px; } .dot{ width: 8px; height: 8px; border-radius: 999px; background: rgba(29,185,84,.95); box-shadow: 0 0 0 4px rgba(29,185,84,.15); } </style> </head> <body> <div class="wrap"> <div class="top"> <div class="brand" aria-label="Rexx MyPage"> <div class="brand-badge">R</div> <div> <h1>마이페이지</h1> <p class="sub">Rexx Strength · 로그인한 사용자 전용</p> </div> </div> <div style="display:flex; gap:10px;"> <a href="/main.html" style="text-decoration:none"> <button class="btn" type="button">메인</button> </a> <button id="logoutBtn" class="btn" type="button">로그아웃</button> </div> </div> <div class="grid"> <!-- 내 계정 카드 --> <section class="card"> <h2 class="card-title">내 계정</h2> <p class="card-desc">가입 정보 / 로그인 상태를 확인합니다.</p> <div class="pill" id="statusPill" style="display:none"> <span class="dot"></span> <span id="statusText">로그인 상태</span> </div> <div class="kvs"> <div class="kv"><span>이메일</span><b id="uEmail">-</b></div> <div class="kv"><span>닉네임</span><b id="uNick">-</b></div> <div class="kv"><span>권한</span><b id="uRole">-</b></div> <div class="kv"><span>가입일</span><b id="uCreated">-</b></div> <div class="kv"><span>최근 로그인</span><b id="uLast">-</b></div> </div> <div id="msg" class="msg" role="alert"></div> </section> <!-- 기능 카드 --> <section class="card"> <h2 class="card-title">내 기능</h2> <p class="card-desc"> 이제 여기부터 “저장 기능”을 붙이면 진짜 서비스가 된다. 오늘은 기능 링크/틀부터 깔끔하게! </p> <div class="actions"> <div class="action"> <div> <div class="action-title">1RM 계산기</div> <div class="action-desc">바로 계산하러 가기</div> </div> <a href="/index.html">이동</a> </div> <div class="action"> <div> <div class="action-title">칼로리 계산기</div> <div class="action-desc">TDEE/벌크/컷 계산</div> </div> <a href="/calorie.html">이동</a> </div> <div class="action"> <div> <div class="action-title">동물로 본 운동유형??!</div> <div class="action-desc">나는 소? 호랑이? 과연?</div> </div> <a href="/animal-test.html">이동</a> </div> <div class="action"> <div> <div class="action-title">내 기록 저장 (다음 단계)</div> <div class="action-desc">1RM / 체중 / PR / 테스트 결과</div> </div> <a href="#" onclick="alert('다음 단계에서 DB 테이블 만들고 저장 기능 붙이면 됨!'); return false;">준비중</a> </div> </div> <div style="margin-top:14px; display:grid; gap:10px;"> <a href="/login1.html" style="text-decoration:none"> <button class="btn btn-primary" type="button">다른 계정으로 로그인</button> </a> </div> </section> </div> </div> <script> const token = localStorage.getItem("token") || sessionStorage.getItem("token"); const msg = document.getElementById("msg"); const statusPill = document.getElementById("statusPill"); const statusText = document.getElementById("statusText"); function showError(text){ msg.textContent = text; msg.classList.add("show"); } function fmt(dt){ if (!dt) return "-"; try { return new Date(dt).toLocaleString("ko-KR"); } catch { return dt; } } async function loadMe(){ // 토큰 없으면 로그인으로 튕김 if (!token) { window.location.href = "/login1.html"; return; } try { const res = await fetch("/api/auth/me", { headers: { "Authorization": "Bearer " + token } }); const data = await res.json(); if (!res.ok || !data.ok) { // 토큰 만료/위조/형식 오류 등 → 토큰 삭제 후 로그인 localStorage.removeItem("token"); sessionStorage.removeItem("token"); window.location.href = "/login1.html"; return; } const u = data.user; document.getElementById("uEmail").textContent = u.email || "-"; document.getElementById("uNick").textContent = u.nickname || "-"; document.getElementById("uRole").textContent = u.role || "user"; document.getElementById("uCreated").textContent = fmt(u.created_at); document.getElementById("uLast").textContent = fmt(u.last_login_at); statusPill.style.display = "inline-flex"; statusText.textContent = "로그인 유지 중"; } catch (e) { showError("서버와 통신할 수 없습니다. 잠시 후 다시 시도해주세요."); } } document.getElementById("logoutBtn").addEventListener("click", () => { localStorage.removeItem("token"); sessionStorage.removeItem("token"); window.location.href = "/login1.html"; }); loadMe(); </script> <footer style=" margin-top: 24px; padding: 16px 0; font-size: 14px; opacity: 0.95; "> <div style=" display: flex; gap: 14px; flex-wrap: wrap; align-items: center; "> <span>© Rexx Strength</span> <a href="/privacy.html" style="text-decoration:none;color:inherit;"> 개인정보처리방침 </a> <a href="/contact.html" style="text-decoration:none;color:inherit;"> 문의하기 </a> </div> </footer> </body> </html>
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>마이페이지 | Rexx</title>
+
+    <style>
+      :root {
+        --green: #1db954;
+        --green-2: #16a34a;
+        --bg: #0b0f0c;
+        --card: rgba(255, 255, 255, 0.06);
+        --card-2: rgba(255, 255, 255, 0.1);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.65);
+        --line: rgba(255, 255, 255, 0.14);
+        --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+        --radius: 16px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+          Arial, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+        color: var(--text);
+        background: radial-gradient(
+            900px 450px at 50% -10%,
+            rgba(29, 185, 84, 0.35),
+            transparent 60%
+          ),
+          radial-gradient(
+            700px 360px at 90% 20%,
+            rgba(29, 185, 84, 0.18),
+            transparent 60%
+          ),
+          linear-gradient(180deg, #070a08 0%, #0b0f0c 55%, #070a08 100%);
+        padding: 24px;
+      }
+
+      .wrap {
+        max-width: 980px;
+        margin: 0 auto;
+      }
+
+      /* top bar */
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        user-select: none;
+      }
+
+      .brand-badge {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(29, 185, 84, 0.95), rgba(29, 185, 84, 0.35));
+        box-shadow: 0 10px 28px rgba(29, 185, 84, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: #041b0b;
+      }
+
+      .brand h1 {
+        margin: 0;
+        font-size: 18px;
+        letter-spacing: -0.2px;
+      }
+
+      .sub {
+        margin: 2px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      /* buttons */
+      .btn {
+        height: 44px;
+        padding: 0 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.07);
+        color: var(--text);
+        cursor: pointer;
+        font-weight: 700;
+        letter-spacing: -0.2px;
+        transition: background 0.15s ease, transform 0.06s ease;
+      }
+
+      .btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .btn:active {
+        transform: translateY(1px);
+      }
+
+      .btn-primary {
+        border: 0;
+        background: linear-gradient(135deg, rgba(29, 185, 84, 0.98), rgba(29, 185, 84, 0.72));
+        color: #041b0b;
+      }
+
+      .btn-primary:hover {
+        filter: brightness(1.03);
+      }
+
+      /* layout cards */
+      .grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 14px;
+      }
+
+      @media (max-width: 860px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 18px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .card-title {
+        margin: 0 0 10px;
+        font-size: 15px;
+        letter-spacing: -0.2px;
+      }
+
+      .card-desc {
+        margin: 0 0 12px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .kvs {
+        display: grid;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .kv {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.18);
+        font-size: 13px;
+      }
+
+      .kv span {
+        color: var(--muted);
+      }
+
+      .kv b {
+        font-weight: 800;
+      }
+
+      .actions {
+        display: grid;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .action {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 12px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.18);
+      }
+
+      .action-title {
+        font-weight: 800;
+      }
+
+      .action-desc {
+        color: var(--muted);
+        font-size: 13px;
+        margin-top: 2px;
+      }
+
+      .action a {
+        color: rgba(29, 185, 84, 0.95);
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 13px;
+        white-space: nowrap;
+      }
+
+      .action a:hover {
+        text-decoration: underline;
+      }
+
+      .msg {
+        display: none;
+        margin-top: 12px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: rgba(255, 86, 86, 0.12);
+        border: 1px solid rgba(255, 86, 86, 0.2);
+        color: rgba(255, 255, 255, 0.92);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .msg.show {
+        display: block;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(29, 185, 84, 0.25);
+        background: rgba(29, 185, 84, 0.1);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 12px;
+        margin-top: 10px;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(29, 185, 84, 0.95);
+        box-shadow: 0 0 0 4px rgba(29, 185, 84, 0.15);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="top">
+        <div class="brand" aria-label="Rexx MyPage">
+          <div class="brand-badge">R</div>
+          <div>
+            <h1>마이페이지</h1>
+            <p class="sub">Rexx Strength · 로그인한 사용자 전용</p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <a href="/main.html" style="text-decoration: none;">
+            <button class="btn" type="button">메인</button>
+          </a>
+          <button id="logoutBtn" class="btn" type="button">로그아웃</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <!-- 내 계정 카드 -->
+        <section class="card">
+          <h2 class="card-title">내 계정</h2>
+          <p class="card-desc">가입 정보 / 로그인 상태를 확인합니다.</p>
+
+          <div class="pill" id="statusPill" style="display: none;">
+            <span class="dot"></span>
+            <span id="statusText">로그인 상태</span>
+          </div>
+
+          <div class="kvs">
+            <div class="kv"><span>이메일</span><b id="uEmail">-</b></div>
+            <div class="kv"><span>닉네임</span><b id="uNick">-</b></div>
+            <div class="kv"><span>권한</span><b id="uRole">-</b></div>
+            <div class="kv"><span>가입일</span><b id="uCreated">-</b></div>
+            <div class="kv"><span>최근 로그인</span><b id="uLast">-</b></div>
+          </div>
+
+          <div id="msg" class="msg" role="alert"></div>
+        </section>
+
+        <!-- 기능 카드 -->
+        <section class="card">
+          <h2 class="card-title">내 기능</h2>
+          <p class="card-desc">
+            이제 여기부터 “저장 기능”을 붙이면 진짜 서비스가 된다. 오늘은 기능 링크/틀부터
+            깔끔하게!
+          </p>
+
+          <div class="actions">
+            <div class="action">
+              <div>
+                <div class="action-title">1RM 계산기</div>
+                <div class="action-desc">바로 계산하러 가기</div>
+              </div>
+              <a href="/index.html">이동</a>
+            </div>
+
+            <div class="action">
+              <div>
+                <div class="action-title">칼로리 계산기</div>
+                <div class="action-desc">TDEE/벌크/컷 계산</div>
+              </div>
+              <a href="/calorie.html">이동</a>
+            </div>
+
+            <div class="action">
+              <div>
+                <div class="action-title">동물로 본 운동유형??!</div>
+                <div class="action-desc">나는 소? 호랑이? 과연?</div>
+              </div>
+              <a href="/animal-test.html">이동</a>
+            </div>
+
+            
+            </div>
+          </div>
+
+          <div style="margin-top: 14px; display: grid; gap: 10px;">
+            <a href="/login1.html" style="text-decoration: none;">
+              <button class="btn btn-primary" type="button">다른 계정으로 로그인</button>
+            </a>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+      const msg = document.getElementById("msg");
+      const statusPill = document.getElementById("statusPill");
+      const statusText = document.getElementById("statusText");
+
+      function showError(text) {
+        msg.textContent = text;
+        msg.classList.add("show");
+      }
+
+      function fmt(dt) {
+        if (!dt) return "-";
+        try {
+          return new Date(dt).toLocaleString("ko-KR");
+        } catch {
+          return dt;
+        }
+      }
+
+      async function loadMe() {
+        // 토큰 없으면 로그인으로 튕김
+        if (!token) {
+          window.location.href = "/login1.html";
+          return;
+        }
+
+        try {
+          const res = await fetch("/api/auth/me", {
+            headers: { Authorization: "Bearer " + token },
+          });
+          const data = await res.json();
+
+          if (!res.ok || !data.ok) {
+            // 토큰 만료/위조/형식 오류 등 → 토큰 삭제 후 로그인
+            localStorage.removeItem("token");
+            sessionStorage.removeItem("token");
+            window.location.href = "/login1.html";
+            return;
+          }
+
+          const u = data.user;
+
+          document.getElementById("uEmail").textContent = u.email || "-";
+          document.getElementById("uNick").textContent = u.nickname || "-";
+          document.getElementById("uRole").textContent = u.role || "user";
+          document.getElementById("uCreated").textContent = fmt(u.created_at);
+          document.getElementById("uLast").textContent = fmt(u.last_login_at);
+
+          statusPill.style.display = "inline-flex";
+          statusText.textContent = "로그인 유지 중";
+        } catch (e) {
+          showError("서버와 통신할 수 없습니다. 잠시 후 다시 시도해주세요.");
+        }
+      }
+
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
+        window.location.href = "/login1.html";
+      });
+
+      loadMe();
+    </script>
+
+    <footer
+      style="
+        margin-top: 24px;
+        padding: 16px 0;
+        font-size: 14px;
+        opacity: 0.95;
+      "
+    >
+      <div style="display: flex; gap: 14px; flex-wrap: wrap; align-items: center;">
+        <span>© Rexx Strength</span>
+        <a href="/privacy.html" style="text-decoration: none; color: inherit;">
+          개인정보처리방침
+        </a>
+        <a href="/contact.html" style="text-decoration: none; color: inherit;">
+          문의하기
+        </a>
+      </div>
+    </footer>
+  </body>
+</html>
