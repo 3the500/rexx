@@ -4,21 +4,68 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>문의하기 | Rexx Strength</title>
+
   <style>
-    body{margin:0;font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
-    .wrap{max-width:720px;margin:0 auto;padding:28px 16px}
-    .card{border:1px solid #e6e6e6;border-radius:12px;padding:14px 16px}
-    a{color:inherit}
-    .muted{color:#666;font-size:14px}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+      line-height:1.7;
+      background:#fff;
+    }
+    .wrap{
+      max-width:720px;
+      margin:0 auto;
+      padding:28px 16px;
+    }
+    .card{
+      border:1px solid #e6e6e6;
+      border-radius:12px;
+      padding:14px 16px;
+      background:#fff;
+    }
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+    .muted{
+      color:#666;
+      font-size:14px;
+    }
+
+    /* ✅ Footer 공통 스타일 */
+    footer{
+      margin-top:24px;
+      padding:16px 0;
+      font-size:14px;
+      opacity:.95;
+    }
+    .footer-inner{
+      max-width:720px;
+      margin:0 auto;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:14px;
+      flex-wrap:wrap;
+      text-align:center;
+    }
   </style>
 </head>
+
 <body>
   <main class="wrap">
     <h1>문의하기</h1>
+
     <div class="card">
-      <p>기능 제안/버그 제보/협업 문의는 아래 이메일로 보내주세요.</p>
-      <p><strong>이메일:</strong> <a href="mailto:rlagusals0903@gmail.com">rlagusals0903@gmail.com</a></p>
-      <p class="muted">가능하면 사용한 페이지 URL, 기기/브라우저 정보를 함께 적어주면 빠르게 해결할 수 있어요.</p>
+      <p>기능 제안 · 버그 제보 · 협업 문의는 아래 이메일로 보내주세요.</p>
+      <p>
+        <strong>이메일:</strong>
+        <a href="mailto:rlagusals0903@gmail.com">rlagusals0903@gmail.com</a>
+      </p>
+      <p class="muted">
+        가능하면 사용한 페이지 URL, 기기/브라우저 정보를 함께 적어주면
+        더 빠르게 확인할 수 있어요.
+      </p>
     </div>
 
     <p class="muted" style="margin-top:16px;">
@@ -26,26 +73,12 @@
     </p>
   </main>
 
-  <footer style="
-  margin-top: 24px;
-  padding: 16px 0;
-  font-size: 14px;
-  opacity: 0.95;
-">
-  <div style="
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-    align-items: center;
-  ">
-    <span>© Rexx Strength</span>
-    <a href="/privacy.html" style="text-decoration:none;color:inherit;">
-      개인정보처리방침
-    </a>
-    <a href="/contact.html" style="text-decoration:none;color:inherit;">
-      문의하기
-    </a>
-  </div>
-</footer>
+  <footer>
+    <div class="footer-inner">
+      <span>© Rexx Strength</span>
+      <a href="/privacy.html">개인정보처리방침</a>
+      <a href="/contact.html">문의하기</a>
+    </div>
+  </footer>
 </body>
 </html>
