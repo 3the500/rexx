@@ -37,12 +37,22 @@
       font-size:14px;
       color:#374151;
     }
-    footer{
-      margin-top:40px;
-      font-size:13px;
-      color:#6b7280;
-      text-align:center;
-    }
+    
+
+    /* 하단 링크 */
+  footer{
+    position:fixed;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:13px;
+    opacity:.6;
+  }
+  footer a{
+    text-decoration:none;
+    color:inherit;
+    margin:0 6px;
+  }
   </style>
 </head>
 
@@ -119,8 +129,10 @@
     </p>
 
     <footer>
-      본 약관은 2026년 1월 29일부터 적용됩니다.
-    </footer>
+    <a href="/privacy.html">개인정보처리방침</a> ·
+    <a href="/contact.html">문의하기</a>
+    <a href="/terms.html">이용약관</a>  
+  </footer>  
   </main>
 </body>
 </html>
