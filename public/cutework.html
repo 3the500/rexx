@@ -367,6 +367,20 @@
       display:none;
       z-index: 9999;
     }
+.resultImageWrap{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 14px 0 10px;
+}
+
+.resultImageWrap img{
+  width: min(320px, 85%);
+  max-width: 360px;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(0,0,0,.22);
+}
+    
   </style>
 </head>
 <body>
@@ -406,6 +420,8 @@ data-ad-height = "100"></ins>
 <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>  
 
       
+
+      
       <!-- QUIZ -->
       <section class="section" id="screenQuiz">
         <div class="quizHead">
@@ -434,6 +450,12 @@ data-ad-height = "100"></ins>
         </div>
       </section>
 
+      <!-- 일러스트 태그 -->
+<div class="resultImageWrap">
+  <img id="resultImage" src="cute1.png" alt="유형 일러스트">
+</div>
+
+      
       <!-- RESULT -->
       <section class="section" id="screenResult">
         <div class="resultTop">
@@ -531,7 +553,8 @@ const results = {
     pros:["루틴 지속력 최상","증량/감량 성과가 꾸준히 쌓임","실수가 적고 재현성이 높음"],
     cons:["루틴이 깨지면 스트레스가 큼","가끔 ‘즐김’이 빠질 수 있음"],
     routine:["3~5일 분할 + 기록 필수","4~6주 단위로 볼륨/강도 계획","주 1회 컨디션 체크(수면/통증)"],
-    quote:"“계획이 근육을 만든다.”"
+    quote:"“계획이 근육을 만든다.”",
+    img:"cute1.png"
   },
   "Plan|Safe": { name:"루틴중독형", desc:"뇌가 편해야 몸도 편함. 안정적인 패턴을 반복할수록 폼이 단단해지고 부상 확률이 줄어든다.",
     pros:["폼 안정성 좋음","부상 위험 관리 능력 탁월","꾸준함으로 이김"],
@@ -683,6 +706,17 @@ function finish(){
   el.barFill.style.width = "100%";
   const {key, top, all} = pickResultKey();
   const r = results[key];
+
+  // ✅ 결과 이미지 처리
+const imgEl = document.getElementById("resultImage");
+
+if (r.img) {
+  imgEl.src = r.img;          // 예: "cute1.png"
+  imgEl.alt = r.name + " 캐릭터";
+  imgEl.style.display = "block";
+} else {
+  imgEl.style.display = "none";
+}
 
   el.resultTitle.textContent = r.name;
   el.resultDesc.textContent = r.desc;
