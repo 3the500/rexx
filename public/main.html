@@ -272,12 +272,38 @@
     .stat h3{margin:0; font-size:14px; color:var(--muted)}
     .stat p{margin:0; font-size:24px; font-weight:800}
 
-    .features{padding:40px 0 80px}
-    .grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:16px}
-    .feature h4{margin:6px 0 8px; font-size:18px}
-    .feature p{margin:0; color:var(--muted); line-height:1.6}
-    .chip{display:inline-block; font-size:12px; padding:4px 8px; border-radius:999px; background:rgba(16,185,129,.12); color:#b7f7d5; border:1px solid rgba(16,185,129,.25)}
+    /* 메인 하단 광고 섹션 */
+.main-ad-section {
+  margin: 60px 0;              /* 위아래 큰 여백 */
+  padding: 0 16px;             /* 모바일 좌우 여백 */
+}
 
+.ad-container {
+  max-width: 1000px;
+  margin: 0 auto;              /* 가운데 정렬 */
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 14px;
+  text-align: center;
+}
+
+.ad-label {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-bottom: 12px;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .ad-container {
+    padding: 16px;
+  }
+
+  .kakao_ad_area {
+    transform: scale(0.95);
+    transform-origin: center;
+  }
+}
     footer{padding:36px 0 60px; color:var(--muted)}
     .foot{display:flex; align-items:center; justify-content:flex-start; gap:12px; flex-wrap:wrap}
     .foot a{color:var(--muted); text-decoration:none}
@@ -490,28 +516,22 @@
     </div>
   </section>
 
-  <!-- Features -->
-  <section id="features" class="features" aria-label="기능">
-    <div class="container">
-      <div class="grid">
-        <div class="card feature">
-          <span class="chip">빠르고 가벼움</span>
-          <h4>로딩 최소화</h4>
-          <p>필요한 리소스만 불러오는 구조로 초기 진입이 빠릅니다.</p>
-        </div>
-        <div class="card feature">
-          <span class="chip">정확성</span>
-          <h4>다양한 공식 지원</h4>
-          <p>Epley, Brzycki 등 여러 공식을 비교해 최적 값을 제공합니다.</p>
-        </div>
-        <div class="card feature">
-          <span class="chip">확장성</span>
-          <h4>여러 계산기와 연동</h4>
-          <p>앞으로 탑롤 디펜스/사이드 프레셔 등 계산기와도 연결 가능.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- Main Banner Ad -->
+<section class="main-ad-section" aria-label="추천 콘텐츠">
+  <div class="ad-container">
+    <p class="ad-label">추천 콘텐츠</p>
+
+    <!-- Kakao AdFit 728x90 -->
+    <ins class="kakao_ad_area"
+         data-ad-unit="DAN-qZj3BwJEfBKvFtxu"
+         data-ad-width="728"
+         data-ad-height="90">
+    </ins>
+  </div>
+</section>
+
+<script async type="text/javascript"
+        src="//t1.daumcdn.net/kas/static/ba.min.js"></script>
 
   <!-- About / CTA -->
   <section id="about" aria-label="소개">
