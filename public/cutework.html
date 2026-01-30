@@ -6,12 +6,9 @@
   <title>운동할 때 드러나는 진짜 성격 테스트</title>
   <style>
     :root{
-      /* ✅ 여기만 바꾸면 배경 변경 가능 */
       --bg-url: url('cute.png');
 
       --bg: #0b0f0c;
-      --card: rgba(255,255,255,.12);
-      --card2: rgba(255,255,255,.16);
       --text: rgba(255,255,255,.94);
       --muted: rgba(255,255,255,.75);
       --line: rgba(255,255,255,.22);
@@ -19,7 +16,6 @@
       --radius: 18px;
       --green: #1DB954;
       --green2: #16a34a;
-      --red: #ff4d4d;
       --yellow: #ffd166;
     }
 
@@ -33,7 +29,6 @@
       overflow-x:hidden;
     }
 
-    /* 배경 이미지 */
     .bg{
       position: fixed;
       inset: 0;
@@ -42,12 +37,10 @@
       background-position: center;
       background-repeat: no-repeat;
       transform: scale(1.03);
-      /* ✅ 배경 자체를 조금 더 밝게 */
       filter: saturate(1.08) brightness(1.05);
       z-index:-3;
     }
 
-    /* ✅ 어두운 오버레이 → 밝고 산뜻한 오버레이로 변경 */
     .overlay{
       position: fixed;
       inset: 0;
@@ -88,6 +81,7 @@
       gap:12px;
       padding: 6px 4px 18px;
     }
+
     .brand{
       display:flex;
       align-items:center;
@@ -95,6 +89,7 @@
       font-weight:800;
       letter-spacing:-.3px;
     }
+
     .pill{
       font-size:12px;
       color: rgba(255,255,255,.85);
@@ -168,22 +163,6 @@
     }
     .btnPrimary:hover{ filter: brightness(1.03); }
 
-    /* 광고 슬롯(자리 확보용) */
-    .adSlot{
-      border: 1px dashed rgba(255,255,255,.30);
-      background: rgba(0,0,0,.12);
-      color: rgba(255,255,255,.70);
-      border-radius: 14px;
-      padding: 10px 12px;
-      text-align:center;
-      font-size: 12.5px;
-      backdrop-filter: blur(10px);
-    }
-    .adSlot .small{ font-size: 11px; opacity:.9; }
-    .adTop{ margin: 10px 0 16px; min-height: 92px; display:grid; place-items:center; }
-    .adBottom{ margin: 14px 0 0; min-height: 92px; display:grid; place-items:center; }
-
-    /* 테스트 UI */
     .quizHead{
       display:flex;
       align-items:flex-start;
@@ -219,7 +198,6 @@
       text-shadow: 0 4px 10px rgba(0,0,0,.18);
     }
 
-    /* ✅ 질문을 중앙 상단으로 자연스럽게 */
     .qBox{
       margin-top: 4px;
       padding: 16px 16px 14px;
@@ -236,8 +214,18 @@
       line-height: 1.25;
       text-shadow: 0 4px 12px rgba(0,0,0,.20);
     }
+
+    .adfitWrap{
+      margin: 10px auto 2px; /* ✅ 질문 밑 여백 */
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height: 100px;     /* 320x100 자리 확보 */
+      width: 100%;
+    }
+
     .options{
-      margin-top: 14px;
+      margin-top: 12px;
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
@@ -276,7 +264,6 @@
       text-shadow: 0 4px 10px rgba(0,0,0,.18);
     }
 
-    /* 결과 UI */
     .resultTop{
       display:flex;
       flex-wrap:wrap;
@@ -393,7 +380,6 @@
         <span class="pill">Rexx • Type Test</span>
         <span style="opacity:.95;font-weight:900;text-shadow:0 6px 18px rgba(0,0,0,.18);">운동 성격 테스트</span>
       </div>
-      <!-- ✅ 우상단 완료/진행 표시 제거(요청사항) -->
     </div>
 
     <div class="card">
@@ -406,34 +392,15 @@
             질문은 8개뿐이라 금방 끝난다구!!
           </p>
 
-          <div class="adSlot adTop">
-            <div>
-              (광고 자리 - 상단)<br/>
-              <span class="small">나중에 광고 코드 넣을 예정이면 이 박스에 교체</span>
-            </div>
-          </div>
-
           <div class="ctaRow">
             <button class="btn btnPrimary" id="btnStart">시작하기</button>
             <button class="btn" id="btnRandomBg">배경 테스트(블러 토글)</button>
           </div>
-
-          <p class="tiny">
-            ✅ 배경 이미지 넣는 법: 파일을 같은 폴더에 두고, CSS의 <b>--bg-url</b>만 바꾸면 끝.<br/>
-            예) <code style="color:#fff;opacity:.95">--bg-url: url('cute.png');</code>
-          </p>
         </div>
       </section>
 
       <!-- QUIZ -->
       <section class="section" id="screenQuiz">
-        <div class="adSlot adTop">
-          <div>
-            (광고 자리 - 테스트 상단)<br/>
-            <span class="small">질문은 중앙 상단, 광고는 이 위/아래로 자연스럽게 배치됨</span>
-          </div>
-        </div>
-
         <div class="quizHead">
           <div class="progress">
             <div class="meta">
@@ -445,23 +412,27 @@
           <button class="btn" id="btnReset" title="처음부터">리셋</button>
         </div>
 
-        <!-- ✅ 질문 중앙 상단 박스 -->
         <div class="qBox">
           <p class="qTitle" id="qTitle">질문</p>
+
+          <!-- ✅ 질문 텍스트 밑에 광고 삽입 -->
+          <div class="adfitWrap">
+            <div>
+              <ins class="kakao_ad_area" style="display:none;"
+                data-ad-unit="DAN-UbdMz8EGIgleqqGs"
+                data-ad-width="320"
+                data-ad-height="100"></ins>
+            </div>
+          </div>
+
           <div class="options">
             <div class="opt" id="optA">선택지 A</div>
             <div class="opt" id="optB">선택지 B</div>
           </div>
+
           <div class="quizFoot">
             <span id="footTip">팁: 고민할수록 너랑 멀어진다. 첫 느낌으로 ㄱ</span>
             <span id="footProg">0/8</span>
-          </div>
-        </div>
-
-        <div class="adSlot adBottom">
-          <div>
-            (광고 자리 - 테스트 하단)<br/>
-            <span class="small">결과 페이지에도 광고 슬롯 1개 더 있음</span>
           </div>
         </div>
       </section>
@@ -502,32 +473,16 @@
             </p>
           </div>
         </div>
-
-        <div class="adSlot adBottom">
-          <div>
-            (광고 자리 - 결과 하단)<br/>
-            <span class="small">여기에 광고 코드 넣으면 자연스럽게 붙음</span>
-          </div>
-        </div>
       </section>
     </div>
   </div>
 
   <div class="toast" id="toast">복사됨!</div>
 
-<script>
-/**
- * 8문항 / 2선택
- * 점수 축(양쪽 trait) 4개:
- * - Plan(계획) vs Flow(즉흥)
- * - Data(기록) vs Feel(감각)
- * - Drive(공격) vs Safe(안정)
- * - Inner(내향) vs Social(사교)
- *
- * 각 축은 2문항(0~2점).
- * 결과는 "점수 높은 trait 2개" 조합으로 12유형 매핑.
- */
+  <!-- ✅ AdFit 스크립트는 페이지에서 1번만 로드 -->
+  <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 
+<script>
 const TRAITS = ["Plan","Flow","Data","Feel","Drive","Safe","Inner","Social"];
 const traitLabel = {
   Plan: "계획",
@@ -576,101 +531,77 @@ const questions = [
 ];
 
 const results = {
-  "Plan|Data": {
-    name: "전략가형",
-    desc: "운동은 감이 아니라 설계. 목표–과정–피드백이 깔끔하게 맞물릴 때 가장 강해진다.",
-    pros: ["루틴 지속력 최상", "증량/감량 성과가 꾸준히 쌓임", "실수가 적고 재현성이 높음"],
-    cons: ["루틴이 깨지면 스트레스가 큼", "가끔 ‘즐김’이 빠질 수 있음"],
-    routine: ["3~5일 분할 + 기록 필수", "4~6주 단위로 볼륨/강도 계획", "주 1회 컨디션 체크(수면/통증)"],
-    quote: "“계획이 근육을 만든다.”"
+  "Plan|Data": { name:"전략가형", desc:"운동은 감이 아니라 설계. 목표–과정–피드백이 깔끔하게 맞물릴 때 가장 강해진다.",
+    pros:["루틴 지속력 최상","증량/감량 성과가 꾸준히 쌓임","실수가 적고 재현성이 높음"],
+    cons:["루틴이 깨지면 스트레스가 큼","가끔 ‘즐김’이 빠질 수 있음"],
+    routine:["3~5일 분할 + 기록 필수","4~6주 단위로 볼륨/강도 계획","주 1회 컨디션 체크(수면/통증)"],
+    quote:"“계획이 근육을 만든다.”"
   },
-  "Plan|Safe": {
-    name: "루틴중독형",
-    desc: "뇌가 편해야 몸도 편함. 안정적인 패턴을 반복할수록 폼이 단단해지고 부상 확률이 줄어든다.",
-    pros: ["폼 안정성 좋음", "부상 위험 관리 능력 탁월", "꾸준함으로 이김"],
-    cons: ["자극/변화가 부족하면 정체기 올 수 있음", "가끔 너무 안전하게만 갈 때가 있음"],
-    routine: ["RPE 7~8 중심", "스트레칭/워밍업 루틴 고정", "매달 1~2개 운동만 살짝 업그레이드"],
-    quote: "“안전이 쌓이면, 성과는 따라온다.”"
+  "Plan|Safe": { name:"루틴중독형", desc:"뇌가 편해야 몸도 편함. 안정적인 패턴을 반복할수록 폼이 단단해지고 부상 확률이 줄어든다.",
+    pros:["폼 안정성 좋음","부상 위험 관리 능력 탁월","꾸준함으로 이김"],
+    cons:["자극/변화가 부족하면 정체기 올 수 있음","가끔 너무 안전하게만 갈 때가 있음"],
+    routine:["RPE 7~8 중심","스트레칭/워밍업 루틴 고정","매달 1~2개 운동만 살짝 업그레이드"],
+    quote:"“안전이 쌓이면, 성과는 따라온다.”"
   },
-  "Plan|Inner": {
-    name: "설계자형",
-    desc: "혼자 조용히, 대신 정확하게. 내 페이스를 지킬 때 퍼포먼스가 폭발한다.",
-    pros: ["집중력/몰입이 강함", "세트 퀄리티가 일정함", "혼자서도 루틴 유지 가능"],
-    cons: ["가끔 피드백/자극이 부족해질 수 있음", "완벽주의로 지칠 때가 있음"],
-    routine: ["핵심 3~4종목만 ‘깊게’", "영상으로 폼 체크(주 1회)", "세션 길이 60~75분 컷"],
-    quote: "“조용히, 근데 확실하게.”"
+  "Plan|Inner": { name:"설계자형", desc:"혼자 조용히, 대신 정확하게. 내 페이스를 지킬 때 퍼포먼스가 폭발한다.",
+    pros:["집중력/몰입이 강함","세트 퀄리티가 일정함","혼자서도 루틴 유지 가능"],
+    cons:["가끔 피드백/자극이 부족해질 수 있음","완벽주의로 지칠 때가 있음"],
+    routine:["핵심 3~4종목만 ‘깊게’","영상으로 폼 체크(주 1회)","세션 길이 60~75분 컷"],
+    quote:"“조용히, 근데 확실하게.”"
   },
-  "Flow|Drive": {
-    name: "불도저형",
-    desc: "몸이 ‘가자’ 하면 바로 간다. 분위기 타면 한 세션에서 판을 뒤집는 타입.",
-    pros: ["몰아치는 에너지", "고강도 세션에 강함", "멘탈로 뚫는 능력"],
-    cons: ["가끔 과몰입 → 회복/부상 리스크", "루틴 일관성이 흔들릴 수 있음"],
-    routine: ["하드데이/라이트데이 교차", "PR은 2주~4주에 1번", "다음날 회복(수면/탄수) 강제"],
-    quote: "“오늘 안 하면, 누가 하냐.”"
+  "Flow|Drive": { name:"불도저형", desc:"몸이 ‘가자’ 하면 바로 간다. 분위기 타면 한 세션에서 판을 뒤집는 타입.",
+    pros:["몰아치는 에너지","고강도 세션에 강함","멘탈로 뚫는 능력"],
+    cons:["가끔 과몰입 → 회복/부상 리스크","루틴 일관성이 흔들릴 수 있음"],
+    routine:["하드데이/라이트데이 교차","PR은 2주~4주에 1번","다음날 회복(수면/탄수) 강제"],
+    quote:"“오늘 안 하면, 누가 하냐.”"
   },
-  "Flow|Social": {
-    name: "분위기메이커형",
-    desc: "혼자보다 같이 할 때 불 붙는 타입. 사람·음악·분위기가 퍼포먼스를 끌어올린다.",
-    pros: ["운동 동기 유지력 높음", "세션이 즐거워 오래 감", "파트너 운동 시 효율↑"],
-    cons: ["혼자 하면 페이스가 떨어질 수 있음", "대화가 길어져 세션이 늘어질 때 있음"],
-    routine: ["파트너 세션 주 1~2회", "서킷/슈퍼셋으로 텐션 유지", "시간 제한(예: 70분 타이머)"],
-    quote: "“재밌어야 오래 한다.”"
+  "Flow|Social": { name:"분위기메이커형", desc:"혼자보다 같이 할 때 불 붙는 타입. 사람·음악·분위기가 퍼포먼스를 끌어올린다.",
+    pros:["운동 동기 유지력 높음","세션이 즐거워 오래 감","파트너 운동 시 효율↑"],
+    cons:["혼자 하면 페이스가 떨어질 수 있음","대화가 길어져 세션이 늘어질 때 있음"],
+    routine:["파트너 세션 주 1~2회","서킷/슈퍼셋으로 텐션 유지","시간 제한(예: 70분 타이머)"],
+    quote:"“재밌어야 오래 한다.”"
   },
-  "Flow|Feel": {
-    name: "변덕형",
-    desc: "컨디션과 기분에 솔직하다. 잘 맞는 날은 천재, 안 맞는 날은 그냥 ‘쉬는 날’이 된다.",
-    pros: ["몸 신호를 잘 느낌", "자극 찾는 센스 좋음", "운동을 스트레스 없이 함"],
-    cons: ["일관성 부족하면 성과가 들쭉날쭉", "목표가 흐려질 수 있음"],
-    routine: ["‘최소 루틴’ 20분만이라도 고정", "컨디션 좋을 때만 강도 업", "주간 목표(세션 횟수)만 지키기"],
-    quote: "“오늘의 나에게 최적화.”"
+  "Flow|Feel": { name:"변덕형", desc:"컨디션과 기분에 솔직하다. 잘 맞는 날은 천재, 안 맞는 날은 그냥 ‘쉬는 날’이 된다.",
+    pros:["몸 신호를 잘 느낌","자극 찾는 센스 좋음","운동을 스트레스 없이 함"],
+    cons:["일관성 부족하면 성과가 들쭉날쭉","목표가 흐려질 수 있음"],
+    routine:["‘최소 루틴’ 20분만이라도 고정","컨디션 좋을 때만 강도 업","주간 목표(세션 횟수)만 지키기"],
+    quote:"“오늘의 나에게 최적화.”"
   },
-  "Data|Inner": {
-    name: "분석가형",
-    desc: "내 몸을 데이터로 해석한다. 조용히, 하지만 수치로 확신을 만든다.",
-    pros: ["정체기 원인 파악 능력", "불필요한 세트/운동 제거 잘함", "장기적으로 강해짐"],
-    cons: ["가끔 숫자에 매몰", "느낌/즐김이 빠질 수 있음"],
-    routine: ["주요 리프트만 수치 관리", "보조 운동은 ‘느낌’으로 균형", "3~4주마다 딜로드 1회"],
-    quote: "“측정되지 않으면, 개선도 없다.”"
+  "Data|Inner": { name:"분석가형", desc:"내 몸을 데이터로 해석한다. 조용히, 하지만 수치로 확신을 만든다.",
+    pros:["정체기 원인 파악 능력","불필요한 세트/운동 제거 잘함","장기적으로 강해짐"],
+    cons:["가끔 숫자에 매몰","느낌/즐김이 빠질 수 있음"],
+    routine:["주요 리프트만 수치 관리","보조 운동은 ‘느낌’으로 균형","3~4주마다 딜로드 1회"],
+    quote:"“측정되지 않으면, 개선도 없다.”"
   },
-  "Data|Drive": {
-    name: "기록러형",
-    desc: "기록이 곧 승부다. 어제의 나를 매번 갱신하려는 ‘상승 그래프’ 중독자.",
-    pros: ["증량/진행 속도 빠름", "목표 달성 집착력", "경쟁심으로 성장"],
-    cons: ["무리해서 기록 갱신 시도할 수 있음", "휴식/회복을 과소평가할 때 있음"],
-    routine: ["주 1회 ‘기록 세션’", "나머지는 볼륨/폼 세션", "통증 신호 체크리스트 만들기"],
-    quote: "“기록이 말해준다. 더 할 수 있다고.”"
+  "Data|Drive": { name:"기록러형", desc:"기록이 곧 승부다. 어제의 나를 매번 갱신하려는 ‘상승 그래프’ 중독자.",
+    pros:["증량/진행 속도 빠름","목표 달성 집착력","경쟁심으로 성장"],
+    cons:["무리해서 기록 갱신 시도할 수 있음","휴식/회복을 과소평가할 때 있음"],
+    routine:["주 1회 ‘기록 세션’","나머지는 볼륨/폼 세션","통증 신호 체크리스트 만들기"],
+    quote:"“기록이 말해준다. 더 할 수 있다고.”"
   },
-  "Feel|Social": {
-    name: "감성러형",
-    desc: "운동은 감정 정리다. 자극/음악/분위기에서 ‘살아있는 느낌’을 얻는다.",
-    pros: ["운동이 힐링이 됨", "루틴이 부담스럽지 않음", "꾸준함으로 이어지기 쉬움"],
-    cons: ["목표 지표가 없으면 방향을 잃기 쉬움", "강도 유지가 어려울 때 있음"],
-    routine: ["좋아하는 종목 2개는 고정", "나머지는 ‘오늘 기분’으로 선택", "주 1회만 가벼운 지표(횟수/시간) 기록"],
-    quote: "“운동은 내 마음을 세팅하는 시간.”"
+  "Feel|Social": { name:"감성러형", desc:"운동은 감정 정리다. 자극/음악/분위기에서 ‘살아있는 느낌’을 얻는다.",
+    pros:["운동이 힐링이 됨","루틴이 부담스럽지 않음","꾸준함으로 이어지기 쉬움"],
+    cons:["목표 지표가 없으면 방향을 잃기 쉬움","강도 유지가 어려울 때 있음"],
+    routine:["좋아하는 종목 2개는 고정","나머지는 ‘오늘 기분’으로 선택","주 1회만 가벼운 지표(횟수/시간) 기록"],
+    quote:"“운동은 내 마음을 세팅하는 시간.”"
   },
-  "Feel|Safe": {
-    name: "힐링형",
-    desc: "지치지 않게, 오래 가는 게 1등이다. 회복을 챙길수록 몸은 더 좋아진다.",
-    pros: ["회복 관리 능력", "부상 회피 탁월", "장기적인 바디 밸런스 좋음"],
-    cons: ["가끔 강도 부족으로 정체기", "도전이 줄어들 수 있음"],
-    routine: ["중강도 + 폼 최우선", "유산소/스트레칭 주 2~3회", "수면/영양 루틴 고정"],
-    quote: "“내 몸은 오래 쓸 거다.”"
+  "Feel|Safe": { name:"힐링형", desc:"지치지 않게, 오래 가는 게 1등이다. 회복을 챙길수록 몸은 더 좋아진다.",
+    pros:["회복 관리 능력","부상 회피 탁월","장기적인 바디 밸런스 좋음"],
+    cons:["가끔 강도 부족으로 정체기","도전이 줄어들 수 있음"],
+    routine:["중강도 + 폼 최우선","유산소/스트레칭 주 2~3회","수면/영양 루틴 고정"],
+    quote:"“내 몸은 오래 쓸 거다.”"
   },
-  "Drive|Inner": {
-    name: "깡다구형",
-    desc: "말은 적은데, 할 건 한다. 남 눈치 안 보고 내 싸움을 끝까지 가져가는 타입.",
-    pros: ["멘탈 강철", "혼자서도 고강도 가능", "버티는 힘이 성과로 직결"],
-    cons: ["무리도 혼자 떠안을 수 있음", "휴식 타이밍을 놓칠 때 있음"],
-    routine: ["빅3/머신 핵심 4~5종목", "마지막 1~2세트만 승부", "주 1회 회복데이 강제"],
-    quote: "“조용히 쎄게, 끝까지.”"
+  "Drive|Inner": { name:"깡다구형", desc:"말은 적은데, 할 건 한다. 남 눈치 안 보고 내 싸움을 끝까지 가져가는 타입.",
+    pros:["멘탈 강철","혼자서도 고강도 가능","버티는 힘이 성과로 직결"],
+    cons:["무리도 혼자 떠안을 수 있음","휴식 타이밍을 놓칠 때 있음"],
+    routine:["빅3/머신 핵심 4~5종목","마지막 1~2세트만 승부","주 1회 회복데이 강제"],
+    quote:"“조용히 쎄게, 끝까지.”"
   },
-  "Safe|Inner": {
-    name: "안전제일형",
-    desc: "부상 없이 오래 가는 게 진짜 실력. 내 몸의 경고등을 가장 빨리 읽는다.",
-    pros: ["자기관리/회복 탑티어", "폼/자세 안정적", "지속 가능성 최상"],
-    cons: ["도전/강도에서 보수적으로 굳을 수 있음", "가끔 재미가 심심해질 수 있음"],
-    routine: ["RPE 6~8, 템포/정지 반복", "코어/가동성 루틴 필수", "월 1회만 ‘도전 세션’ 넣기"],
-    quote: "“부상 없는 사람이 결국 이긴다.”"
+  "Safe|Inner": { name:"안전제일형", desc:"부상 없이 오래 가는 게 진짜 실력. 내 몸의 경고등을 가장 빨리 읽는다.",
+    pros:["자기관리/회복 탑티어","폼/자세 안정적","지속 가능성 최상"],
+    cons:["도전/강도에서 보수적으로 굳을 수 있음","가끔 재미가 심심해질 수 있음"],
+    routine:["RPE 6~8, 템포/정지 반복","코어/가동성 루틴 필수","월 1회만 ‘도전 세션’ 넣기"],
+    quote:"“부상 없는 사람이 결국 이긴다.”"
   }
 };
 
@@ -702,7 +633,6 @@ const el = {
 
 let qIndex = 0;
 let scores = initScores();
-let answers = [];
 
 function initScores(){
   const s = {};
@@ -731,7 +661,6 @@ function applyChoice(choice){
   const q = questions[qIndex];
   const add = (choice==="a" ? q.a.adds : q.b.adds);
   for(const k in add){ scores[k] += add[k]; }
-  answers.push(choice);
   qIndex++;
 
   if(qIndex >= questions.length) finish();
@@ -792,7 +721,6 @@ function escapeHtml(str){
 function resetAll(){
   qIndex = 0;
   scores = initScores();
-  answers = [];
   renderQuestion();
   showScreen("quiz");
 }
@@ -850,7 +778,6 @@ document.getElementById("btnRandomBg").addEventListener("click", ()=>{
     const decoded = decodeURIComponent(type);
     const foundKey = Object.keys(results).find(k => results[k].name === decoded);
     if(foundKey){
-      scores = initScores();
       const r = results[foundKey];
       el.resultTitle.textContent = r.name;
       el.resultDesc.textContent = r.desc;
