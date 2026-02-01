@@ -74,12 +74,32 @@
       padding: 24px 0 60px;
     }
 
+    /* ✅ (추가) 상단 고정 헤더 + 메인 버튼 */
     .topbar{
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(960px, 92vw);
+      z-index: 999;
+
       display:flex;
       justify-content: space-between;
       align-items:center;
       gap:12px;
-      padding: 6px 4px 18px;
+      padding: 10px 12px;
+
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.22);
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 12px 34px rgba(0,0,0,.22);
+    }
+
+    /* ✅ (추가) 고정 topbar 때문에 컨텐츠가 가리지 않게 */
+    .wrap{
+      padding: 86px 0 60px;
     }
 
     .brand{
@@ -88,6 +108,7 @@
       gap:10px;
       font-weight:800;
       letter-spacing:-.3px;
+      min-width: 0;
     }
 
     .pill{
@@ -99,6 +120,28 @@
       background: rgba(0,0,0,.18);
       backdrop-filter: blur(10px);
     }
+
+    /* ✅ (추가) 메인으로 버튼 */
+    .homeBtn{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
+      color: rgba(255,255,255,.95);
+      text-decoration:none;
+      font-weight: 900;
+      letter-spacing:-.2px;
+      user-select:none;
+      transition: transform .06s ease, background .2s ease, border-color .2s ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      white-space: nowrap;
+    }
+    .homeBtn:hover{ background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.28); }
+    .homeBtn:active{ transform: translateY(1px); }
 
     .card{
       border: 1px solid var(--line);
@@ -114,24 +157,33 @@
     }
     .section.active{ display:block; }
 
+    /* ✅ (수정) START 화면에서 텍스트/버튼 가독성 해결: 히어로 패널 */
     .hero{
       padding: 26px 22px 22px;
       text-align:center;
+
+      /* 추가된 핵심 */
+      background: rgba(0,0,0,.42);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
+
     h1{
       margin: 0 0 10px;
       font-size: clamp(22px, 2.7vw, 34px);
       letter-spacing:-.8px;
       line-height: 1.15;
-      text-shadow: 0 6px 18px rgba(0,0,0,.25);
+      text-shadow: 0 8px 18px rgba(0,0,0,.60);
     }
     .sub{
       margin: 0 auto 18px;
       max-width: 620px;
-      color: rgba(255,255,255,.85);
+      color: rgba(255,255,255,.90);
       line-height: 1.55;
       font-size: 14.5px;
-      text-shadow: 0 4px 14px rgba(0,0,0,.22);
+      text-shadow: 0 6px 14px rgba(0,0,0,.55);
     }
     .ctaRow{
       display:flex;
@@ -367,35 +419,35 @@
       display:none;
       z-index: 9999;
     }
-.resultImageWrap{
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin: 14px 0 10px;
-}
+    .resultImageWrap{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 14px 0 10px;
+    }
 
-.resultImageWrap img{
-  width: min(320px, 85%);
-  max-width: 360px;
-  border-radius: 18px;
-  box-shadow: 0 12px 28px rgba(0,0,0,.22);
-}
+    .resultImageWrap img{
+      width: min(320px, 85%);
+      max-width: 360px;
+      border-radius: 18px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.22);
+    }
 
-/* 하단 링크 */
-  footer{
-    position:fixed;
-    bottom:18px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:13px;
-    opacity:.6;
-  }
-  footer a{
-    text-decoration:none;
-    color:inherit;
-    margin:0 6px;
-  }
-    
+    /* 하단 링크 */
+    footer{
+      position:fixed;
+      bottom:18px;
+      left:50%;
+      transform:translateX(-50%);
+      font-size:13px;
+      opacity:.6;
+      z-index: 50;
+    }
+    footer a{
+      text-decoration:none;
+      color:inherit;
+      margin:0 6px;
+    }
   </style>
 </head>
 <body>
@@ -404,11 +456,16 @@
   <div class="grain"></div>
 
   <div class="wrap">
+
+    <!-- ✅ (수정) topbar에 "메인" 버튼 추가 + 고정 -->
     <div class="topbar">
       <div class="brand">
         <span class="pill">Rexx • Type Test</span>
         <span style="opacity:.95;font-weight:900;text-shadow:0 6px 18px rgba(0,0,0,.18);">운동 성향 테스트</span>
       </div>
+
+      <!-- 메인으로 돌아가기 -->
+      <a class="homeBtn" href="/main.html" title="메인화면으로">← 메인</a>
     </div>
 
     <div class="card">
@@ -428,15 +485,12 @@
         </div>
       </section>
 
-          <ins class="kakao_ad_area" style="display:none;"
-data-ad-unit = "DAN-UbdMz8EGIgleqqGs"
-data-ad-width = "320"
-data-ad-height = "100"></ins>
-<script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>  
+      <ins class="kakao_ad_area" style="display:none;"
+        data-ad-unit="DAN-UbdMz8EGIgleqqGs"
+        data-ad-width="320"
+        data-ad-height="100"></ins>
+      <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 
-      
-
-      
       <!-- QUIZ -->
       <section class="section" id="screenQuiz">
         <div class="quizHead">
@@ -453,7 +507,7 @@ data-ad-height = "100"></ins>
         <div class="qBox">
           <p class="qTitle" id="qTitle">질문</p>
 
-         <div class="options">
+          <div class="options">
             <div class="opt" id="optA">선택지 A</div>
             <div class="opt" id="optB">선택지 B</div>
           </div>
@@ -465,8 +519,6 @@ data-ad-height = "100"></ins>
         </div>
       </section>
 
-      
-      
       <!-- RESULT -->
       <section class="section" id="screenResult">
         <div class="resultTop">
@@ -479,9 +531,9 @@ data-ad-height = "100"></ins>
         </div>
 
         <!-- 일러스트 태그 -->
-<div class="resultImageWrap">
-  <img id="resultImage"  alt="유형 일러스트" style="display:none;">
-</div>
+        <div class="resultImageWrap">
+          <img id="resultImage" alt="유형 일러스트" style="display:none;">
+        </div>
 
         <div class="grid">
           <div class="box">
@@ -503,7 +555,7 @@ data-ad-height = "100"></ins>
               <button class="btn btnPrimary" id="btnCopy">결과 공유문구 복사</button>
               <button class="btn" id="btnRestart">다시하기</button>
             </div>
-           
+
           </div>
         </div>
       </section>
@@ -511,8 +563,6 @@ data-ad-height = "100"></ins>
   </div>
 
   <div class="toast" id="toast">복사됨!</div>
-
-  
 
 <script>
 const TRAITS = ["Plan","Flow","Data","Feel","Drive","Safe","Inner","Social"];
@@ -575,35 +625,35 @@ const results = {
     cons:["자극/변화가 부족하면 정체기 올 수 있음","가끔 너무 안전하게만 갈 때가 있음"],
     routine:["RPE 7~8 중심","스트레칭/워밍업 루틴 고정","매달 1~2개 운동만 살짝 업그레이드"],
     quote:"“안전이 쌓이면, 성과는 따라온다.”",
-    img:"cute2.png"            
+    img:"cute2.png"
   },
   "Plan|Inner": { name:"설계자형", desc:"혼자 조용히, 대신 정확하게. 내 페이스를 지킬 때 퍼포먼스가 폭발한다.",
     pros:["집중력/몰입이 강함","세트 퀄리티가 일정함","혼자서도 루틴 유지 가능"],
     cons:["가끔 피드백/자극이 부족해질 수 있음","완벽주의로 지칠 때가 있음"],
     routine:["핵심 3~4종목만 ‘깊게’","영상으로 폼 체크(주 1회)","세션 길이 60~75분 컷"],
     quote:"“조용히, 근데 확실하게.”",
-    img:"cute3.png"             
+    img:"cute3.png"
   },
   "Flow|Drive": { name:"불도저형", desc:"몸이 ‘가자’ 하면 바로 간다. 분위기 타면 한 세션에서 판을 뒤집는 타입.",
     pros:["몰아치는 에너지","고강도 세션에 강함","멘탈로 뚫는 능력"],
     cons:["가끔 과몰입 → 회복/부상 리스크","루틴 일관성이 흔들릴 수 있음"],
     routine:["하드데이/라이트데이 교차","PR은 2주~4주에 1번","다음날 회복(수면/탄수) 강제"],
     quote:"“오늘 안 하면, 언제 하냐.”",
-    img:"cute4.png"             
+    img:"cute4.png"
   },
   "Flow|Social": { name:"분위기메이커형", desc:"혼자보다 같이 할 때 불 붙는 타입. 사람·음악·분위기가 퍼포먼스를 끌어올린다.",
     pros:["운동 동기 유지력 높음","세션이 즐거워 오래 감","파트너 운동 시 효율↑"],
     cons:["혼자 하면 페이스가 떨어질 수 있음","대화가 길어져 세션이 늘어질 때 있음"],
     routine:["파트너 세션 주 1~2회","서킷/슈퍼셋으로 텐션 유지","시간 제한(예: 70분 타이머)"],
     quote:"“재밌어야 오래 한다.”",
-    img:"cute5.png"              
+    img:"cute5.png"
   },
   "Flow|Feel": { name:"마이웨이형", desc:"컨디션과 기분에 솔직하다. 잘 맞는 날은 천재, 안 맞는 날은 그냥 ‘쉬는 날’이 된다.",
     pros:["몸 신호를 잘 느낌","자극 찾는 센스 좋음","운동을 스트레스 없이 함"],
     cons:["일관성 부족하면 성과가 들쭉날쭉","목표가 흐려질 수 있음"],
     routine:["‘최소 루틴’ 20분만이라도 고정","컨디션 좋을 때만 강도 업","주간 목표(세션 횟수)만 지키기"],
     quote:"“오늘의 나에게 최적화.”",
-    img:"cute6.png"            
+    img:"cute6.png"
   },
   "Data|Inner": { name:"과학기반형", desc:"내 몸을 데이터로 해석한다. 조용히, 하지만 수치로 확신을 만든다.",
     pros:["정체기 원인 파악 능력","불필요한 세트/운동 제거 잘함","장기적으로 강해짐"],
@@ -616,7 +666,7 @@ const results = {
     cons:["무리해서 기록 갱신 시도할 수 있음","휴식/회복을 과소평가할 때 있음"],
     routine:["주 1회 ‘기록 세션’","나머지는 볼륨/폼 세션","통증 신호 체크리스트 만들기"],
     quote:"“기록이 말해준다. 더 할 수 있다고.”",
-    img:"cute8.png"             
+    img:"cute8.png"
   },
   "Feel|Social": { name:"감성러형", desc:"운동은 감정 정리다. 자극/음악/분위기에서 ‘살아있는 느낌’을 얻는다.",
     pros:["운동이 힐링이 됨","루틴이 부담스럽지 않음","꾸준함으로 이어지기 쉬움"],
@@ -728,15 +778,14 @@ function finish(){
   const r = results[key];
 
   // ✅ 결과 이미지 처리
-const imgEl = document.getElementById("resultImage");
-
-if (r.img) {
-  imgEl.src = r.img;          // 예: "cute1.png"
-  imgEl.alt = r.name + " 캐릭터";
-  imgEl.style.display = "block";
-} else {
-  imgEl.style.display = "none";
-}
+  const imgEl = document.getElementById("resultImage");
+  if (r.img) {
+    imgEl.src = r.img;
+    imgEl.alt = r.name + " 캐릭터";
+    imgEl.style.display = "block";
+  } else {
+    imgEl.style.display = "none";
+  }
 
   el.resultTitle.textContent = r.name;
   el.resultDesc.textContent = r.desc;
@@ -829,6 +878,17 @@ document.getElementById("btnRandomBg").addEventListener("click", ()=>{
     const foundKey = Object.keys(results).find(k => results[k].name === decoded);
     if(foundKey){
       const r = results[foundKey];
+
+      // ✅ 공유 링크로 결과 바로 열렸을 때도 이미지 반영
+      const imgEl = document.getElementById("resultImage");
+      if (r.img) {
+        imgEl.src = r.img;
+        imgEl.alt = r.name + " 캐릭터";
+        imgEl.style.display = "block";
+      } else {
+        imgEl.style.display = "none";
+      }
+
       el.resultTitle.textContent = r.name;
       el.resultDesc.textContent = r.desc;
       el.resultTraits.textContent = `특성: (공유 링크 프리뷰)`;
@@ -845,11 +905,10 @@ document.getElementById("btnRandomBg").addEventListener("click", ()=>{
 })();
 </script>
 
-
 <footer>
-    <a href="/privacy.html">개인정보처리방침</a> ·
-    <a href="/contact.html">문의하기</a>
-    <a href="/terms.html">이용약관</a>  
-  </footer>  
+  <a href="/privacy.html">개인정보처리방침</a> ·
+  <a href="/contact.html">문의하기</a>
+  <a href="/terms.html">이용약관</a>
+</footer>
 </body>
 </html>
