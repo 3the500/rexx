@@ -380,6 +380,21 @@
   border-radius: 18px;
   box-shadow: 0 12px 28px rgba(0,0,0,.22);
 }
+
+/* 하단 링크 */
+  footer{
+    position:fixed;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:13px;
+    opacity:.6;
+  }
+  footer a{
+    text-decoration:none;
+    color:inherit;
+    margin:0 6px;
+  }
     
   </style>
 </head>
@@ -829,5 +844,12 @@ document.getElementById("btnRandomBg").addEventListener("click", ()=>{
   showScreen("start");
 })();
 </script>
+
+
+<footer>
+    <a href="/privacy.html">개인정보처리방침</a> ·
+    <a href="/contact.html">문의하기</a>
+    <a href="/terms.html">이용약관</a>  
+  </footer>  
 </body>
 </html>
