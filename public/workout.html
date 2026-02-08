@@ -1,18 +1,18 @@
 <!doctype html>
 <html lang="ko">
 <head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7710330114657085"
+    crossorigin="anonymous"></script>
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7710330114657085"
-     crossorigin="anonymous"></script>
-  
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>나와 맞는 운동찾기!!</title>
+
   <style>
     :root{
       --bg:#0b0f19;
       --card:rgba(255,255,255,.10);
-      --border:rgba(255,255,255,.18);
+      --border:rgba(255,255,255,.16);
       --text:#eaf0ff;
       --muted:rgba(234,240,255,.75);
       --accent:#7aa7ff;
@@ -30,39 +30,41 @@
       overflow-x:hidden;
     }
 
-    /* 배경이미지 넣을 거면 여기 URL만 바꿔 */
+    /* 배경이미지 */
     .bg {
       position:fixed; inset:0;
       background-image:url("./workout1.png");
       background-size:cover;
       background-position:center;
       filter: saturate(1.05) contrast(1.05);
-      opacity:.25;
+      opacity:.22;
       z-index:-2;
     }
     .bg::after{
       content:"";
       position:absolute; inset:0;
-      background: linear-gradient(to bottom, rgba(11,15,25,.75), rgba(11,15,25,.92));
+      background: linear-gradient(to bottom, rgba(11,15,25,.78), rgba(11,15,25,.94));
       z-index:-1;
     }
 
+    /* ✅ 1RM 페이지처럼: 중앙 카드 + 위아래 여백 */
     .wrap{
       min-height:100vh;
       display:flex;
-      align-items:center;
+      align-items:flex-start;            /* center -> top */
       justify-content:center;
-      padding:24px;
+      padding:28px 16px 40px;            /* 위/좌우/아래 여백 */
     }
 
+    /* ✅ 카드 크기/느낌 조정 (너무 큰 박스 줄이기) */
     .card{
-      width:min(920px, 100%);
+      width:min(760px, 100%);            /* 920 -> 760 */
       background:var(--card);
       border:1px solid var(--border);
-      border-radius:18px;
+      border-radius:16px;                /* 18 -> 16 */
       backdrop-filter: blur(10px);
-      padding:22px;
-      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+      padding:18px;                      /* 22 -> 18 */
+      box-shadow: 0 10px 28px rgba(0,0,0,.28);
     }
 
     header{
@@ -70,7 +72,7 @@
       gap:12px;
       align-items:flex-start;
       justify-content:space-between;
-      margin-bottom:14px;
+      margin-bottom:12px;
     }
     .title{
       font-size:18px;
@@ -78,9 +80,10 @@
       margin:0;
     }
     .sub{
-      margin:4px 0 0;
+      margin:6px 0 0;
       font-size:13px;
       color:var(--muted);
+      line-height:1.45;
     }
     .pill{
       font-size:12px;
@@ -92,24 +95,40 @@
       user-select:none;
     }
 
-    /* ✅ 질문/선택지 전체를 화면 중앙으로 */
+    .bar{
+      height:10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.10);
+      overflow:hidden;
+      border:1px solid var(--border);
+      margin:12px 0 6px;
+    }
+    .bar > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(122,167,255,.9), rgba(122,167,255,.45));
+      transition: width .25s ease;
+    }
+
+    /* ✅ 질문/선택지가 카드에서 너무 아래로 내려가 박스를 키우지 않게 */
     .stage{
       display:flex;
       align-items:center;
       justify-content:center;
-      min-height:58vh;
+      min-height: 360px;                 /* 58vh -> 고정/작게 */
+      padding: 8px 0;
     }
 
     .qbox{
-      width:min(760px, 100%);
+      width:min(680px, 100%);            /* 760 -> 680 */
       display:flex;
       flex-direction:column;
-      gap:14px;
-      text-align:center; /* 질문을 중앙에 */
+      gap:12px;
+      text-align:center;
     }
 
     .qtext{
-      font-size:24px;
+      font-size:22px;                    /* 24 -> 22 */
       line-height:1.35;
       margin:0 auto;
       letter-spacing:-0.3px;
@@ -119,11 +138,12 @@
       display:grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap:10px;
-      margin-top:6px;
+      margin-top:4px;
     }
     @media (max-width:720px){
       .answers{grid-template-columns: 1fr;}
-      .qtext{font-size:20px;}
+      .qtext{font-size:19px;}
+      .stage{min-height: 340px;}
     }
 
     .opt{
@@ -131,7 +151,7 @@
       display:flex;
       gap:10px;
       align-items:flex-start;
-      padding:12px 12px;
+      padding:12px;
       border:1px solid var(--border);
       border-radius:14px;
       background: rgba(255,255,255,.06);
@@ -153,27 +173,12 @@
     .opt .label b{ font-weight:700; }
     .opt .label span{ color:var(--muted); font-size:13px; }
 
-    .bar{
-      height:10px;
-      border-radius:999px;
-      background: rgba(255,255,255,.10);
-      overflow:hidden;
-      border:1px solid var(--border);
-      margin:14px 0 4px;
-    }
-    .bar > div{
-      height:100%;
-      width:0%;
-      background: linear-gradient(90deg, rgba(122,167,255,.9), rgba(122,167,255,.45));
-      transition: width .25s ease;
-    }
-
     .footer{
       display:flex;
       gap:10px;
       justify-content:space-between;
       align-items:center;
-      margin-top:12px;
+      margin-top:10px;
       flex-wrap:wrap;
     }
     .btns{
@@ -199,7 +204,7 @@
       text-align:center;
       padding:8px 0 0;
     }
-    .result h2{ margin:8px 0 4px; font-size:26px; }
+    .result h2{ margin:8px 0 4px; font-size:24px; }
     .result p{ margin:0; color:var(--muted); }
     .badge{
       display:inline-block;
@@ -226,24 +231,62 @@
     }
 
     .hide{ display:none !important; }
+
+    /* ✅ 광고: 1RM 계산기처럼 "카드 하단 중앙" + 담백한 박스 */
+    .adfit-inline{
+      margin: 18px auto 6px;             /* 위 여백 + 아래 살짝 */
+      padding: 12px;
+      max-width: 360px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display:flex;
+      justify-content:center;
+    }
+    .adfit-inline ins{ display:block; }
+    .ad-label{
+      max-width: 360px;
+      margin: 10px auto 0;
+      font-size: 12px;
+      color: rgba(234,240,255,.65);
+      text-align:left;
+    }
+
+    /* footer 정리 */
+    .site-footer{
+      margin-top: 18px;
+      padding: 14px 0 0;
+      font-size: 14px;
+      opacity: 0.95;
+      border-top: 1px solid rgba(255,255,255,.10);
+    }
+    .site-footer .row{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:center;
+      color: rgba(234,240,255,.85);
+    }
+    .site-footer a{ text-decoration:none; color:inherit; }
   </style>
 </head>
+
 <body>
   <div class="bg"></div>
 
   <div class="wrap">
     <div class="card" role="application" aria-label="운동 유형 테스트">
+
       <header>
         <div>
           <h1 class="title">나와 맞는 운동찾기!!</h1>
-          <p class="sub">10문항으로 16개 종목(레슬링/유도/팔씨름/헬스/러닝/크로스핏/축구/농구/배구/필라테스/수영/탁구/볼링/배드민턴/복싱/태권도) 중 추천을 골라줘.</p>
+          
         </div>
         <div class="pill" id="counter">Q 1 / 10</div>
       </header>
 
       <div class="bar" aria-hidden="true"><div id="barFill"></div></div>
 
-      <!-- ✅ 질문이 화면 중앙(카드 기준)으로 오게 구성 -->
       <div class="stage" id="stage">
         <div class="qbox" id="qbox">
           <p class="qtext" id="qtext">질문</p>
@@ -252,7 +295,8 @@
           <div class="footer">
             <div class="hint" id="hint">선택지를 고른 뒤 “다음”을 눌러줘.</div>
             <div class="btns">
-              <button class="ghost" id="prevBtn" type="button" oneclick="location.href='./main.html'">이전</button>
+              <!-- ✅ oneclick -> onclick 수정 -->
+              <button class="ghost" id="prevBtn" type="button" onclick="location.href='./main.html'">이전</button>
               <button class="primary" id="nextBtn" type="button">다음</button>
               <button class="danger hide" id="restartBtn" type="button">다시하기</button>
             </div>
@@ -266,15 +310,29 @@
           </div>
         </div>
       </div>
+
+      <!-- ✅ 광고: 카드 내용 포함해서 하단 중앙에 자연스럽게 -->
+      <ins class="kakao_ad_area" style="display:none;"
+data-ad-unit = "DAN-YbltG2Bbjv4Cs3oj"
+data-ad-width = "320"
+data-ad-height = "100"></ins>
+<script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+      
+         <footer class="site-footer">
+        <div class="row">
+          <span>© Rexx Strength</span>
+          <a href="/privacy.html">개인정보처리방침</a>
+          <a href="/contact.html">문의하기</a>
+          <a href="/terms.html">이용약관</a>
+        </div>
+      </footer>
     </div>
   </div>
 
+  <!-- ✅ 애드핏 스크립트는 ins 아래 1번만 -->
+  <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+
   <script>
-    /**
-     * ✅ 유형(16종목) 정의 + 간단 설명
-     * 사용자 요청: "유형별로 종목을 나눠줘"
-     * => 각 유형 = 종목 1개로 매핑 (총 16유형)
-     */
     const TYPES = [
       { key:"wrestling", name:"레슬링", desc:"몸싸움/클린치/테이크다운 감각이 강함. 치열한 접촉전 좋아하는 타입." },
       { key:"judo", name:"유도", desc:"그립 싸움과 밸런스 붕괴에 강함. 기술로 상대를 제압하는 타입." },
@@ -294,109 +352,104 @@
       { key:"taekwondo", name:"태권도", desc:"킥/스피드/거리. 발차기와 폭발력을 즐기는 타입." },
     ];
 
-    // 점수판
     const score = Object.fromEntries(TYPES.map(t => [t.key, 0]));
 
-    /**
-     * ✅ 10가지 질문 (요청한 종목 기준으로 점수 분배)
-     * 각 문항의 선택지마다 여러 종목에 가중치를 부여해서 결과를 내도록 구성.
-     */
     const QUESTIONS = [
       {
         text: "운동할 때 제일 설레는 순간은?",
         options: [
-          { title:"상대랑 부딪히고 주도권 잡을 때", sub:"클린치/그립/힘싸움", points:{ wrestling:2, judo:2, armwrestling:1 } },
-          { title:"기록이 오르는 걸 확인할 때", sub:"중량/반복/PR", points:{ gym:3, crossfit:1 } },
-          { title:"호흡이 터져도 계속 밀어붙일 때", sub:"지구력/심폐", points:{ running:2, swimming:2, crossfit:1 } },
-          { title:"팀플로 한 방에 분위기 뒤집을 때", sub:"패스/연계/득점", points:{ soccer:2, basketball:2, volleyball:2 } },
+          { title:"상대랑 부딪히고 주도권 잡을 때", points:{ wrestling:2, judo:2, armwrestling:1 } },
+          { title:"기록이 오르는 걸 확인할 때",  points:{ gym:3, crossfit:1 } },
+          { title:"호흡이 터져도 계속 밀어붙일 때", points:{ running:2, swimming:2, crossfit:1 } },
+          { title:"팀플로 한 방에 분위기 뒤집을 때", points:{ soccer:2, basketball:2, volleyball:2 } },
         ]
       },
       {
         text: "너는 어떤 승부가 더 취향이야?",
         options: [
-          { title:"맨몸으로 정면승부", sub:"붙어서 끝내는 맛", points:{ wrestling:2, judo:2, boxing:1 } },
-          { title:"정확도/기술로 깔끔하게", sub:"각도/스핀/루틴", points:{ tabletennis:2, bowling:2, badminton:1 } },
-          { title:"순간 폭발력으로 찍어누르기", sub:"스피드/파워", points:{ taekwondo:2, basketball:2, boxing:1 } },
-          { title:"꾸준함으로 만든 체력", sub:"지구력/호흡", points:{ running:2, swimming:2, pilates:1 } },
+          { title:"맨몸으로 정면승부",  points:{ wrestling:2, judo:2, boxing:1 } },
+          { title:"정확도/기술로 깔끔하게", points:{ tabletennis:2, bowling:2, badminton:1 } },
+          { title:"순간 폭발력으로 찍어누르기", points:{ taekwondo:2, basketball:2, boxing:1 } },
+          { title:"꾸준함으로 만든 체력", points:{ running:2, swimming:2, pilates:1 } },
         ]
       },
       {
         text: "너한테 가장 중요한 건?",
         options: [
-          { title:"힘(파워)", sub:"세게 때리고/들고/밀기", points:{ gym:2, armwrestling:2, crossfit:1 } },
-          { title:"기술(컨트롤)", sub:"밸런스/각도/타이밍", points:{ judo:2, tabletennis:2, volleyball:1 } },
-          { title:"스피드(반응)", sub:"순간 판단/순발력", points:{ badminton:2, basketball:2, taekwondo:1 } },
-          { title:"지구력(지속)", sub:"오래 가는 힘", points:{ running:2, swimming:2, soccer:1 } },
+          { title:"힘(파워)",  points:{ gym:2, armwrestling:2, crossfit:1 } },
+          { title:"기술(컨트롤)",  points:{ judo:2, tabletennis:2, volleyball:1 } },
+          { title:"스피드(반응)",  points:{ badminton:2, basketball:2, taekwondo:1 } },
+          { title:"지구력(지속)",  points:{ running:2, swimming:2, soccer:1 } },
         ]
       },
       {
         text: "운동 스타일, 너는 어느 쪽?",
         options: [
-          { title:"혼자 몰입해서 루틴", sub:"나만의 페이스", points:{ running:2, gym:2, swimming:1, pilates:1 } },
-          { title:"사람들이랑 같이 해야 불 붙음", sub:"팀/커뮤니티", points:{ crossfit:2, soccer:2, basketball:1, volleyball:1 } },
-          { title:"1:1 승부가 제일 재밌음", sub:"상대랑 붙어서", points:{ boxing:2, wrestling:1, judo:1, armwrestling:2 } },
-          { title:"정교한 감각/손맛이 좋음", sub:"라켓/볼/핀", points:{ tabletennis:2, badminton:2, bowling:1 } },
+          { title:"혼자 몰입해서 루틴",  points:{ running:2, gym:2, swimming:1, pilates:1 } },
+          { title:"사람들이랑 같이 해야 불 붙음",  points:{ crossfit:2, soccer:2, basketball:1, volleyball:1 } },
+          { title:"1:1 승부가 제일 재밌음",  points:{ boxing:2, wrestling:1, judo:1, armwrestling:2 } },
+          { title:"정교한 감각/손맛이 좋음",  points:{ tabletennis:2, badminton:2, bowling:1 } },
         ]
       },
       {
-        text: "너는 어떤 훈련이 더 잘 맞아?",
+        text: "너한테 어떤 훈련이 더 잘 맞아?",
         options: [
-          { title:"반복해서 폼을 완성", sub:"자세/정렬/기본기", points:{ pilates:2, swimming:1, boxing:1, taekwondo:1 } },
-          { title:"힘을 모아서 한 번에", sub:"한 방/레버리지", points:{ armwrestling:3, gym:1 } },
-          { title:"전략적으로 움직이는 전개", sub:"전술/포지션", points:{ soccer:2, basketball:2, volleyball:2 } },
-          { title:"붙어서 무너뜨리는 기술", sub:"테이크다운/던지기", points:{ wrestling:2, judo:2 } },
+          { title:"반복해서 폼을 완성",  points:{ pilates:2, swimming:1, boxing:1, taekwondo:1 } },
+          { title:"힘을 모아서 한 번에",  points:{ armwrestling:3, gym:1 } },
+          { title:"전략적으로 움직이는 전개",  points:{ soccer:2, basketball:2, volleyball:2 } },
+          { title:"붙어서 무너뜨리는 기술",  points:{ wrestling:2, judo:2 } },
         ]
       },
       {
         text: "부상/피로 관리 기준으로는?",
         options: [
-          { title:"관절 부담 적고 전신운동 선호", sub:"회복이 중요", points:{ swimming:3, pilates:2 } },
-          { title:"타격/접촉 있어도 OK", sub:"스릴이 더 큼", points:{ boxing:2, taekwondo:2, wrestling:1, judo:1 } },
-          { title:"내 페이스대로 조절 가능해야 함", sub:"강약 조절", points:{ gym:2, running:2, bowling:1 } },
-          { title:"짧고 강하게, 템포 있게", sub:"고강도 한 판", points:{ crossfit:3, badminton:1, basketball:1 } },
+          { title:"관절 부담 적고 전신운동 선호",  points:{ swimming:3, pilates:2 } },
+          { title:"타격/접촉 있어도 OK",  points:{ boxing:2, taekwondo:2, wrestling:1, judo:1 } },
+          { title:"내 페이스대로 조절 가능해야 함",  points:{ gym:2, running:2, bowling:1 } },
+          { title:"짧고 강하게, 템포 있게",  points:{ crossfit:3, badminton:1, basketball:1 } },
         ]
       },
       {
         text: "너의 경쟁 본능은 어디서 터져?",
         options: [
-          { title:"랠리/공방이 길어질수록", sub:"집중력 폭발", points:{ badminton:2, tabletennis:2, volleyball:1 } },
-          { title:"카운터 한 방/한 번의 타이밍", sub:"클러치", points:{ basketball:2, bowling:2, boxing:1 } },
-          { title:"끝까지 버티는 체력 싸움", sub:"페이스 유지", points:{ running:2, swimming:2, soccer:1 } },
-          { title:"힘/그립으로 찍어누르는 승부", sub:"완력", points:{ armwrestling:2, gym:1, wrestling:1, judo:1 } },
+          { title:"랠리/공방이 길어질수록",  points:{ badminton:2, tabletennis:2, volleyball:1 } },
+          { title:"카운터 한 방/한 번의 타이밍",  points:{ basketball:2, bowling:2, boxing:1 } },
+          { title:"끝까지 버티는 체력 싸움",  points:{ running:2, swimming:2, soccer:1 } },
+          { title:"힘/그립으로 찍어누르는 승부",  points:{ armwrestling:2, gym:1, wrestling:1, judo:1 } },
         ]
       },
       {
         text: "너는 어떤 장비/환경이 더 끌려?",
         options: [
-          { title:"매트/도장 같은 격투 공간", sub:"스파링/기술", points:{ wrestling:2, judo:2, taekwondo:1, boxing:1 } },
-          { title:"헬스장/바벨/기구", sub:"중량의 로망", points:{ gym:3, crossfit:1 } },
-          { title:"코트/구장", sub:"라인/포지션", points:{ soccer:2, basketball:2, volleyball:2, badminton:1 } },
-          { title:"물/레인", sub:"호흡과 리듬", points:{ swimming:3 } },
+          { title:"매트/도장 같은 격투 공간",  points:{ wrestling:2, judo:2, taekwondo:1, boxing:1 } },
+          { title:"헬스장/바벨/기구",  points:{ gym:3, crossfit:1 } },
+          { title:"코트/구장",  points:{ soccer:2, basketball:2, volleyball:2, badminton:1 } },
+          { title:"물/레인",  points:{ swimming:3 } },
         ]
       },
       {
         text: "너에게 ‘재미’는?",
         options: [
-          { title:"기술이 통했을 때의 짜릿함", sub:"각도/타이밍", points:{ judo:2, tabletennis:2, badminton:1, boxing:1 } },
-          { title:"기록이 누적되는 성장", sub:"꾸준함", points:{ gym:2, running:1, swimming:1, pilates:1 } },
-          { title:"팀워크로 만들어내는 한 점", sub:"연계", points:{ soccer:2, basketball:2, volleyball:2 } },
-          { title:"한 방으로 흐름을 뒤집는 폭발", sub:"스피드/파워", points:{ taekwondo:2, crossfit:1, boxing:1 } },
+          { title:"기술이 통했을 때의 짜릿함",  points:{ judo:2, tabletennis:2, badminton:1, boxing:1 } },
+          { title:"기록이 누적되는 성장",  points:{ gym:2, running:1, swimming:1, pilates:1 } },
+          { title:"팀워크로 만들어내는 한 점",  points:{ soccer:2, basketball:2, volleyball:2 } },
+          { title:"한 방으로 흐름을 뒤집는 폭발",  points:{ taekwondo:2, crossfit:1, boxing:1 } },
         ]
       },
       {
         text: "마지막! 너의 성향에 가장 가까운 건?",
         options: [
-          { title:"냉정하고 계산적", sub:"정확/멘탈", points:{ bowling:2, tabletennis:2, pilates:1 } },
-          { title:"불타오르는 공격형", sub:"압박/전진", points:{ boxing:2, taekwondo:2, wrestling:1 } },
-          { title:"끈질긴 운영형", sub:"지구력/페이스", points:{ running:2, swimming:2, soccer:1 } },
-          { title:"파워/피지컬 자신 있음", sub:"힘으로 해결", points:{ gym:2, armwrestling:2, crossfit:1 } },
+          { title:"냉정하고 계산적",  points:{ bowling:2, tabletennis:2, pilates:1 } },
+          { title:"불타오르는 공격형",  points:{ boxing:2, taekwondo:2, wrestling:1 } },
+          { title:"끈질긴 운영형", points:{ running:2, swimming:2, soccer:1 } },
+          { title:"파워/피지컬 자신 있음",  points:{ gym:2, armwrestling:2, crossfit:1 } },
         ]
       },
     ];
 
-    // 상태
     let idx = 0;
-    const answersPicked = new Array(QUESTIONS.length).fill(null); // {optIndex, points}
+    const answersPicked = new Array(QUESTIONS.length).fill(null);
+
     const qtext = document.getElementById("qtext");
     const answersEl = document.getElementById("answers");
     const counter = document.getElementById("counter");
@@ -432,7 +485,6 @@
     }
 
     function renderQuestion() {
-      // 결과 화면 숨김
       resultBox.style.display = "none";
       restartBtn.classList.add("hide");
       nextBtn.classList.remove("hide");
@@ -468,7 +520,6 @@
         answersEl.appendChild(label);
       });
 
-      // 이전에 선택한 값 복원
       const prevPick = answersPicked[idx];
       if (prevPick) {
         const radio = document.getElementById(`q${idx}_o${prevPick.optIndex}`);
@@ -480,18 +531,14 @@
 
       prevBtn.disabled = idx === 0;
       prevBtn.style.opacity = idx === 0 ? .5 : 1;
-
-      // 마지막 문항 버튼 텍스트 변경
       nextBtn.textContent = (idx === QUESTIONS.length - 1) ? "결과 보기" : "다음";
 
       setProgress();
     }
 
     function showResult() {
-      // 전체 점수 재계산(안전)
       recomputeScoresUpTo(QUESTIONS.length);
 
-      // 점수 정렬
       const ranked = TYPES
         .map(t => ({...t, score: score[t.key]}))
         .sort((a,b) => b.score - a.score);
@@ -500,17 +547,14 @@
       const second = ranked[1];
       const third = ranked[2];
 
-      // UI 전환
       answersEl.classList.add("hide");
       hint.classList.add("hide");
       nextBtn.classList.add("hide");
       restartBtn.classList.remove("hide");
 
-      // 진행바 100%
       barFill.style.width = "100%";
       counter.textContent = `DONE / ${QUESTIONS.length}`;
 
-      // 결과 출력
       resultMain.textContent = best.name;
       resultDesc.textContent = best.desc;
       top3.innerHTML = "";
@@ -527,8 +571,6 @@
 
     prevBtn.addEventListener("click", () => {
       if (idx === 0) return;
-
-      // 현재 인덱스 이전까지 점수 재계산
       idx -= 1;
       recomputeScoresUpTo(idx);
       renderQuestion();
@@ -542,7 +584,6 @@
         return;
       }
 
-      // 현재 문항까지 반영해서 점수 누적
       recomputeScoresUpTo(idx+1);
 
       if (idx === QUESTIONS.length - 1) {
@@ -562,32 +603,7 @@
       setProgress();
     });
 
-    // 초기 렌더
     renderQuestion();
   </script>
-  <footer style="
-  margin-top: 24px;
-  padding: 16px 0;
-  font-size: 14px;
-  opacity: 0.95;
-">
-  <div style="
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-    align-items: center;
-  ">
-    <span>© Rexx Strength</span>
-    <a href="/privacy.html" style="text-decoration:none;color:inherit;">
-      개인정보처리방침
-    </a>
-    <a href="/contact.html" style="text-decoration:none;color:inherit;">
-      문의하기
-    </a>
-       <a href="/terms.html" style="text-decoration:none;color:inherit;">
-      이용약관
-    </a>  
-  </div>
-</footer>
 </body>
 </html>
