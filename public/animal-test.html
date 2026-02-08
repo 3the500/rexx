@@ -149,6 +149,30 @@
       .animal-hero{ padding: 18px 14px; }
       .animal-cta{ width: min(320px, 100%); }
     }
+
+/* 애드핏 광고 영역 */
+.adfit-wrapper {
+  margin: 32px auto 48px;      /* 위 아래 여백 */
+  max-width: 360px;            /* 모바일 기준 안정 */
+  display: flex;
+  justify-content: center;
+}
+
+/* 광고 카드 느낌 */
+.adfit-wrapper ins {
+  background: rgba(0, 0, 0, 0.35); /* 배경이랑 자연스럽게 */
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* PC에서 너무 튀지 않게 */
+@media (min-width: 768px) {
+  .adfit-wrapper {
+    margin-top: 40px;
+  }
+}
+       
   </style>
 </head>
 
@@ -178,6 +202,14 @@
         </div>
       </div>
     </section>
+       
+<ins class="kakao_ad_area" style="display:none;"
+data-ad-unit = "DAN-2hXOaW8L6qgmNHZb"
+data-ad-width = "320"
+data-ad-height = "480"></ins>
+<script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+
+       
   </main>
   <footer style="
   margin-top: 24px;
