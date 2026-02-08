@@ -150,26 +150,27 @@
       .animal-cta{ width: min(320px, 100%); }
     }
 
-/* 애드핏 광고 영역 */
-.adfit-wrapper {
-  margin: 32px auto 48px;      /* 위 아래 여백 */
-  max-width: 360px;            /* 모바일 기준 안정 */
+/* 애드핏 - 인라인 콘텐츠형 */
+.adfit-inline {
+  max-width: 360px;       /* 1RM 카드랑 비슷 */
+  margin: 24px auto 32px;/* 위아래 여백만 살짝 */
+  padding: 12px;
+  background: #f7f7f7;   /* 카드 배경 */
+  border-radius: 12px;
+  border: 1px solid #e5e5e5;
   display: flex;
   justify-content: center;
 }
 
-/* 광고 카드 느낌 */
-.adfit-wrapper ins {
-  background: rgba(0, 0, 0, 0.35); /* 배경이랑 자연스럽게 */
-  border-radius: 16px;
-  padding: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+/* 광고 자체 */
+.adfit-inline ins {
+  display: block;
 }
 
-/* PC에서 너무 튀지 않게 */
-@media (min-width: 768px) {
-  .adfit-wrapper {
-    margin-top: 40px;
+/* 모바일에서 더 자연스럽게 */
+@media (max-width: 480px) {
+  .adfit-inline {
+    margin: 20px 16px 28px;
   }
 }
        
