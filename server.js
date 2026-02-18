@@ -326,6 +326,100 @@ app.post(
 );
 
 /* =========================================================
+ * [리스트컬 계산기 API] ✅ 추가됨
+ *  POST /api/wristcurl
+ *    body: { bodyweightKg, weightKg, reps(optional) }
+ * =======================================================*/
+// ==============================
+// 리스트컬 계산기
+// ==============================
+function wristcurlEstimate1RM(weight, reps) {
+  if (!reps || reps <= 1) return weight;
+  const r = Math.min(Math.max(reps, 2), 20); // 2~20 reps만 신뢰 구간
+  return weight * (1 + r / 30); // Epley
+}
+
+function wristcurlGetGrade(ratio) {
+  // ratio = usedWeight / bodyweight
+  if (ratio < 0.10) return { key: "입문", emoji: "🔰", range: "< 10%" };
+  if (ratio < 0.18) return { key: "초급", emoji: "🟢", range: "10% ~ 18%" };
+  if (ratio < 0.25) return { key: "중급", emoji: "🔵", range: "18% ~ 25%" };
+  if (ratio < 0.35) return { key: "고급", emoji: "🟣", range: "25% ~ 35%" };
+  return { key: "괴물", emoji: "🔴", range: "35% +" };
+}
+
+function wristcurlPercentileHint(ratio) {
+  // 통계가 아니라 재미/자기점검용 문구
+  if (ratio < 0.10) return "대략 하위권(입문 구간)";
+  if (ratio < 0.18) return "대략 보통~초급 상위";
+  if (ratio < 0.25) return "대략 상위권(중급 이상)";
+  if (ratio < 0.35) return "대략 상위 10% 내외 느낌";
+  return "대략 상위 1~3%급 느낌";
+}
+
+function wristcurlArmwrestlingHint(ratio) {
+  if (ratio < 0.10) return "우선 폼(풀레인지/반동X)부터 고정하면 성장속도 빠름";
+  if (ratio < 0.18) return "탑롤/훅 둘 다 기반 생기는 구간. 손가락+프로네이션도 같이 ㄱㄱ";
+  if (ratio < 0.25) return "손목 플렉션 기반 확실. 실전에서 손목 싸움 이길 확률 올라감";
+  if (ratio < 0.35) return "훅 잠재력 큼. 압박 걸 때 손목이 버텨줄 확률 높음";
+  return "손목 괴물급. 상대 손목 말림 만드는 무기 가능";
+}
+
+app.post("/api/wristcurl", (req, res) => {
+  try {
+    const { bodyweightKg, weightKg, reps } = req.body || {};
+
+    const bw = Number(bodyweightKg);
+    const w = Number(weightKg);
+    const r =
+      reps === "" || reps === undefined || reps === null ? null : Number(reps);
+
+    if (!Number.isFinite(bw) || bw <= 0) {
+      return res
+        .status(400)
+        .json({ ok: false, message: "체중(kg)을 올바르게 입력해줘." });
+    }
+    if (!Number.isFinite(w) || w <= 0) {
+      return res
+        .status(400)
+        .json({ ok: false, message: "중량(kg)을 올바르게 입력해줘." });
+    }
+    if (r !== null && (!Number.isFinite(r) || r <= 0)) {
+      return res
+        .status(400)
+        .json({ ok: false, message: "반복수(reps)를 올바르게 입력해줘." });
+    }
+
+    const usedWeight = wristcurlEstimate1RM(w, r); // reps 있으면 1RM 추정
+    const ratio = usedWeight / bw;
+    const percentBW = ratio * 100;
+
+    const grade = wristcurlGetGrade(ratio);
+
+    return res.json({
+      ok: true,
+      input: { bodyweightKg: bw, weightKg: w, reps: r },
+      result: {
+        usedWeightKg: Number(usedWeight.toFixed(1)),
+        percentBW: Number(percentBW.toFixed(1)),
+        grade,
+        percentileHint: wristcurlPercentileHint(ratio),
+        armwrestlingHint: wristcurlArmwrestlingHint(ratio),
+        note:
+          r && r > 1
+            ? "반복수를 입력해서 1RM(추정) 기준으로 계산했어."
+            : "반복수 미입력: 입력 중량 기준으로 계산했어.",
+      },
+    });
+  } catch (e) {
+    console.error("wristcurl error:", e);
+    return res
+      .status(500)
+      .json({ ok: false, message: "server_error" });
+  }
+});
+
+/* =========================================================
  * [서버 실행]
  * =======================================================*/
 app.listen(PORT, HOST, () => {
