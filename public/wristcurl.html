@@ -3,35 +3,124 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>리스트컬 등급표 | Recx Strength</title>
+    <title>리스트컬 등급표 | Rexx Strength</title>
     <style>
-      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", sans-serif; margin: 0; background:#0b0d12; color:#eef2ff; }
+      /* ✅ 배경 이미지: public/images/rexx-bg.png 로 넣으면 됨 */
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", sans-serif;
+        margin: 0;
+        color: #eef2ff;
+
+        background:
+          linear-gradient(rgba(11,13,18,0.72), rgba(11,13,18,0.72)),
+          url("/wrist.png") no-repeat center center fixed;
+        background-size: cover;
+      }
+
       .wrap { max-width: 820px; margin: 0 auto; padding: 24px; }
-      .card { background:#121827; border:1px solid #26314d; border-radius:16px; padding:18px; box-shadow: 0 8px 30px rgba(0,0,0,.25); }
+
+      /* ✅ 카드(툴바) 반투명 + 블러로 배경이 살짝 보이게 */
+      .card {
+        background: rgba(18, 24, 39, 0.78);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 8px 30px rgba(0,0,0,.35);
+      }
+
       h1 { margin: 0 0 10px; font-size: 22px; }
       p { margin: 8px 0; color:#cbd5e1; line-height: 1.5; }
+
       .grid { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 14px; }
       label { display:block; font-size: 13px; color:#cbd5e1; margin-bottom: 6px; }
-      input { width:100%; box-sizing:border-box; padding:12px; border-radius:12px; border:1px solid #2b3759; background:#0f1422; color:#eef2ff; outline:none; }
+
+      input {
+        width:100%;
+        box-sizing:border-box;
+        padding:12px;
+        border-radius:12px;
+        border:1px solid rgba(255,255,255,0.14);
+        background: rgba(15,20,34,0.72);
+        color:#eef2ff;
+        outline:none;
+      }
       input:focus { border-color:#4f6cff; }
-      .btns { display:flex; gap: 10px; margin-top: 12px; }
-      button { padding:12px 14px; border-radius:12px; border:1px solid #2b3759; background:#1a2440; color:#eef2ff; cursor:pointer; font-weight: 700; }
+
+      .btns { display:flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+
+      button {
+        padding:12px 14px;
+        border-radius:12px;
+        border:1px solid rgba(255,255,255,0.14);
+        background: rgba(26, 36, 64, 0.75);
+        color:#eef2ff;
+        cursor:pointer;
+        font-weight: 700;
+      }
       button:hover { filter: brightness(1.1); }
-      .result { margin-top: 14px; padding: 14px; border-radius: 14px; background:#0f1422; border:1px solid #2b3759; }
+
+      /* ✅ 메인으로 버튼만 살짝 강조(같은 톤) */
+      .btn-home {
+        background: rgba(255, 122, 24, 0.22);
+        border-color: rgba(255, 122, 24, 0.35);
+      }
+
+      .result {
+        margin-top: 14px;
+        padding: 14px;
+        border-radius: 14px;
+        background: rgba(15,20,34,0.78);
+        border:1px solid rgba(255,255,255,0.12);
+      }
+
       .big { font-size: 20px; font-weight: 900; margin: 0 0 6px; }
       .muted { color:#9aa7c2; font-size: 12px; }
       .row { display:flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
-      .pill { padding: 8px 10px; border:1px solid #2b3759; background:#121827; border-radius: 999px; font-size: 13px; color:#cbd5e1; }
-      .hr { height:1px; background:#26314d; margin: 16px 0; }
+
+      .pill {
+        padding: 8px 10px;
+        border:1px solid rgba(255,255,255,0.14);
+        background: rgba(18,24,39,0.78);
+        border-radius: 999px;
+        font-size: 13px;
+        color:#cbd5e1;
+      }
+
+      .hr { height:1px; background: rgba(255,255,255,0.10); margin: 16px 0; }
       .footer { margin-top: 16px; font-size: 12px; color:#9aa7c2; }
       @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+
+
+      /* 하단 링크 */
+  footer{
+    position:fixed;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:13px;
+    opacity:.6;
+  }
+  footer a{
+    text-decoration:none;
+    color:inherit;
+    margin:0 6px;
+  }
+      
     </style>
   </head>
+
   <body>
     <div class="wrap">
       <div class="card">
         <h1>리스트컬 등급표 (한손 기준)</h1>
         <p>체중과 리스트컬 중량(풀레인지/반동X 기준)을 입력하면, 체중 대비 %와 등급을 알려줘.</p>
+
+        <!-- ✅ 버튼 추가: 메인 페이지로 돌아가기 -->
+        <div class="btns" style="margin-top:10px;">
+          <button class="btn-home" type="button" onclick="window.location.href='/'">← 메인페이지로</button>
+        </div>
 
         <div class="grid">
           <div>
@@ -71,7 +160,7 @@
 
         <h2 style="font-size:16px; margin:14px 0 8px;">테스트 기준(추천)</h2>
         <p class="muted" style="margin:0;">
-          팔꿈치 고정 · 반동X · 손목 풀레인지 · 통제된 템포(내려갈 때도 컨트롤)  
+          팔꿈치 고정 · 반동X · 손목 풀레인지 · 통제된 템포(내려갈 때도 컨트롤)
           ※ 기준이 흔들리면 결과도 의미가 없어짐.
         </p>
 
@@ -148,7 +237,7 @@
 - 등급: ${grade.key} (${grade.range})
 - 한줄평: ${r.armwrestlingHint}
 
-#recxstrength #리스트컬 #팔씨름`;
+#rexxstrength #리스트컬 #팔씨름`;
       }
 
       calcBtn.addEventListener("click", () => calculate());
@@ -166,5 +255,15 @@
         }
       });
     </script>
+
+
+
+
+<footer>
+    <a href="/privacy.html">개인정보처리방침</a> ·
+    <a href="/contact.html">문의하기</a>
+    <a href="/terms.html">이용약관</a>  
+  </footer>
+    
   </body>
 </html>
