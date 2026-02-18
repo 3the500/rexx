@@ -92,36 +92,41 @@
       .footer { margin-top: 16px; font-size: 12px; color:#9aa7c2; }
       @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
 
+     
+
+
+
       /* ===========================
-   광고 영역 스타일
+   카드 내부 광고 스타일
 =========================== */
 
-.ad-container {
-  display: flex;
-  justify-content: center;
-  margin: 40px 0 60px 0; /* 위 40px 아래 60px 여백 */
+.ad-section {
+  margin-top: 30px;
 }
 
-.ad-box {
+.ad-label {
+  font-size: 13px;
+  color: #9aa7c2;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.ad-wrapper {
+  background: rgba(255, 255, 255, 0.95);   /* 거의 흰 배경 */
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+/* 광고 내부 320x100 고정 */
+.ad-wrapper > * {
   width: 320px;
   height: 100px;
-
-  /* 자연스럽게 보이도록 살짝 반투명 */
-  background: rgba(18, 24, 39, 0.75);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 14px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  overflow: hidden;
 }
-
-      
 
 
       /* 하단 링크 */
