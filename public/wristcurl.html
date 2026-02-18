@@ -92,6 +92,37 @@
       .footer { margin-top: 16px; font-size: 12px; color:#9aa7c2; }
       @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
 
+      /* ===========================
+   광고 영역 스타일
+=========================== */
+
+.ad-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0 60px 0; /* 위 40px 아래 60px 여백 */
+}
+
+.ad-box {
+  width: 320px;
+  height: 100px;
+
+  /* 자연스럽게 보이도록 살짝 반투명 */
+  background: rgba(18, 24, 39, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+      
+
 
       /* 하단 링크 */
   footer{
@@ -169,6 +200,9 @@
         </div>
       </div>
     </div>
+
+
+    
 
     <script>
       const bwEl = document.getElementById("bw");
@@ -257,6 +291,11 @@
     </script>
 
 
+    <ins class="kakao_ad_area" style="display:none;"
+data-ad-unit = "DAN-YbltG2Bbjv4Cs3oj"
+data-ad-width = "320"
+data-ad-height = "100"></ins>
+<script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 
 
 <footer>
