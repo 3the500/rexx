@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>리스트컬 등급표 | Recx Strength</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", sans-serif; margin: 0; background:#0b0d12; color:#eef2ff; }
+      .wrap { max-width: 820px; margin: 0 auto; padding: 24px; }
+      .card { background:#121827; border:1px solid #26314d; border-radius:16px; padding:18px; box-shadow: 0 8px 30px rgba(0,0,0,.25); }
+      h1 { margin: 0 0 10px; font-size: 22px; }
+      p { margin: 8px 0; color:#cbd5e1; line-height: 1.5; }
+      .grid { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 14px; }
+      label { display:block; font-size: 13px; color:#cbd5e1; margin-bottom: 6px; }
+      input { width:100%; box-sizing:border-box; padding:12px; border-radius:12px; border:1px solid #2b3759; background:#0f1422; color:#eef2ff; outline:none; }
+      input:focus { border-color:#4f6cff; }
+      .btns { display:flex; gap: 10px; margin-top: 12px; }
+      button { padding:12px 14px; border-radius:12px; border:1px solid #2b3759; background:#1a2440; color:#eef2ff; cursor:pointer; font-weight: 700; }
+      button:hover { filter: brightness(1.1); }
+      .result { margin-top: 14px; padding: 14px; border-radius: 14px; background:#0f1422; border:1px solid #2b3759; }
+      .big { font-size: 20px; font-weight: 900; margin: 0 0 6px; }
+      .muted { color:#9aa7c2; font-size: 12px; }
+      .row { display:flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+      .pill { padding: 8px 10px; border:1px solid #2b3759; background:#121827; border-radius: 999px; font-size: 13px; color:#cbd5e1; }
+      .hr { height:1px; background:#26314d; margin: 16px 0; }
+      .footer { margin-top: 16px; font-size: 12px; color:#9aa7c2; }
+      @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <h1>리스트컬 등급표 (한손 기준)</h1>
+        <p>체중과 리스트컬 중량(풀레인지/반동X 기준)을 입력하면, 체중 대비 %와 등급을 알려줘.</p>
+
+        <div class="grid">
+          <div>
+            <label for="bw">체중 (kg)</label>
+            <input id="bw" type="number" inputmode="decimal" placeholder="예: 83" />
+          </div>
+          <div>
+            <label for="w">리스트컬 중량 (kg)</label>
+            <input id="w" type="number" inputmode="decimal" placeholder="예: 28" />
+          </div>
+          <div>
+            <label for="reps">반복수 (선택)</label>
+            <input id="reps" type="number" inputmode="numeric" placeholder="예: 5" />
+          </div>
+        </div>
+
+        <div class="btns">
+          <button id="calcBtn">등급 보기</button>
+          <button id="copyBtn" type="button">결과 복사</button>
+        </div>
+
+        <div id="result" class="result" style="display:none;">
+          <div class="big" id="headline"></div>
+          <div class="row" id="pills"></div>
+          <div class="hr"></div>
+          <p id="hint" style="margin:0;"></p>
+          <p class="muted" id="note" style="margin-top:10px;"></p>
+        </div>
+
+        <div class="hr"></div>
+
+        <h2 style="font-size:16px; margin:0 0 8px;">리스트컬이란?</h2>
+        <p>
+          전완 굴곡근(손목을 말아주는 힘)을 키우는 대표 운동.
+          팔씨름에서는 훅/탑롤 모두에서 <b>손목 플렉션 기반</b>이 되기 때문에 “기본기”로 많이 쳐.
+        </p>
+
+        <h2 style="font-size:16px; margin:14px 0 8px;">테스트 기준(추천)</h2>
+        <p class="muted" style="margin:0;">
+          팔꿈치 고정 · 반동X · 손목 풀레인지 · 통제된 템포(내려갈 때도 컨트롤)  
+          ※ 기준이 흔들리면 결과도 의미가 없어짐.
+        </p>
+
+        <div class="footer">
+          * 이 계산기는 재미/자기점검용. 앞으로 유저 데이터가 쌓이면 기준은 더 정확하게 업데이트 가능.
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const bwEl = document.getElementById("bw");
+      const wEl = document.getElementById("w");
+      const repsEl = document.getElementById("reps");
+      const resultEl = document.getElementById("result");
+      const headlineEl = document.getElementById("headline");
+      const pillsEl = document.getElementById("pills");
+      const hintEl = document.getElementById("hint");
+      const noteEl = document.getElementById("note");
+      const calcBtn = document.getElementById("calcBtn");
+      const copyBtn = document.getElementById("copyBtn");
+
+      let lastCopyText = "";
+
+      function pill(text) {
+        const d = document.createElement("div");
+        d.className = "pill";
+        d.textContent = text;
+        return d;
+      }
+
+      async function calculate() {
+        const bodyweightKg = bwEl.value;
+        const weightKg = wEl.value;
+        const reps = repsEl.value;
+
+        const payload = {
+          bodyweightKg,
+          weightKg,
+          reps: reps === "" ? "" : Number(reps),
+        };
+
+        const res = await fetch("/api/wristcurl", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await res.json();
+        if (!data.ok) {
+          alert(data.message || "입력값을 확인해줘.");
+          return;
+        }
+
+        const r = data.result;
+        const grade = r.grade;
+
+        resultEl.style.display = "block";
+        headlineEl.textContent = `${grade.emoji} ${grade.key} 등급`;
+
+        pillsEl.innerHTML = "";
+        pillsEl.appendChild(pill(`체중대비 ${r.percentBW}%`));
+        pillsEl.appendChild(pill(`계산중량(추정1RM) ${r.usedWeightKg}kg`));
+        pillsEl.appendChild(pill(`구간: ${grade.range}`));
+        pillsEl.appendChild(pill(r.percentileHint));
+
+        hintEl.textContent = r.armwrestlingHint;
+        noteEl.textContent = r.note;
+
+        lastCopyText =
+`${grade.emoji} 리스트컬 등급표 결과
+- 체중: ${data.input.bodyweightKg}kg
+- 리스트컬: ${data.input.weightKg}kg${data.input.reps ? ` x ${data.input.reps}reps` : ""}
+- 체중대비: ${r.percentBW}%
+- 등급: ${grade.key} (${grade.range})
+- 한줄평: ${r.armwrestlingHint}
+
+#recxstrength #리스트컬 #팔씨름`;
+      }
+
+      calcBtn.addEventListener("click", () => calculate());
+
+      copyBtn.addEventListener("click", async () => {
+        if (!lastCopyText) {
+          alert("먼저 등급 보기를 눌러서 결과를 만들어줘!");
+          return;
+        }
+        try {
+          await navigator.clipboard.writeText(lastCopyText);
+          alert("복사 완료! 인스타/디씨/카톡에 붙여넣기 ㄱㄱ");
+        } catch (e) {
+          alert("복사 실패. 브라우저 권한을 확인해줘.");
+        }
+      });
+    </script>
+  </body>
+</html>
