@@ -92,7 +92,62 @@
       .footer { margin-top: 16px; font-size: 12px; color:#9aa7c2; }
       @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
 
-     
+      
+/* ✅ Top Ad Slot (Coupang Partners) */
+.ad-slot {
+  margin: 14px 0 18px;
+  padding: 12px 12px;
+  border-radius: 14px;
+
+  /* 너 페이지가 다크/유리 느낌이니까 톤 맞춤 */
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(6px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* 상단 영역에서 너무 커 보이면 여백만 살짝 조절 */
+.ad-slot--top {
+  margin-top: 10px;
+}
+
+/* 광고 라벨(작게) */
+.ad-slot__label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 12px;
+  opacity: 0.7;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* iframe 기본 스타일 */
+.coupang-iframe {
+  border: 0;
+  display: block;
+}
+
+/* ✅ 반응형: 모바일에서는 광고가 너무 커 보이니까 자동 축소 */
+@media (max-width: 480px) {
+  .ad-slot {
+    padding: 10px;
+  }
+
+  /* 쿠팡 iframe이 120x240 같은 고정 크기라서 scale로 줄이는 방식 */
+  .coupang-iframe {
+    transform: scale(0.9);
+    transform-origin: center;
+  }
+}     
 
 
 
@@ -152,8 +207,8 @@
       <div class="card">
         <h1>리스트컬 등급표 (한손 기준)</h1>
         <p>체중과 리스트컬 중량(풀레인지/반동X 기준)을 입력하면, 체중 대비 %와 등급을 알려줘.</p>
-
-        <!-- ✅ 버튼 추가: 메인 페이지로 돌아가기 -->
+        
+<iframe src="https://coupa.ng/clMpz7" width="120" height="240" frameborder="0" scrolling="no" referrerpolicy="unsafe-url" browsingtopics></iframe>        <!-- ✅ 버튼 추가: 메인 페이지로 돌아가기 -->
         <div class="btns" style="margin-top:10px;">
           <button class="btn-home" type="button" onclick="window.location.href='/'">← 메인페이지로</button>
         </div>
@@ -201,8 +256,7 @@
         </p>
 
         <div class="footer">
-          * 이 계산기는 재미/자기점검용. 앞으로 유저 데이터가 쌓이면 기준은 더 정확하게 업데이트 가능.
-        </div>
+          * 이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.        </div>
       </div>
     </div>
 
